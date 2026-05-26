@@ -212,22 +212,25 @@ justify-content:center;
 align-items:center;
 }
 
-#monster{
-width:min(58vw,280px);
+#monsterContainer{
 position:relative;
 }
 
-/* LETTER ON BELLY */
+#monster{
+width:min(60vw,300px);
+}
+
+/* LETTER */
 
 #monsterLetter{
 position:absolute;
 
 left:50%;
-top:56%;
+top:52%;
 
 transform:translate(-50%,-50%);
 
-font-size:min(16vw,90px);
+font-size:min(16vw,95px);
 
 font-weight:bold;
 
@@ -237,24 +240,23 @@ text-shadow:
 0 0 8px black;
 }
 
-/* MOUTH DROP ZONE */
+/* MOUTH */
 
 #mouthZone{
 position:absolute;
 
 left:50%;
-top:67%;
+top:72%;
 
 transform:translateX(-50%);
 
-width:36%;
-height:16%;
+width:34%;
+height:14%;
 
 border-radius:40px;
-
 }
 
-/* PICTURES AREA */
+/* PICTURE AREA */
 
 #pictureArea{
 position:relative;
@@ -262,7 +264,7 @@ width:100%;
 height:55vh;
 }
 
-/* DRAG IMAGES */
+/* PICTURES */
 
 .picture{
 position:absolute;
@@ -342,7 +344,7 @@ src="assets/wrong.mp3"></audio>
 
 <div id="game">
 
-<!-- START -->
+<!-- START SCREEN -->
 
 <div class="screen active"
 id="startScreen">
@@ -372,7 +374,7 @@ Feed pictures that start with A
 
 <div id="monsterArea">
 
-<div style="position:relative;">
+<div id="monsterContainer">
 
 <img src="assets/monster.png"
 id="monster">
@@ -393,7 +395,7 @@ A
 
 </div>
 
-<!-- FINAL -->
+<!-- FINAL SCREEN -->
 
 <div class="screen"
 id="finalScreen">
@@ -581,6 +583,8 @@ let images=[
 
 images.sort(()=>Math.random()-0.5);
 
+/* POSITION ONLY BELOW MONSTER */
+
 images.forEach((img,index)=>{
 
 let pic=
@@ -592,13 +596,17 @@ pic.className='picture';
 
 pic.draggable=false;
 
-/* POSITION IMAGES BELOW MONSTER */
+pic.dataset.startX=
+(5+(index%4)*22);
+
+pic.dataset.startY=
+(5+Math.floor(index/4)*22);
 
 pic.style.left=
-(5+(index%4)*22)+'vw';
+pic.dataset.startX+'vw';
 
 pic.style.top=
-(5+Math.floor(index/4)*22)+'vh';
+pic.dataset.startY+'vh';
 
 area.appendChild(pic);
 
@@ -760,14 +768,29 @@ nextLevel();
 
 playWrong();
 
-/* RESET POSITION */
+resetPosition(element);
 
-element.style.left='10vw';
-element.style.top='40vh';
+}
+
+}else{
+
+resetPosition(element);
 
 }
 
 }
+
+/* RESET */
+
+function resetPosition(element){
+
+element.style.transition='all 0.4s';
+
+element.style.left=
+element.dataset.startX+'vw';
+
+element.style.top=
+element.dataset.startY+'vh';
 
 }
 
