@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no">
+
+<title>Feed The Letter Monster</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+body{
+overflow:hidden;
+font-family:'Arial Rounded MT Bold',sans-serif;
+touch-action:none;
+
+background:
+linear-gradient(to bottom,
+#74d9ff 0%,
+#b7f1ff 45%,
+#9be15d 45%,
+#6ed957 100%);
+}
+
+/* SKY */
+
+.cloud{
+position:absolute;
+background:white;
+border-radius:50%;
+opacity:0.9;
+}
+
+.cloud1{
+width:170px;
+height:80px;
+top:20px;
+left:20px;
+}
+
+.cloud2{
+width:200px;
+height:90px;
+top:30px;
+right:20px;
+}
+
+.cloud::before{
+content:'';
+position:absolute;
+background:white;
+border-radius:50%;
+}
+
+.cloud1::before{
+width:90px;
+height:90px;
+top:-20px;
+left:25px;
+}
+
+.cloud2::before{
+width:100px;
+height:100px;
+top:-25px;
+left:45px;
+}
+
+/* HILLS */
+
+.hill{
+position:absolute;
+bottom:-120px;
+width:450px;
+height:260px;
+border-radius:50%;
+}
+
+.hill1{
+left:-100px;
+background:#93df5b;
+}
+
+.hill2{
+right:-100px;
+background:#7ad54d;
+}
+
+/* GAME */
+
+#game{
+width:100vw;
+height:100vh;
+position:relative;
+overflow:hidden;
+}
+
+/* SCREENS */
+
+.screen{
+position:absolute;
+width:100%;
+height:100%;
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+padding:10px;
+}
+
+.active{
+display:flex;
+}
+
+/* LOGO */
+
+#logoScreen{
+position:absolute;
+width:100%;
+height:100%;
+background:white;
+z-index:999;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+#logoScreen img{
+width:min(70vw,280px);
+}
+
+/* TITLE */
+
+.title{
+font-size:min(13vw,80px);
+font-weight:bold;
+color:#ff4fa0;
+
+text-shadow:
+0 0 10px white,
+0 4px 0 #d63384;
+
+margin-bottom:20px;
+text-align:center;
+}
+
+/* BUTTON */
+
+.play-btn{
+padding:16px 35px;
+
+font-size:min(7vw,34px);
+
+border:none;
+border-radius:25px;
+
+background:
+linear-gradient(to bottom,
+#ffd54f,
+#ff9800);
+
+color:white;
+
+font-weight:bold;
+
+cursor:pointer;
+
+box-shadow:
+0 5px 0 #d67d00,
+0 10px 15px rgba(0,0,0,0.2);
+}
+
+/* MONSTER */
+
+.monster{
+width:min(55vw,260px);
+height:min(55vw,260px);
+
+background:#ff5ebc;
+
+border-radius:50%;
+
+position:relative;
+
+margin-top:20px;
+
+box-shadow:
+0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* EYES */
+
+.eye{
+width:45px;
+height:45px;
+
+background:white;
+
+border-radius:50%;
+
+position:absolute;
+top:55px;
+}
+
+.eye1{
+left:60px;
+}
+
+.eye2{
+right:60px;
+}
+
+.pupil{
+width:18px;
+height:18px;
+
+background:black;
+
+border-radius:50%;
+
+position:absolute;
+
+top:14px;
+left:14px;
+}
+
+/* MOUTH */
+
+.mouth{
+width:120px;
+height:60px;
+
+background:#7a003c;
+
+border-radius:0 0 80px 80px;
+
+position:absolute;
+
+bottom:45px;
+left:50%;
+
+transform:translateX(-50%);
+}
+
+/* LETTER */
+
+.letter{
+position:absolute;
+
+left:50%;
+top:48%;
+
+transform:translate(-50%,-50%);
+
+font-size:min(18vw,100px);
+
+font-weight:bold;
+
+color:white;
+
+text-shadow:
+0 0 8px #000;
+}
+
+/* INSTRUCTION */
+
+.instruction{
+background:white;
+
+padding:12px 20px;
+
+border-radius:22px;
+
+font-size:min(5vw,28px);
+
+font-weight:bold;
+
+margin-top:15px;
+
+box-shadow:
+0 5px 12px rgba(0,0,0,0.18);
+
+text-align:center;
+
+max-width:90%;
+}
+
+/* PICTURES */
+
+#pictureArea{
+position:absolute;
+width:100%;
+height:100%;
+pointer-events:none;
+}
+
+.picture{
+position:absolute;
+
+width:min(20vw,100px);
+
+pointer-events:auto;
+
+cursor:pointer;
+
+transition:transform 0.3s;
+}
+
+.picture:active{
+transform:scale(1.1);
+}
+
+/* CONFETTI */
+
+.confetti{
+position:absolute;
+width:8px;
+height:8px;
+animation:fall linear infinite;
+}
+
+@keyframes fall{
+from{
+transform:translateY(-100px) rotate(0deg);
+}
+to{
+transform:translateY(110vh) rotate(360deg);
+}
+}
+
+/* FINAL */
+
+#finalScreen{
+background:
+linear-gradient(to bottom,
+#002d62,
+#00152d);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+
+<div class="cloud cloud1"></div>
+<div class="cloud cloud2"></div>
+
+<div class="hill hill1"></div>
+<div class="hill hill2"></div>
+
+<!-- LOGO -->
+
+<div id="logoScreen">
+
+<img src="assets/innovine-logo.png">
+
+</div>
+
+<!-- AUDIO -->
+
+<audio id="correctSound"
+src="assets/correct.mp3"></audio>
+
+<audio id="wrongSound"
+src="assets/wrong.mp3"></audio>
+
+<!-- GAME -->
+
+<div id="game">
+
+<!-- START -->
+
+<div class="screen active"
+id="startScreen">
+
+<div class="title">
+Feed The Letter Monster
+</div>
+
+<button class="play-btn"
+onclick="startGame()">
+Play
+</button>
+
+</div>
+
+<!-- GAME SCREEN -->
+
+<div class="screen"
+id="gameScreen">
+
+<div class="monster"
+id="monster">
+
+<div class="eye eye1">
+<div class="pupil"></div>
+</div>
+
+<div class="eye eye2">
+<div class="pupil"></div>
+</div>
+
+<div class="mouth"></div>
+
+<div class="letter"
+id="monsterLetter">
+A
+</div>
+
+</div>
+
+<div class="instruction"
+id="instruction">
+
+Feed pictures that start with A
+
+</div>
+
+<div id="pictureArea"></div>
+
+</div>
+
+<!-- FINAL -->
+
+<div class="screen"
+id="finalScreen">
+
+<div id="confettiArea"></div>
+
+<div class="title">
+Great Job!
+</div>
+
+<div class="instruction">
+You fed all the letters
+</div>
+
+<button class="play-btn"
+onclick="restartGame()">
+Play again
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* LETTER DATA */
+
+const levels=[
+
+{
+letter:'A',
+correct:[
+'assets/apple.png',
+'assets/ant.png',
+'assets/alligator.png',
+'assets/aeroplane.png',
+'assets/axe.png'
+],
+wrong:[
+'assets/ball.png',
+'assets/cake.png',
+'assets/dog.png'
+]
+},
+
+{
+letter:'B',
+correct:[
+'assets/bag.png',
+'assets/ball.png',
+'assets/balloon.png',
+'assets/bat.png',
+'assets/bear.png'
+],
+wrong:[
+'assets/apple.png',
+'assets/car.png',
+'assets/dog.png'
+]
+},
+
+{
+letter:'C',
+correct:[
+'assets/cake.png',
+'assets/cap.png',
+'assets/car.png',
+'assets/carrot.png',
+'assets/cat.png'
+],
+wrong:[
+'assets/ball.png',
+'assets/doll.png',
+'assets/dog.png'
+]
+},
+
+{
+letter:'D',
+correct:[
+'assets/dog.png',
+'assets/doll.png',
+'assets/door.png',
+'assets/duckling.png',
+'assets/dum.png'
+],
+wrong:[
+'assets/apple.png',
+'assets/car.png',
+'assets/bag.png'
+]
+}
+
+];
+
+let currentLevel=0;
+let completed=0;
+
+/* START */
+
+window.onload=()=>{
+
+setTimeout(()=>{
+
+document.getElementById('logoScreen')
+.style.display='none';
+
+},5000);
+
+}
+
+/* AUDIO */
+
+function playCorrect(){
+
+let s=
+document.getElementById('correctSound');
+
+s.currentTime=0;
+
+s.play();
+
+setTimeout(()=>{
+
+s.pause();
+s.currentTime=0;
+
+},800);
+
+}
+
+function playWrong(){
+
+let s=
+document.getElementById('wrongSound');
+
+s.currentTime=0;
+
+s.play();
+
+}
+
+/* START GAME */
+
+function startGame(){
+
+document.getElementById('startScreen')
+.classList.remove('active');
+
+document.getElementById('gameScreen')
+.classList.add('active');
+
+currentLevel=0;
+
+loadLevel();
+
+}
+
+/* LOAD LEVEL */
+
+function loadLevel(){
+
+completed=0;
+
+let level=levels[currentLevel];
+
+document.getElementById('monsterLetter')
+.innerHTML=level.letter;
+
+document.getElementById('instruction')
+.innerHTML=
+'Feed pictures that start with '+level.letter;
+
+let area=
+document.getElementById('pictureArea');
+
+area.innerHTML='';
+
+let images=[
+...level.correct,
+...level.wrong
+];
+
+/* SHUFFLE */
+
+images.sort(()=>Math.random()-0.5);
+
+images.forEach((img,index)=>{
+
+let pic=
+document.createElement('img');
+
+pic.src=img;
+
+pic.className='picture';
+
+pic.draggable=false;
+
+pic.style.left=
+(5+(index%4)*22)+'vw';
+
+pic.style.top=
+(10+Math.floor(index/4)*22)+'vh';
+
+area.appendChild(pic);
+
+/* TOUCH + CLICK */
+
+pic.onclick=()=>{
+
+checkAnswer(pic,img);
+
+};
+
+});
+
+}
+
+/* CHECK */
+
+function checkAnswer(pic,img){
+
+let level=levels[currentLevel];
+
+if(level.correct.includes(img)){
+
+playCorrect();
+
+pic.style.transition='all 0.5s';
+
+pic.style.left='42vw';
+
+pic.style.top='45vh';
+
+pic.style.opacity='0';
+
+completed++;
+
+setTimeout(()=>{
+
+pic.remove();
+
+},500);
+
+if(completed>=level.correct.length){
+
+setTimeout(()=>{
+
+nextLevel();
+
+},900);
+
+}
+
+}else{
+
+playWrong();
+
+pic.style.transform='scale(0.9)';
+
+setTimeout(()=>{
+
+pic.style.transform='scale(1)';
+
+},300);
+
+}
+
+}
+
+/* NEXT */
+
+function nextLevel(){
+
+currentLevel++;
+
+if(currentLevel>=levels.length){
+
+endGame();
+
+}else{
+
+loadLevel();
+
+}
+
+}
+
+/* END */
+
+function endGame(){
+
+document.getElementById('gameScreen')
+.classList.remove('active');
+
+document.getElementById('finalScreen')
+.classList.add('active');
+
+createConfetti();
+
+}
+
+/* CONFETTI */
+
+function createConfetti(){
+
+let area=
+document.getElementById('confettiArea');
+
+area.innerHTML='';
+
+let colors=[
+'#ff4081',
+'#2196f3',
+'#4caf50',
+'#ffeb3b',
+'#ff9800',
+'#9c27b0'
+];
+
+for(let i=0;i<120;i++){
+
+let paper=
+document.createElement('div');
+
+paper.className='confetti';
+
+paper.style.left=
+Math.random()*100+'vw';
+
+paper.style.background=
+colors[Math.floor(Math.random()*colors.length)];
+
+paper.style.animationDuration=
+(2+Math.random()*3)+'s';
+
+paper.style.width=
+(4+Math.random()*6)+'px';
+
+paper.style.height=
+(4+Math.random()*6)+'px';
+
+area.appendChild(paper);
+
+}
+
+}
+
+/* RESTART */
+
+function restartGame(){
+
+document.getElementById('finalScreen')
+.classList.remove('active');
+
+document.getElementById('gameScreen')
+.classList.add('active');
+
+currentLevel=0;
+
+loadLevel();
+
+}
+
+</script>
+
+</body>
+</html>
