@@ -17,66 +17,48 @@ user-scalable=no">
 margin:0;
 padding:0;
 box-sizing:border-box;
--webkit-tap-highlight-color:transparent;
 }
 
-html,body{
-width:100%;
-height:100%;
+body{
+font-family:Arial,sans-serif;
 overflow:hidden;
-font-family:Arial Rounded MT Bold,sans-serif;
-background:#87ceeb;
+background:linear-gradient(to bottom,#87CEEB 0%,#bdefff 40%,#7bd85a 40%,#4CAF50 100%);
+height:100vh;
+width:100vw;
+touch-action:none;
 }
 
 /* BACKGROUND */
 
-body{
-background:
-linear-gradient(
-to bottom,
-#7ed9ff 0%,
-#bdf3ff 38%,
-#88d96d 38%,
-#49b04a 100%
-);
-}
-
-/* SUN */
-
 .sun{
 position:absolute;
-top:15px;
-right:15px;
+top:20px;
+right:20px;
 width:80px;
 height:80px;
-background:#ffd93d;
+background:#FFD93D;
 border-radius:50%;
-box-shadow:0 0 30px #ffd93d;
-z-index:1;
+box-shadow:0 0 30px #FFD93D;
 }
-
-/* CLOUDS */
 
 .cloud{
 position:absolute;
 background:white;
 border-radius:50%;
-opacity:0.95;
-z-index:1;
 }
 
 .cloud1{
-width:150px;
-height:65px;
-top:20px;
+width:140px;
+height:60px;
+top:30px;
 left:20px;
 }
 
 .cloud2{
-width:160px;
-height:70px;
-top:45px;
-right:90px;
+width:150px;
+height:65px;
+top:50px;
+right:100px;
 }
 
 .cloud::before{
@@ -87,92 +69,17 @@ border-radius:50%;
 }
 
 .cloud1::before{
+width:70px;
+height:70px;
+top:-20px;
+left:25px;
+}
+
+.cloud2::before{
 width:80px;
 height:80px;
 top:-20px;
 left:30px;
-}
-
-.cloud2::before{
-width:85px;
-height:85px;
-top:-20px;
-left:35px;
-}
-
-/* TREES */
-
-.tree{
-position:absolute;
-bottom:0;
-width:100px;
-height:240px;
-z-index:1;
-}
-
-.tree .trunk{
-position:absolute;
-bottom:0;
-left:35px;
-width:30px;
-height:120px;
-background:#8b5a2b;
-border-radius:10px;
-}
-
-.tree .leaf{
-position:absolute;
-width:95px;
-height:95px;
-background:#2ecc71;
-border-radius:50%;
-}
-
-.leaf1{
-top:0;
-left:2px;
-}
-
-.leaf2{
-top:35px;
-left:-10px;
-}
-
-.leaf3{
-top:35px;
-left:20px;
-}
-
-.tree1{
-left:-10px;
-}
-
-.tree2{
-right:-10px;
-}
-
-/* FLOWERS */
-
-.flower{
-position:absolute;
-bottom:10px;
-font-size:28px;
-animation:bounce 2s infinite;
-z-index:1;
-}
-
-.fl1{left:10%;}
-.fl2{left:28%;}
-.fl3{right:20%;}
-.fl4{right:8%;}
-
-@keyframes bounce{
-0%,100%{
-transform:translateY(0px);
-}
-50%{
-transform:translateY(-8px);
-}
 }
 
 /* LOGO */
@@ -188,16 +95,8 @@ z-index:9999;
 }
 
 #logoScreen img{
-width:min(70vw,260px);
-}
-
-/* GAME */
-
-#game{
-position:relative;
-width:100%;
-height:100%;
-overflow:hidden;
+width:250px;
+max-width:70vw;
 }
 
 /* SCREENS */
@@ -206,10 +105,9 @@ overflow:hidden;
 position:absolute;
 inset:0;
 display:none;
-flex-direction:column;
 justify-content:center;
 align-items:center;
-padding:10px;
+flex-direction:column;
 }
 
 .active{
@@ -224,70 +122,56 @@ font-weight:bold;
 color:#ff4fa0;
 text-shadow:
 0 0 10px white,
-0 5px 0 #d63384;
+0 4px 0 #d63384;
 margin-bottom:20px;
 text-align:center;
-z-index:2;
 }
 
 /* BUTTON */
 
-.play-btn{
-padding:14px 32px;
-font-size:clamp(22px,4vw,32px);
-font-weight:bold;
+.playBtn{
+padding:15px 35px;
+font-size:clamp(22px,4vw,34px);
 border:none;
-border-radius:22px;
-background:
-linear-gradient(to bottom,
-#ffd43b,
-#ff8c00);
+border-radius:20px;
+background:linear-gradient(to bottom,#ffd43b,#ff8c00);
 color:white;
+font-weight:bold;
 cursor:pointer;
-box-shadow:
-0 5px 0 #d67d00,
-0 10px 15px rgba(0,0,0,0.2);
-z-index:2;
+box-shadow:0 5px 0 #cc7000;
 }
 
 /* INSTRUCTION */
 
-.instruction{
+#instruction{
+margin-top:10px;
 background:white;
-padding:10px 18px;
+padding:12px 20px;
 border-radius:20px;
 font-size:clamp(18px,3vw,28px);
 font-weight:bold;
 text-align:center;
-margin-top:5px;
-margin-bottom:10px;
-box-shadow:
-0 5px 12px rgba(0,0,0,0.18);
 max-width:95%;
-z-index:2;
+box-shadow:0 5px 12px rgba(0,0,0,0.2);
 }
 
-/* MONSTER AREA */
+/* MONSTER */
 
 #monsterArea{
 position:relative;
 width:100%;
-height:38%;
+height:38vh;
 display:flex;
 justify-content:center;
 align-items:center;
-z-index:2;
 }
-
-/* MONSTER */
 
 #monsterContainer{
 position:relative;
 }
 
 #monster{
-width:min(45vw,240px);
-max-width:240px;
+width:min(45vw,250px);
 min-width:170px;
 pointer-events:none;
 }
@@ -297,64 +181,52 @@ pointer-events:none;
 #monsterLetter{
 position:absolute;
 left:50%;
-top:62%;
+top:63%;
 transform:translate(-50%,-50%);
-font-size:clamp(50px,8vw,90px);
+font-size:clamp(50px,9vw,90px);
 font-weight:bold;
 color:#ff1744;
 text-shadow:
 0 0 10px white,
-0 0 14px white;
+0 0 15px white;
 pointer-events:none;
 }
 
-/* MOUTH ZONE */
+/* MOUTH HIT AREA */
 
-#mouthZone{
+#mouth{
 position:absolute;
 left:50%;
 top:26%;
 transform:translateX(-50%);
 width:42%;
 height:22%;
-border-radius:50px;
 }
 
-/* PICTURE AREA */
+/* OBJECTS AREA */
 
-#pictureArea{
+#objects{
 position:relative;
 width:100%;
-height:55%;
-z-index:2;
+height:55vh;
 }
 
 /* OBJECTS */
 
-.picture{
+.object{
 position:absolute;
-width:min(16vw,85px);
-max-width:85px;
-min-width:55px;
-cursor:grab;
+width:min(16vw,90px);
+max-width:90px;
+min-width:60px;
 touch-action:none;
 user-select:none;
-transition:transform 0.2s;
-}
-
-.picture:active{
-transform:scale(1.08);
+cursor:pointer;
 }
 
 /* FINAL */
 
 #finalScreen{
-background:
-linear-gradient(
-to bottom,
-#002d62,
-#00152d
-);
+background:linear-gradient(to bottom,#002d62,#00152d);
 }
 
 /* CONFETTI */
@@ -390,25 +262,6 @@ transform:translateY(110vh) rotate(360deg);
 <div class="cloud cloud1"></div>
 <div class="cloud cloud2"></div>
 
-<div class="tree tree1">
-<div class="trunk"></div>
-<div class="leaf leaf1"></div>
-<div class="leaf leaf2"></div>
-<div class="leaf leaf3"></div>
-</div>
-
-<div class="tree tree2">
-<div class="trunk"></div>
-<div class="leaf leaf1"></div>
-<div class="leaf leaf2"></div>
-<div class="leaf leaf3"></div>
-</div>
-
-<div class="flower fl1">🌸</div>
-<div class="flower fl2">🌼</div>
-<div class="flower fl3">🌻</div>
-<div class="flower fl4">🌺</div>
-
 <!-- LOGO -->
 
 <div id="logoScreen">
@@ -423,11 +276,7 @@ src="assets/freesound_community-claps-44774.mp3"></audio>
 <audio id="wrongSound"
 src="assets/wrong.mp3"></audio>
 
-<!-- GAME -->
-
-<div id="game">
-
-<!-- START -->
+<!-- START SCREEN -->
 
 <div class="screen active"
 id="startScreen">
@@ -436,7 +285,7 @@ id="startScreen">
 Feed The Monster
 </div>
 
-<button class="play-btn"
+<button class="playBtn"
 onclick="startGame()">
 Play
 </button>
@@ -448,8 +297,7 @@ Play
 <div class="screen"
 id="gameScreen">
 
-<div class="instruction"
-id="instruction">
+<div id="instruction">
 Feed the monster with letter A objects
 </div>
 
@@ -464,37 +312,31 @@ id="monster">
 A
 </div>
 
-<div id="mouthZone"></div>
+<div id="mouth"></div>
 
 </div>
 
 </div>
 
-<div id="pictureArea"></div>
+<div id="objects"></div>
 
 </div>
 
-<!-- FINAL -->
+<!-- FINAL SCREEN -->
 
 <div class="screen"
 id="finalScreen">
 
-<div id="confettiArea"></div>
+<div id="confettiContainer"></div>
 
 <div class="title">
 Great Job!
 </div>
 
-<div class="instruction">
-You fed all the letters
-</div>
-
-<button class="play-btn"
+<button class="playBtn"
 onclick="restartGame()">
-Play again
+Play Again
 </button>
-
-</div>
 
 </div>
 
@@ -547,8 +389,8 @@ correct:[
 ],
 wrong:[
 'assets/apple.png',
-'assets/doll.png',
-'assets/dog.png'
+'assets/dog.png',
+'assets/ball.png'
 ]
 },
 
@@ -571,45 +413,18 @@ wrong:[
 ];
 
 let currentLevel=0;
-let completed=0;
+let correctCount=0;
 
 /* LOGO */
 
-window.onload=()=>{
+window.onload=function(){
 
-setTimeout(()=>{
+setTimeout(function(){
 
 document.getElementById('logoScreen')
 .style.display='none';
 
 },5000);
-
-};
-
-/* SOUNDS */
-
-function playCorrect(){
-
-let s=document.getElementById('correctSound');
-
-s.currentTime=0;
-s.play();
-
-setTimeout(()=>{
-
-s.pause();
-s.currentTime=0;
-
-},1000);
-
-}
-
-function playWrong(){
-
-let s=document.getElementById('wrongSound');
-
-s.currentTime=0;
-s.play();
 
 }
 
@@ -633,9 +448,9 @@ loadLevel();
 
 function loadLevel(){
 
-completed=0;
+correctCount=0;
 
-let level=levels[currentLevel];
+const level=levels[currentLevel];
 
 document.getElementById('monsterLetter')
 .innerHTML=level.letter;
@@ -646,48 +461,49 @@ document.getElementById('instruction')
 level.letter+
 ' objects';
 
-let area=
-document.getElementById('pictureArea');
+const area=
+document.getElementById('objects');
 
 area.innerHTML='';
 
-let images=[
+const allImages=[
 ...level.correct,
 ...level.wrong
 ];
 
-images.sort(()=>Math.random()-0.5);
+allImages.sort(()=>Math.random()-0.5);
 
-images.forEach((img,index)=>{
+allImages.forEach(function(img,index){
 
-let pic=
+const object=
 document.createElement('img');
 
-pic.src=img;
+object.src=img;
 
-pic.className='picture';
+object.className='object';
 
-pic.draggable=false;
+object.draggable=false;
 
-/* RESPONSIVE POSITION */
+/* RESPONSIVE POSITIONS */
 
-let cols=4;
+let col=index%4;
+let row=Math.floor(index/4);
 
-let col=index%cols;
-let row=Math.floor(index/cols);
+object.style.left=
+(8 + col*22)+'vw';
 
-let left=5 + (col*22);
-let top=3 + (row*18);
+object.style.top=
+(5 + row*18)+'vh';
 
-pic.style.left=left+'vw';
-pic.style.top=top+'vh';
+object.dataset.startLeft=
+object.style.left;
 
-pic.dataset.left=left;
-pic.dataset.top=top;
+object.dataset.startTop=
+object.style.top;
 
-area.appendChild(pic);
+area.appendChild(object);
 
-makeDraggable(pic,img);
+dragElement(object,img);
 
 });
 
@@ -695,120 +511,130 @@ makeDraggable(pic,img);
 
 /* DRAG SYSTEM */
 
-function makeDraggable(element,img){
+function dragElement(el,img){
 
-let startX=0;
-let startY=0;
-let initialLeft=0;
-let initialTop=0;
+let offsetX=0;
+let offsetY=0;
+let dragging=false;
 
-function dragStart(e){
+/* DESKTOP */
 
-e.preventDefault();
+el.onmousedown=dragMouseDown;
 
-let touch=e.touches ? e.touches[0] : e;
+/* MOBILE */
 
-startX=touch.clientX;
-startY=touch.clientY;
+el.ontouchstart=dragTouchStart;
 
-initialLeft=parseFloat(element.style.left);
-initialTop=parseFloat(element.style.top);
-
-document.addEventListener(
-'mousemove',
-dragMove
-);
-
-document.addEventListener(
-'touchmove',
-dragMove,
-{passive:false}
-);
-
-document.addEventListener(
-'mouseup',
-dragEnd
-);
-
-document.addEventListener(
-'touchend',
-dragEnd
-);
-
-}
-
-function dragMove(e){
+function dragMouseDown(e){
 
 e.preventDefault();
 
-let touch=e.touches ? e.touches[0] : e;
+dragging=true;
 
-let dx=touch.clientX-startX;
-let dy=touch.clientY-startY;
+offsetX=e.clientX-el.offsetLeft;
+offsetY=e.clientY-el.offsetTop;
 
-/* WORKS ON BOTH PHONE + LAPTOP */
-
-element.style.left=
-`calc(${initialLeft}vw + ${dx}px)`;
-
-element.style.top=
-`calc(${initialTop}vh + ${dy}px)`;
+document.onmousemove=elementDrag;
+document.onmouseup=closeDrag;
 
 }
 
-function dragEnd(){
+function dragTouchStart(e){
 
-document.removeEventListener(
-'mousemove',
-dragMove
-);
+dragging=true;
 
-document.removeEventListener(
-'touchmove',
-dragMove
-);
+const touch=e.touches[0];
 
-checkDrop(element,img);
+offsetX=touch.clientX-el.offsetLeft;
+offsetY=touch.clientY-el.offsetTop;
+
+document.ontouchmove=elementTouchDrag;
+document.ontouchend=closeTouchDrag;
 
 }
 
-element.addEventListener(
-'mousedown',
-dragStart
-);
+function elementDrag(e){
 
-element.addEventListener(
-'touchstart',
-dragStart,
-{passive:false}
-);
+if(!dragging)return;
+
+e.preventDefault();
+
+el.style.left=
+(e.clientX-offsetX)+'px';
+
+el.style.top=
+(e.clientY-offsetY)+'px';
 
 }
 
-/* CHECK DROP */
+function elementTouchDrag(e){
 
-function checkDrop(element,img){
+if(!dragging)return;
 
-let mouth=
-document.getElementById('mouthZone');
+const touch=e.touches[0];
 
-let mouthRect=
+el.style.left=
+(touch.clientX-offsetX)+'px';
+
+el.style.top=
+(touch.clientY-offsetY)+'px';
+
+}
+
+/* DESKTOP DROP */
+
+function closeDrag(){
+
+dragging=false;
+
+document.onmouseup=null;
+document.onmousemove=null;
+
+checkAnswer(el,img);
+
+}
+
+/* MOBILE DROP */
+
+function closeTouchDrag(){
+
+dragging=false;
+
+document.ontouchend=null;
+document.ontouchmove=null;
+
+checkAnswer(el,img);
+
+}
+
+}
+
+/* CHECK ANSWER */
+
+function checkAnswer(el,img){
+
+const mouth=
+document.getElementById('mouth');
+
+const mouthRect=
 mouth.getBoundingClientRect();
 
-let imgRect=
-element.getBoundingClientRect();
+const objectRect=
+el.getBoundingClientRect();
 
-let level=
-levels[currentLevel];
+const overlap=
 
-/* STRONG COLLISION DETECTION */
+!(
+objectRect.right < mouthRect.left ||
 
-let overlap = !(
-imgRect.right < mouthRect.left ||
-imgRect.left > mouthRect.right ||
-imgRect.bottom < mouthRect.top ||
-imgRect.top > mouthRect.bottom
+objectRect.left > mouthRect.right ||
+
+objectRect.bottom < mouthRect.top ||
+
+objectRect.top > mouthRect.bottom
 );
+
+const level=levels[currentLevel];
 
 if(overlap){
 
@@ -816,26 +642,26 @@ if(level.correct.includes(img)){
 
 playCorrect();
 
-element.style.transition='all 0.4s';
+el.style.transition='0.4s';
 
-element.style.opacity='0';
-element.style.transform='scale(0.2)';
+el.style.opacity='0';
+el.style.transform='scale(0.2)';
 
-completed++;
+correctCount++;
 
-setTimeout(()=>{
+setTimeout(function(){
 
-element.remove();
+el.remove();
 
 },400);
 
-if(completed>=level.correct.length){
+if(correctCount>=level.correct.length){
 
-setTimeout(()=>{
+setTimeout(function(){
 
 nextLevel();
 
-},700);
+},800);
 
 }
 
@@ -843,13 +669,13 @@ nextLevel();
 
 playWrong();
 
-resetPosition(element);
+resetObject(el);
 
 }
 
 }else{
 
-resetPosition(element);
+resetObject(el);
 
 }
 
@@ -857,19 +683,19 @@ resetPosition(element);
 
 /* RESET */
 
-function resetPosition(element){
+function resetObject(el){
 
-element.style.transition='all 0.3s';
+el.style.transition='0.3s';
 
-element.style.left=
-element.dataset.left+'vw';
+el.style.left=
+el.dataset.startLeft;
 
-element.style.top=
-element.dataset.top+'vh';
+el.style.top=
+el.dataset.startTop;
 
 }
 
-/* NEXT LEVEL */
+/* NEXT */
 
 function nextLevel(){
 
@@ -887,7 +713,7 @@ loadLevel();
 
 }
 
-/* END GAME */
+/* END */
 
 function endGame(){
 
@@ -898,56 +724,6 @@ document.getElementById('finalScreen')
 .classList.add('active');
 
 createConfetti();
-
-}
-
-/* CONFETTI */
-
-function createConfetti(){
-
-let area=
-document.getElementById('confettiArea');
-
-area.innerHTML='';
-
-let colors=[
-'#ff4081',
-'#2196f3',
-'#4caf50',
-'#ffeb3b',
-'#ff9800',
-'#9c27b0'
-];
-
-for(let i=0;i<140;i++){
-
-let paper=
-document.createElement('div');
-
-paper.className='confetti';
-
-paper.style.left=
-Math.random()*100+'vw';
-
-paper.style.background=
-colors[
-Math.floor(
-Math.random()*colors.length
-)
-];
-
-paper.style.animationDuration=
-(2+Math.random()*3)+'s';
-
-paper.style.width=
-(4+Math.random()*6)+'px';
-
-paper.style.height=
-(4+Math.random()*6)+'px';
-
-area.appendChild(paper);
-
-}
 
 }
 
@@ -964,6 +740,85 @@ document.getElementById('gameScreen')
 currentLevel=0;
 
 loadLevel();
+
+}
+
+/* SOUNDS */
+
+function playCorrect(){
+
+const sound=
+document.getElementById('correctSound');
+
+sound.currentTime=0;
+
+sound.play();
+
+setTimeout(function(){
+
+sound.pause();
+sound.currentTime=0;
+
+},1000);
+
+}
+
+function playWrong(){
+
+const sound=
+document.getElementById('wrongSound');
+
+sound.currentTime=0;
+
+sound.play();
+
+}
+
+/* CONFETTI */
+
+function createConfetti(){
+
+const container=
+document.getElementById('confettiContainer');
+
+container.innerHTML='';
+
+const colors=[
+'#ff4081',
+'#2196f3',
+'#4caf50',
+'#ffeb3b',
+'#ff9800',
+'#9c27b0'
+];
+
+for(let i=0;i<120;i++){
+
+const paper=
+document.createElement('div');
+
+paper.className='confetti';
+
+paper.style.left=
+Math.random()*100+'vw';
+
+paper.style.background=
+colors[
+Math.floor(Math.random()*colors.length)
+];
+
+paper.style.animationDuration=
+(2+Math.random()*3)+'s';
+
+paper.style.width=
+(4+Math.random()*6)+'px';
+
+paper.style.height=
+(4+Math.random()*6)+'px';
+
+container.appendChild(paper);
+
+}
 
 }
 
