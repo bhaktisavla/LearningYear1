@@ -9,7 +9,7 @@ initial-scale=1.0,
 maximum-scale=1.0,
 user-scalable=no">
 
-<title>Feed The Letter Monster</title>
+<title>Feed The Bear</title>
 
 <style>
 
@@ -24,121 +24,111 @@ body{
 overflow:hidden;
 font-family:'Arial Rounded MT Bold',sans-serif;
 touch-action:none;
+}
 
-/* NEW PRESCHOOL BACKGROUND */
+/* JUNGLE BACKGROUND */
+
+body::before{
+content:'';
+position:fixed;
+inset:0;
 
 background:
-linear-gradient(
-to bottom,
+linear-gradient(to bottom,
 #6ed6ff 0%,
-#b5f1ff 35%,
-#ffeaa7 35%,
-#ffeaa7 45%,
-#7ed957 45%,
-#59c93d 100%
-);
+#a9ecff 35%,
+#87d85d 35%,
+#4caf50 100%);
 
+z-index:-5;
 }
 
-/* RAINBOW */
+/* SUN */
 
-.rainbow{
+.sun{
 position:absolute;
-top:-120px;
-left:-120px;
-width:420px;
-height:420px;
-border-radius:50%;
-border:28px solid #ff4d6d;
-border-bottom-color:transparent;
-border-left-color:transparent;
-transform:rotate(45deg);
-opacity:0.45;
-}
-
-.rainbow::before{
-content:'';
-position:absolute;
-top:-55px;
-left:-55px;
-width:360px;
-height:360px;
-border-radius:50%;
-border:24px solid #ffbe0b;
-border-bottom-color:transparent;
-border-left-color:transparent;
-}
-
-.rainbow::after{
-content:'';
-position:absolute;
-top:-105px;
-left:-105px;
-width:470px;
-height:470px;
-border-radius:50%;
-border:22px solid #8338ec;
-border-bottom-color:transparent;
-border-left-color:transparent;
-}
-
-/* CLOUDS */
-
-.cloud{
-position:absolute;
-background:white;
-border-radius:50%;
-opacity:0.95;
-box-shadow:0 0 25px rgba(255,255,255,0.9);
-}
-
-.cloud1{
-width:170px;
-height:80px;
-top:25px;
-left:25px;
-}
-
-.cloud2{
-width:190px;
-height:90px;
-top:40px;
+top:20px;
 right:25px;
-}
 
-.cloud::before{
-content:'';
-position:absolute;
-background:white;
-border-radius:50%;
-}
-
-.cloud1::before{
 width:90px;
 height:90px;
-top:-20px;
+
+background:#ffd93d;
+
+border-radius:50%;
+
+box-shadow:
+0 0 40px #ffd93d;
+}
+
+/* TREES */
+
+.tree{
+position:absolute;
+bottom:0;
+width:120px;
+height:280px;
+}
+
+.tree .trunk{
+position:absolute;
+bottom:0;
+left:40px;
+
+width:35px;
+height:140px;
+
+background:#8b5a2b;
+
+border-radius:10px;
+}
+
+.tree .leaf{
+position:absolute;
+
+width:110px;
+height:110px;
+
+background:#2ecc71;
+
+border-radius:50%;
+}
+
+.tree .leaf1{
+top:0;
+left:5px;
+}
+
+.tree .leaf2{
+top:40px;
+left:-15px;
+}
+
+.tree .leaf3{
+top:40px;
 left:25px;
 }
 
-.cloud2::before{
-width:100px;
-height:100px;
-top:-25px;
-left:45px;
+.tree1{
+left:-20px;
+}
+
+.tree2{
+right:-10px;
 }
 
 /* FLOWERS */
 
 .flower{
 position:absolute;
-bottom:20px;
-font-size:40px;
+bottom:15px;
+font-size:34px;
 animation:bounce 2s infinite;
 }
 
-.fl1{left:5%;}
-.fl2{left:20%;}
-.fl3{right:25%;}
+.fl1{left:12%;}
+.fl2{left:28%;}
+.fl3{right:20%;}
 .fl4{right:8%;}
 
 @keyframes bounce{
@@ -150,6 +140,25 @@ transform:translateY(-8px);
 }
 }
 
+/* LOGO */
+
+#logoScreen{
+position:absolute;
+width:100%;
+height:100%;
+background:white;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+z-index:999;
+}
+
+#logoScreen img{
+width:min(70vw,280px);
+}
+
 /* GAME */
 
 #game{
@@ -159,33 +168,17 @@ position:relative;
 overflow:hidden;
 }
 
-/* LOGO */
-
-#logoScreen{
-position:absolute;
-width:100%;
-height:100%;
-background:white;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:999;
-}
-
-#logoScreen img{
-width:min(70vw,280px);
-}
-
-/* SCREENS */
-
 .screen{
 position:absolute;
 width:100%;
 height:100%;
+
 display:none;
+
 justify-content:center;
 align-items:center;
 flex-direction:column;
+
 padding:10px;
 }
 
@@ -196,8 +189,10 @@ display:flex;
 /* TITLE */
 
 .title{
-font-size:min(12vw,78px);
+font-size:min(12vw,70px);
+
 font-weight:bold;
+
 color:#ff4fa0;
 
 text-shadow:
@@ -220,6 +215,7 @@ border:none;
 border-radius:24px;
 
 font-weight:bold;
+
 color:white;
 
 background:
@@ -254,63 +250,64 @@ margin-bottom:12px;
 box-shadow:
 0 5px 12px rgba(0,0,0,0.18);
 
-max-width:92%;
+max-width:94%;
 }
 
-/* MONSTER */
+/* BEAR AREA */
 
-#monsterArea{
+#bearArea{
 position:relative;
+
 width:100%;
-height:38vh;
+height:40vh;
 
 display:flex;
 justify-content:center;
 align-items:center;
 }
 
-#monsterContainer{
+/* BEAR */
+
+#bearContainer{
 position:relative;
 }
 
-#monster{
-width:min(60vw,310px);
+#bear{
+width:min(55vw,260px);
 }
 
-/* LETTER SHIFTED DOWN */
+/* LETTER */
 
-#monsterLetter{
+#bearLetter{
 position:absolute;
 
 left:50%;
-top:64%;
+top:58%;
 
 transform:translate(-50%,-50%);
 
-font-size:min(15vw,88px);
+font-size:min(15vw,90px);
 
 font-weight:bold;
 
-/* DIFFERENT DARK COLOURS */
-
-color:#111;
+color:#ff1744;
 
 text-shadow:
 0 0 8px white,
 0 0 12px white;
 }
 
-/* MOUTH */
+/* MOUTH ZONE */
 
 #mouthZone{
 position:absolute;
 
 left:50%;
-top:78%;
+top:33%;
 
 transform:translateX(-50%);
 
-width:35%;
+width:28%;
 height:12%;
 
 border-radius:40px;
@@ -320,16 +317,17 @@ border-radius:40px;
 
 #pictureArea{
 position:relative;
+
 width:100%;
 height:55vh;
 }
 
-/* PICTURES */
+/* DRAG OBJECTS */
 
 .picture{
 position:absolute;
 
-width:min(18vw,95px);
+width:min(18vw,90px);
 
 touch-action:none;
 
@@ -357,18 +355,23 @@ linear-gradient(to bottom,
 
 .confetti{
 position:absolute;
+
 width:8px;
 height:8px;
+
 animation:fall linear infinite;
 }
 
 @keyframes fall{
+
 from{
 transform:translateY(-100px) rotate(0deg);
 }
+
 to{
 transform:translateY(110vh) rotate(360deg);
 }
+
 }
 
 </style>
@@ -378,10 +381,21 @@ transform:translateY(110vh) rotate(360deg);
 
 <!-- BACKGROUND -->
 
-<div class="rainbow"></div>
+<div class="sun"></div>
 
-<div class="cloud cloud1"></div>
-<div class="cloud cloud2"></div>
+<div class="tree tree1">
+<div class="trunk"></div>
+<div class="leaf leaf1"></div>
+<div class="leaf leaf2"></div>
+<div class="leaf leaf3"></div>
+</div>
+
+<div class="tree tree2">
+<div class="trunk"></div>
+<div class="leaf leaf1"></div>
+<div class="leaf leaf2"></div>
+<div class="leaf leaf3"></div>
+</div>
 
 <div class="flower fl1">🌸</div>
 <div class="flower fl2">🌼</div>
@@ -414,7 +428,7 @@ src="assets/wrong.mp3"></audio>
 id="startScreen">
 
 <div class="title">
-Feed The Letter Monster
+Feed The Bear
 </div>
 
 <button class="play-btn"
@@ -431,19 +445,21 @@ id="gameScreen">
 
 <div class="instruction"
 id="instruction">
-Feed pictures that start with A
+
+Feed the bear with letter A objects
+
 </div>
 
-<!-- MONSTER -->
+<!-- BEAR -->
 
-<div id="monsterArea">
+<div id="bearArea">
 
-<div id="monsterContainer">
+<div id="bearContainer">
 
-<img src="assets/monster.png"
-id="monster">
+<img src="assets/bearpng.png"
+id="bear">
 
-<div id="monsterLetter">
+<div id="bearLetter">
 A
 </div>
 
@@ -453,7 +469,7 @@ A
 
 </div>
 
-<!-- PICTURES -->
+<!-- OBJECTS -->
 
 <div id="pictureArea"></div>
 
@@ -582,8 +598,6 @@ s.currentTime=0;
 
 s.play();
 
-/* REDUCED TIME BUT COMPLETE SOUND */
-
 setTimeout(()=>{
 
 s.pause();
@@ -630,12 +644,14 @@ completed=0;
 
 let level=levels[currentLevel];
 
-document.getElementById('monsterLetter')
+document.getElementById('bearLetter')
 .innerHTML=level.letter;
 
 document.getElementById('instruction')
 .innerHTML=
-'Feed pictures that start with '+level.letter;
+'Feed the bear with letter '+
+level.letter+
+' objects';
 
 let area=
 document.getElementById('pictureArea');
@@ -664,7 +680,7 @@ pic.dataset.startX=
 (5+(index%4)*22);
 
 pic.dataset.startY=
-(5+Math.floor(index/4)*22);
+(5+Math.floor(index/4)*18);
 
 pic.style.left=
 pic.dataset.startX+'vw';
