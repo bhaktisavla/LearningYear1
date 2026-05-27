@@ -35,9 +35,9 @@ inset:0;
 
 background:
 linear-gradient(to bottom,
-#6ed6ff 0%,
-#a9ecff 35%,
-#87d85d 35%,
+#70d6ff 0%,
+#b8f3ff 35%,
+#86d957 35%,
 #4caf50 100%);
 
 z-index:-5;
@@ -48,7 +48,7 @@ z-index:-5;
 .sun{
 position:absolute;
 top:20px;
-right:25px;
+right:20px;
 
 width:90px;
 height:90px;
@@ -59,6 +59,50 @@ border-radius:50%;
 
 box-shadow:
 0 0 40px #ffd93d;
+}
+
+/* CLOUDS */
+
+.cloud{
+position:absolute;
+background:white;
+border-radius:50%;
+opacity:0.95;
+}
+
+.cloud1{
+width:160px;
+height:70px;
+top:30px;
+left:20px;
+}
+
+.cloud2{
+width:180px;
+height:80px;
+top:40px;
+right:120px;
+}
+
+.cloud::before{
+content:'';
+position:absolute;
+background:white;
+border-radius:50%;
+}
+
+.cloud1::before{
+width:80px;
+height:80px;
+top:-20px;
+left:25px;
+}
+
+.cloud2::before{
+width:90px;
+height:90px;
+top:-25px;
+left:40px;
 }
 
 /* TREES */
@@ -73,7 +117,7 @@ height:280px;
 .tree .trunk{
 position:absolute;
 bottom:0;
-left:40px;
+left:42px;
 
 width:35px;
 height:140px;
@@ -110,7 +154,7 @@ left:25px;
 }
 
 .tree1{
-left:-20px;
+left:-10px;
 }
 
 .tree2{
@@ -121,14 +165,14 @@ right:-10px;
 
 .flower{
 position:absolute;
-bottom:15px;
-font-size:34px;
+bottom:12px;
+font-size:32px;
 animation:bounce 2s infinite;
 }
 
-.fl1{left:12%;}
-.fl2{left:28%;}
-.fl3{right:20%;}
+.fl1{left:10%;}
+.fl2{left:25%;}
+.fl3{right:22%;}
 .fl4{right:8%;}
 
 @keyframes bounce{
@@ -168,6 +212,8 @@ position:relative;
 overflow:hidden;
 }
 
+/* SCREENS */
+
 .screen{
 position:absolute;
 width:100%;
@@ -189,7 +235,7 @@ display:flex;
 /* TITLE */
 
 .title{
-font-size:min(12vw,70px);
+font-size:min(12vw,72px);
 
 font-weight:bold;
 
@@ -273,16 +319,16 @@ position:relative;
 }
 
 #bear{
-width:min(55vw,260px);
+width:min(56vw,260px);
 }
 
-/* LETTER */
+/* LETTER ON STOMACH */
 
 #bearLetter{
 position:absolute;
 
 left:50%;
-top:58%;
+top:62%;
 
 transform:translate(-50%,-50%);
 
@@ -303,7 +349,7 @@ text-shadow:
 position:absolute;
 
 left:50%;
-top:33%;
+top:32%;
 
 transform:translateX(-50%);
 
@@ -342,7 +388,7 @@ transition:transform 0.2s;
 transform:scale(1.08);
 }
 
-/* FINAL */
+/* FINAL SCREEN */
 
 #finalScreen{
 background:
@@ -383,6 +429,9 @@ transform:translateY(110vh) rotate(360deg);
 
 <div class="sun"></div>
 
+<div class="cloud cloud1"></div>
+<div class="cloud cloud2"></div>
+
 <div class="tree tree1">
 <div class="trunk"></div>
 <div class="leaf leaf1"></div>
@@ -422,7 +471,7 @@ src="assets/wrong.mp3"></audio>
 
 <div id="game">
 
-<!-- START -->
+<!-- START SCREEN -->
 
 <div class="screen active"
 id="startScreen">
@@ -456,12 +505,18 @@ Feed the bear with letter A objects
 
 <div id="bearContainer">
 
+<!-- NEW TRANSPARENT BEAR IMAGE -->
+
 <img src="assets/bearpng.png"
 id="bear">
+
+<!-- LETTER -->
 
 <div id="bearLetter">
 A
 </div>
+
+<!-- MOUTH -->
 
 <div id="mouthZone"></div>
 
@@ -475,7 +530,7 @@ A
 
 </div>
 
-<!-- FINAL -->
+<!-- FINAL SCREEN -->
 
 <div class="screen"
 id="finalScreen">
@@ -620,7 +675,7 @@ s.play();
 
 }
 
-/* START */
+/* START GAME */
 
 function startGame(){
 
@@ -874,7 +929,7 @@ element.dataset.startY+'vh';
 
 }
 
-/* NEXT */
+/* NEXT LEVEL */
 
 function nextLevel(){
 
@@ -892,7 +947,7 @@ loadLevel();
 
 }
 
-/* END */
+/* END GAME */
 
 function endGame(){
 
