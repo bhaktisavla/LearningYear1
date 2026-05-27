@@ -9,7 +9,7 @@ initial-scale=1.0,
 maximum-scale=1.0,
 user-scalable=no">
 
-<title>Feed The Bear</title>
+<title>Feed The Monster</title>
 
 <style>
 
@@ -299,9 +299,9 @@ box-shadow:
 max-width:94%;
 }
 
-/* BEAR AREA */
+/* MONSTER AREA */
 
-#bearArea{
+#monsterArea{
 position:relative;
 
 width:100%;
@@ -312,19 +312,19 @@ justify-content:center;
 align-items:center;
 }
 
-/* BEAR */
+/* MONSTER */
 
-#bearContainer{
+#monsterContainer{
 position:relative;
 }
 
-#bear{
+#monster{
 width:min(56vw,260px);
 }
 
 /* LETTER ON STOMACH */
 
-#bearLetter{
+#monsterLetter{
 position:absolute;
 
 left:50%;
@@ -477,7 +477,7 @@ src="assets/wrong.mp3"></audio>
 id="startScreen">
 
 <div class="title">
-Feed The Bear
+Feed The Monster
 </div>
 
 <button class="play-btn"
@@ -495,28 +495,22 @@ id="gameScreen">
 <div class="instruction"
 id="instruction">
 
-Feed the bear with letter A objects
+Feed the monster with letter A objects
 
 </div>
 
-<!-- BEAR -->
+<!-- MONSTER -->
 
-<div id="bearArea">
+<div id="monsterArea">
 
-<div id="bearContainer">
+<div id="monsterContainer">
 
-<!-- NEW TRANSPARENT BEAR IMAGE -->
+<img src="assets/monster.png"
+id="monster">
 
-<img src="assets/bearpng.png"
-id="bear">
-
-<!-- LETTER -->
-
-<div id="bearLetter">
+<div id="monsterLetter">
 A
 </div>
-
-<!-- MOUTH -->
 
 <div id="mouthZone"></div>
 
@@ -699,12 +693,12 @@ completed=0;
 
 let level=levels[currentLevel];
 
-document.getElementById('bearLetter')
+document.getElementById('monsterLetter')
 .innerHTML=level.letter;
 
 document.getElementById('instruction')
 .innerHTML=
-'Feed the bear with letter '+
+'Feed the monster with letter '+
 level.letter+
 ' objects';
 
