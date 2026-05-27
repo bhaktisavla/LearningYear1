@@ -20,45 +20,38 @@ box-sizing:border-box;
 -webkit-tap-highlight-color:transparent;
 }
 
-body{
+html,body{
+width:100%;
+height:100%;
 overflow:hidden;
 font-family:'Arial Rounded MT Bold',sans-serif;
 touch-action:none;
+background:#8fe3ff;
 }
 
-/* JUNGLE BACKGROUND */
+/* BACKGROUND */
 
-body::before{
-content:'';
-position:fixed;
-inset:0;
-
+body{
 background:
 linear-gradient(to bottom,
-#70d6ff 0%,
-#b8f3ff 35%,
-#86d957 35%,
-#4caf50 100%);
-
-z-index:-5;
+#75d8ff 0%,
+#b8f0ff 40%,
+#7ed957 40%,
+#49b04a 100%);
 }
 
 /* SUN */
 
 .sun{
 position:absolute;
-top:20px;
-right:20px;
-
-width:90px;
-height:90px;
-
+top:15px;
+right:15px;
+width:80px;
+height:80px;
 background:#ffd93d;
-
 border-radius:50%;
-
-box-shadow:
-0 0 40px #ffd93d;
+box-shadow:0 0 30px #ffd93d;
+z-index:1;
 }
 
 /* CLOUDS */
@@ -71,17 +64,17 @@ opacity:0.95;
 }
 
 .cloud1{
-width:160px;
-height:70px;
-top:30px;
-left:20px;
+width:140px;
+height:60px;
+top:25px;
+left:15px;
 }
 
 .cloud2{
-width:180px;
-height:80px;
-top:40px;
-right:120px;
+width:150px;
+height:65px;
+top:45px;
+right:90px;
 }
 
 .cloud::before{
@@ -92,17 +85,17 @@ border-radius:50%;
 }
 
 .cloud1::before{
-width:80px;
-height:80px;
+width:70px;
+height:70px;
 top:-20px;
 left:25px;
 }
 
 .cloud2::before{
-width:90px;
-height:90px;
-top:-25px;
-left:40px;
+width:80px;
+height:80px;
+top:-22px;
+left:35px;
 }
 
 /* TREES */
@@ -110,47 +103,42 @@ left:40px;
 .tree{
 position:absolute;
 bottom:0;
-width:120px;
-height:280px;
+width:100px;
+height:240px;
+z-index:1;
 }
 
 .tree .trunk{
 position:absolute;
 bottom:0;
-left:42px;
-
-width:35px;
-height:140px;
-
+left:35px;
+width:30px;
+height:120px;
 background:#8b5a2b;
-
 border-radius:10px;
 }
 
 .tree .leaf{
 position:absolute;
-
-width:110px;
-height:110px;
-
+width:95px;
+height:95px;
 background:#2ecc71;
-
 border-radius:50%;
 }
 
 .tree .leaf1{
 top:0;
-left:5px;
+left:3px;
 }
 
 .tree .leaf2{
-top:40px;
-left:-15px;
+top:35px;
+left:-12px;
 }
 
 .tree .leaf3{
-top:40px;
-left:25px;
+top:35px;
+left:20px;
 }
 
 .tree1{
@@ -165,14 +153,15 @@ right:-10px;
 
 .flower{
 position:absolute;
-bottom:12px;
-font-size:32px;
+bottom:8px;
+font-size:28px;
 animation:bounce 2s infinite;
+z-index:1;
 }
 
 .fl1{left:10%;}
-.fl2{left:25%;}
-.fl3{right:22%;}
+.fl2{left:28%;}
+.fl3{right:20%;}
 .fl4{right:8%;}
 
 @keyframes bounce{
@@ -188,27 +177,24 @@ transform:translateY(-8px);
 
 #logoScreen{
 position:absolute;
-width:100%;
-height:100%;
+inset:0;
 background:white;
-
 display:flex;
 justify-content:center;
 align-items:center;
-
-z-index:999;
+z-index:9999;
 }
 
 #logoScreen img{
-width:min(70vw,280px);
+width:min(70vw,260px);
 }
 
 /* GAME */
 
 #game{
-width:100vw;
-height:100vh;
 position:relative;
+width:100%;
+height:100%;
 overflow:hidden;
 }
 
@@ -216,15 +202,11 @@ overflow:hidden;
 
 .screen{
 position:absolute;
-width:100%;
-height:100%;
-
+inset:0;
 display:none;
-
-justify-content:center;
-align-items:center;
 flex-direction:column;
-
+align-items:center;
+justify-content:center;
 padding:10px;
 }
 
@@ -235,152 +217,123 @@ display:flex;
 /* TITLE */
 
 .title{
-font-size:min(12vw,72px);
-
+font-size:min(11vw,60px);
 font-weight:bold;
-
 color:#ff4fa0;
-
 text-shadow:
 0 0 10px white,
 0 5px 0 #d63384;
-
 text-align:center;
-
 margin-bottom:20px;
+z-index:2;
 }
 
 /* BUTTON */
 
 .play-btn{
-padding:16px 34px;
-
-font-size:min(7vw,34px);
-
+padding:14px 30px;
+font-size:min(6vw,30px);
 border:none;
-border-radius:24px;
-
+border-radius:22px;
 font-weight:bold;
-
 color:white;
-
 background:
 linear-gradient(to bottom,
 #ffcf33,
 #ff8c00);
-
 cursor:pointer;
-
 box-shadow:
 0 5px 0 #d67d00,
 0 10px 15px rgba(0,0,0,0.2);
+z-index:2;
 }
 
 /* INSTRUCTION */
 
 .instruction{
 background:white;
-
-padding:12px 20px;
-
-border-radius:22px;
-
-font-size:min(5vw,28px);
-
+padding:10px 16px;
+border-radius:20px;
+font-size:min(4.8vw,24px);
 font-weight:bold;
-
 text-align:center;
-
-margin-bottom:12px;
-
+margin-top:8px;
+margin-bottom:6px;
 box-shadow:
 0 5px 12px rgba(0,0,0,0.18);
-
-max-width:94%;
+max-width:95%;
+z-index:2;
 }
 
 /* MONSTER AREA */
 
 #monsterArea{
 position:relative;
-
 width:100%;
-height:40vh;
-
+height:38vh;
 display:flex;
 justify-content:center;
 align-items:center;
+z-index:2;
 }
-
-/* MONSTER */
 
 #monsterContainer{
 position:relative;
 }
 
+/* MONSTER */
+
 #monster{
-width:min(56vw,260px);
+width:min(52vw,240px);
+pointer-events:none;
 }
 
-/* LETTER ON STOMACH */
+/* LETTER */
 
 #monsterLetter{
 position:absolute;
-
 left:50%;
-top:62%;
-
+top:63%;
 transform:translate(-50%,-50%);
-
-font-size:min(15vw,90px);
-
+font-size:min(14vw,80px);
 font-weight:bold;
-
 color:#ff1744;
-
 text-shadow:
-0 0 8px white,
-0 0 12px white;
+0 0 10px white,
+0 0 14px white;
+pointer-events:none;
 }
 
-/* MOUTH ZONE */
+/* BIGGER MOUTH ZONE */
 
 #mouthZone{
 position:absolute;
-
 left:50%;
-top:32%;
-
+top:28%;
 transform:translateX(-50%);
-
-width:28%;
-height:12%;
-
-border-radius:40px;
+width:42%;
+height:22%;
+border-radius:50px;
 }
 
-/* PICTURE AREA */
+/* OBJECT AREA */
 
 #pictureArea{
 position:relative;
-
 width:100%;
 height:55vh;
+z-index:2;
 }
 
 /* DRAG OBJECTS */
 
 .picture{
 position:absolute;
-
-width:min(18vw,90px);
-
+width:min(18vw,85px);
+max-width:85px;
 touch-action:none;
-
 user-select:none;
-
 cursor:grab;
-
 transition:transform 0.2s;
 }
 
@@ -388,7 +341,7 @@ transition:transform 0.2s;
 transform:scale(1.08);
 }
 
-/* FINAL SCREEN */
+/* FINAL */
 
 #finalScreen{
 background:
@@ -401,10 +354,8 @@ linear-gradient(to bottom,
 
 .confetti{
 position:absolute;
-
 width:8px;
 height:8px;
-
 animation:fall linear infinite;
 }
 
@@ -454,9 +405,7 @@ transform:translateY(110vh) rotate(360deg);
 <!-- LOGO -->
 
 <div id="logoScreen">
-
 <img src="assets/innovine-logo.png">
-
 </div>
 
 <!-- AUDIO -->
@@ -471,7 +420,7 @@ src="assets/wrong.mp3"></audio>
 
 <div id="game">
 
-<!-- START SCREEN -->
+<!-- START -->
 
 <div class="screen active"
 id="startScreen">
@@ -494,9 +443,7 @@ id="gameScreen">
 
 <div class="instruction"
 id="instruction">
-
 Feed the monster with letter A objects
-
 </div>
 
 <!-- MONSTER -->
@@ -524,7 +471,7 @@ A
 
 </div>
 
-<!-- FINAL SCREEN -->
+<!-- FINAL -->
 
 <div class="screen"
 id="finalScreen">
@@ -636,7 +583,7 @@ document.getElementById('logoScreen')
 
 }
 
-/* CORRECT SOUND */
+/* SOUNDS */
 
 function playCorrect(){
 
@@ -644,7 +591,6 @@ let s=
 document.getElementById('correctSound');
 
 s.currentTime=0;
-
 s.play();
 
 setTimeout(()=>{
@@ -656,20 +602,17 @@ s.currentTime=0;
 
 }
 
-/* WRONG SOUND */
-
 function playWrong(){
 
 let s=
 document.getElementById('wrongSound');
 
 s.currentTime=0;
-
 s.play();
 
 }
 
-/* START GAME */
+/* START */
 
 function startGame(){
 
@@ -725,11 +668,16 @@ pic.className='picture';
 
 pic.draggable=false;
 
+/* BETTER MOBILE POSITIONS */
+
+let col=index%4;
+let row=Math.floor(index/4);
+
 pic.dataset.startX=
-(5+(index%4)*22);
+(5 + col*22);
 
 pic.dataset.startY=
-(5+Math.floor(index/4)*18);
+(2 + row*18);
 
 pic.style.left=
 pic.dataset.startX+'vw';
@@ -761,11 +709,11 @@ e.touches ? e.touches[0] : e;
 
 offsetX=
 touch.clientX-
-element.offsetLeft;
+element.getBoundingClientRect().left;
 
 offsetY=
 touch.clientY-
-element.offsetTop;
+element.getBoundingClientRect().top;
 
 document.addEventListener(
 'mousemove',
@@ -834,7 +782,7 @@ startDrag,
 
 }
 
-/* CHECK */
+/* CHECK DROP */
 
 function checkDrop(element,img){
 
@@ -850,18 +798,21 @@ element.getBoundingClientRect();
 let level=
 levels[currentLevel];
 
+/* BIGGER HIT AREA */
+
 let hit=
-!(
 
-imgRect.right < mouthRect.left ||
+imgRect.left <
+mouthRect.right + 20 &&
 
-imgRect.left > mouthRect.right ||
+imgRect.right >
+mouthRect.left - 20 &&
 
-imgRect.bottom < mouthRect.top ||
+imgRect.top <
+mouthRect.bottom + 20 &&
 
-imgRect.top > mouthRect.bottom
-
-);
+imgRect.bottom >
+mouthRect.top - 20;
 
 if(hit){
 
@@ -923,7 +874,7 @@ element.dataset.startY+'vh';
 
 }
 
-/* NEXT LEVEL */
+/* NEXT */
 
 function nextLevel(){
 
@@ -941,7 +892,7 @@ loadLevel();
 
 }
 
-/* END GAME */
+/* END */
 
 function endGame(){
 
