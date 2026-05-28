@@ -86,6 +86,10 @@ cursor:pointer;
 box-shadow:0 4px 0 #c58b00;
 }
 
+.startBtn:active{
+transform:translateY(2px);
+}
+
 /* GAME */
 
 #gameContainer{
@@ -170,41 +174,28 @@ min-width:60px;
 min-height:60px;
 position:relative;
 transition:0.3s;
+border:4px solid #333;
 }
 
 .circle{
 border-radius:50%;
-border:4px solid #333;
 }
 
 .square{
 border-radius:12px;
-border:4px solid #333;
 }
 
 .diamond{
-border-radius:10px;
-border:4px solid #333;
 transform:rotate(45deg);
+border-radius:10px;
 }
-
-/* TRIANGLE USING IMAGE */
-
-.triangle{
-background-image:url('assets/triangle.jpg');
-background-size:contain;
-background-repeat:no-repeat;
-background-position:center;
-border:none;
-}
-
-/* HEART */
 
 .heart{
 position:relative;
 width:90px;
 height:80px;
 transform:rotate(-45deg);
+border:none;
 }
 
 .heart:before,
@@ -438,11 +429,11 @@ const rounds = [
 
 {
 shapes:[
-{type:"triangle", color:"yellow"},
+{type:"square", color:"yellow"},
 {type:"square", color:"blue"},
-{type:"triangle", color:"yellow"},
+{type:"square", color:"yellow"},
 {type:"square", color:"blue"},
-{type:"triangle", blank:true, answer:"yellow"},
+{type:"square", blank:true, answer:"yellow"},
 {type:"square", blank:true, answer:"blue"}
 ],
 palette:["yellow","blue"]
@@ -463,11 +454,11 @@ palette:["red","orange"]
 {
 shapes:[
 {type:"square", color:"#7ad9ff"},
-{type:"triangle", color:"#90ee90"},
+{type:"square", color:"#90ee90"},
 {type:"square", color:"#7ad9ff"},
-{type:"triangle", color:"#90ee90"},
+{type:"square", color:"#90ee90"},
 {type:"square", blank:true, answer:"#7ad9ff"},
-{type:"triangle", blank:true, answer:"#90ee90"}
+{type:"square", blank:true, answer:"#90ee90"}
 ],
 palette:["#90ee90","#7ad9ff"]
 },
@@ -511,11 +502,11 @@ palette:["pink","purple"]
 {
 shapes:[
 {type:"heart", color:"pink"},
-{type:"triangle", color:"yellow"},
+{type:"square", color:"yellow"},
 {type:"heart", color:"pink"},
-{type:"triangle", color:"yellow"},
+{type:"square", color:"yellow"},
 {type:"heart", blank:true, answer:"pink"},
-{type:"triangle", blank:true, answer:"yellow"}
+{type:"square", blank:true, answer:"yellow"}
 ],
 palette:["pink","yellow"]
 }
@@ -580,26 +571,14 @@ const shape = document.createElement("div");
 shape.classList.add("shape");
 shape.classList.add(shapeData.type);
 
-if(shapeData.type !== "triangle" &&
-shapeData.type !== "heart"){
-
+if(shapeData.type !== "heart"){
 shape.style.background =
 shapeData.blank ? "white" : shapeData.color;
-
-}
-
-if(shapeData.type === "triangle"){
-
-shape.style.filter =
-shapeData.blank ? "brightness(3)" : `drop-shadow(0 0 0 ${shapeData.color})`;
-
 }
 
 if(shapeData.type === "heart"){
-
 shape.style.background =
 shapeData.blank ? "white" : shapeData.color;
-
 }
 
 if(shapeData.blank){
@@ -685,17 +664,7 @@ const correct = shape.dataset.answer;
 
 if(color === correct){
 
-if(shape.classList.contains("triangle")){
-
-shape.style.filter =
-`drop-shadow(0 0 0 ${color})`;
-
-}
-else{
-
 shape.style.background = color;
-
-}
 
 shape.classList.remove("blank");
 
