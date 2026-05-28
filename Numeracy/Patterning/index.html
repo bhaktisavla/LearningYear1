@@ -11,7 +11,7 @@ body {margin:0;font-family:'Comic Sans MS',cursive;background:linear-gradient(13
 h1{font-size:3vw;color:#FF4500;text-shadow:2px 2px #fff;margin:10px 0;}
 #question-text{font-size:2vw;color:#0066CC;margin:10px 0;}
 #instruction-text{font-size:1.5vw;color:#333;margin-bottom:10px;}
-.pattern-row{display:flex;justify-content:center;gap:20px;margin:20px 0;flex-wrap:wrap;}
+.pattern-row{display:flex;justify-content:center;gap:15px;margin:20px 0;flex-wrap:wrap;}
 .shape{width:80px;height:80px;border:2px solid black;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .triangle{width:0;height:0;border-left:40px solid transparent;border-right:40px solid transparent;border-bottom:70px solid white;}
 .circle{border-radius:50%;background:white;}
@@ -21,7 +21,7 @@ h1{font-size:3vw;color:#FF4500;text-shadow:2px 2px #fff;margin:10px 0;}
 .heart::before,.heart::after{content:"";position:absolute;width:60px;height:60px;background:white;border-radius:50%;}
 .heart::before{top:-30px;left:0;}.heart::after{left:30px;top:0;}
 #palette{display:flex;justify-content:center;gap:30px;margin:20px 0;}
-.palette-color{width:60px;height:60px;cursor:grab;background-size:cover;border-radius:50%;}
+.palette-color{width:60px;height:60px;cursor:grab;background-size:cover;border-radius:50%;border:2px solid #333;}
 .feedback{font-size:2vw;margin:10px 0;color:green;}
 button{padding:10px 20px;font-size:1.5rem;margin-top:20px;cursor:pointer;border-radius:10px;border:none;background:#FF69B4;color:#fff;}
 #confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;}
@@ -52,15 +52,15 @@ button{padding:10px 20px;font-size:1.5rem;margin-top:20px;cursor:pointer;border-
 <audio id="clap-sound" src="assets/freesound_community-claps-44774.mp3"></audio>
 
 <script>
-// Define rounds
+// Define rounds (pattern sequence and blank shapes)
 const rounds=[
-{pattern:["yellow-square","blue-square","yellow-square","blue-square","plain-square","plain-square"], colors:["yellow","blue"]},
-{pattern:["orange-square","red-circle","orange-square","red-circle","plain-square","plain-circle"], colors:["orange","red"]},
-{pattern:["lightblue-square","lightgreen-triangle","lightblue-square","lightgreen-triangle","plain-square","plain-triangle"], colors:["lightblue","lightgreen"]},
-{pattern:["pink-diamond","yellow-diamond","pink-diamond","yellow-diamond","plain-diamond","plain-diamond"], colors:["pink","yellow"]},
-{pattern:["red-circle","blue-circle","red-circle","blue-circle","plain-circle","plain-circle"], colors:["red","blue"]},
-{pattern:["pink-square","purple-square","pink-square","purple-square","plain-square","plain-square"], colors:["pink","purple"]},
-{pattern:["pink-heart","yellow-triangle","pink-heart","yellow-triangle","plain-heart","plain-triangle"], colors:["pink","yellow"]}
+{pattern:["yellow-triangle","blue-square","yellow-triangle","blue-square","plain-triangle","plain-square"],colors:["yellow","blue"]},
+{pattern:["orange-square","red-circle","orange-square","red-circle","plain-square","plain-circle"],colors:["orange","red"]},
+{pattern:["lightblue-square","lightgreen-triangle","lightblue-square","lightgreen-triangle","plain-square","plain-triangle"],colors:["lightblue","lightgreen"]},
+{pattern:["pink-diamond","yellow-diamond","pink-diamond","yellow-diamond","plain-diamond","plain-diamond"],colors:["pink","yellow"]},
+{pattern:["red-circle","blue-circle","red-circle","blue-circle","plain-circle","plain-circle"],colors:["red","blue"]},
+{pattern:["pink-square","purple-square","pink-square","purple-square","plain-square","plain-square"],colors:["pink","purple"]},
+{pattern:["pink-heart","yellow-triangle","pink-heart","yellow-triangle","plain-heart","plain-triangle"],colors:["pink","yellow"]}
 ];
 
 let currentRound=0;
@@ -74,7 +74,7 @@ const rightSound=document.getElementById('right-sound');
 const wrongSound=document.getElementById('wrong-sound');
 const clapSound=document.getElementById('clap-sound');
 
-// Show logo 5 sec
+// Show logo 5s
 logoScreen.style.display="flex";
 setTimeout(()=>{ logoScreen.style.display="none"; startRound(); gameScreen.style.display="flex"; },5000);
 
@@ -99,13 +99,14 @@ setTimeout(()=>{target.style.transform="translateX(0)";},200);
 }
 }
 
-// Start round
+// Start a round
 function startRound(){
 feedbackDiv.textContent="";
 patternRow.innerHTML="";
 paletteDiv.innerHTML="";
 if(currentRound>=rounds.length){ gameScreen.style.display="none"; endScreen.style.display="flex"; runConfetti(); return;}
 const round=rounds[currentRound];
+// Build pattern row
 round.pattern.forEach((p,i)=>{
 const shapeDiv=document.createElement('div');
 shapeDiv.className='shape';
@@ -114,7 +115,7 @@ if(p.includes("circle")) shapeDiv.classList.add('circle');
 if(p.includes("square")) shapeDiv.classList.add('square');
 if(p.includes("diamond")) shapeDiv.classList.add('diamond');
 if(p.includes("heart")) shapeDiv.classList.add('heart');
-if(p.includes("plain")) shapeDiv.dataset.plain=p;
+if(p.includes("plain")) shapeDiv.dataset.plain=p; // only last shapes are plain
 else{
 let color=p.split('-')[0];
 shapeDiv.style.backgroundColor=color;
@@ -124,7 +125,7 @@ shapeDiv.ondrop=drop;
 shapeDiv.ondragover=allowDrop;
 patternRow.appendChild(shapeDiv);
 });
-// Palette
+// Build palette below
 round.colors.forEach(col=>{
 const colDiv=document.createElement('div');
 colDiv.className='palette-color';
@@ -137,7 +138,7 @@ paletteDiv.appendChild(colDiv);
 }
 
 function getCorrectColor(type){
-if(currentRound===0) return type.includes("square")?"yellow":"blue";
+if(currentRound===0) return type.includes("triangle")?"yellow":"blue";
 if(currentRound===1) return type.includes("square")?"orange":"red";
 if(currentRound===2) return type.includes("square")?"lightblue":"lightgreen";
 if(currentRound===3) return type.includes("diamond")?"pink":"yellow";
