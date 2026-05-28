@@ -21,7 +21,7 @@ h1{font-size:3vw;color:#FF4500;text-shadow:2px 2px #fff;margin:10px 0;}
 .heart::before,.heart::after{content:"";position:absolute;width:60px;height:60px;background:white;border-radius:50%;}
 .heart::before{top:-30px;left:0;}.heart::after{left:30px;top:0;}
 #palette{display:flex;justify-content:center;gap:30px;margin:20px 0;}
-.palette-color{width:60px;height:60px;cursor:grab;background-image:url('assets/df782756-4032-44c8-b54e-c0bededa7360.png');background-size:cover;border-radius:50%;}
+.palette-color{width:60px;height:60px;cursor:grab;background-size:cover;border-radius:50%;}
 .feedback{font-size:2vw;margin:10px 0;color:green;}
 button{padding:10px 20px;font-size:1.5rem;margin-top:20px;cursor:pointer;border-radius:10px;border:none;background:#FF69B4;color:#fff;}
 #confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;}
@@ -52,8 +52,9 @@ button{padding:10px 20px;font-size:1.5rem;margin-top:20px;cursor:pointer;border-
 <audio id="clap-sound" src="assets/freesound_community-claps-44774.mp3"></audio>
 
 <script>
+// Define rounds
 const rounds=[
-{pattern:["yellow-triangle","blue-square","yellow-triangle","blue-square","plain-triangle","plain-square"], colors:["yellow","blue"]},
+{pattern:["yellow-square","blue-square","yellow-square","blue-square","plain-square","plain-square"], colors:["yellow","blue"]},
 {pattern:["orange-square","red-circle","orange-square","red-circle","plain-square","plain-circle"], colors:["orange","red"]},
 {pattern:["lightblue-square","lightgreen-triangle","lightblue-square","lightgreen-triangle","plain-square","plain-triangle"], colors:["lightblue","lightgreen"]},
 {pattern:["pink-diamond","yellow-diamond","pink-diamond","yellow-diamond","plain-diamond","plain-diamond"], colors:["pink","yellow"]},
@@ -73,9 +74,11 @@ const rightSound=document.getElementById('right-sound');
 const wrongSound=document.getElementById('wrong-sound');
 const clapSound=document.getElementById('clap-sound');
 
+// Show logo 5 sec
 logoScreen.style.display="flex";
 setTimeout(()=>{ logoScreen.style.display="none"; startRound(); gameScreen.style.display="flex"; },5000);
 
+// Drag and drop
 function allowDrop(ev){ev.preventDefault();}
 function drag(ev){ev.dataTransfer.setData("text",ev.target.dataset.color);}
 function drop(ev){
@@ -96,6 +99,7 @@ setTimeout(()=>{target.style.transform="translateX(0)";},200);
 }
 }
 
+// Start round
 function startRound(){
 feedbackDiv.textContent="";
 patternRow.innerHTML="";
@@ -120,7 +124,6 @@ shapeDiv.ondrop=drop;
 shapeDiv.ondragover=allowDrop;
 patternRow.appendChild(shapeDiv);
 });
-
 // Palette
 round.colors.forEach(col=>{
 const colDiv=document.createElement('div');
@@ -128,17 +131,18 @@ colDiv.className='palette-color';
 colDiv.dataset.color=col;
 colDiv.draggable=true;
 colDiv.ondragstart=drag;
+colDiv.style.backgroundImage=`url('assets/${col}-splash.png')`;
 paletteDiv.appendChild(colDiv);
 });
 }
 
 function getCorrectColor(type){
-if(currentRound===0) return type.includes("triangle")?"yellow":"blue";
+if(currentRound===0) return type.includes("square")?"yellow":"blue";
 if(currentRound===1) return type.includes("square")?"orange":"red";
 if(currentRound===2) return type.includes("square")?"lightblue":"lightgreen";
-if(currentRound===3) return type.includes("diamond")?(patternRow.children[0].dataset.plain===type?"pink":"yellow"):"";
-if(currentRound===4) return type.includes("circle")?(patternRow.children[0].dataset.plain===type?"red":"blue"):"";
-if(currentRound===5) return type.includes("square")?(patternRow.children[0].dataset.plain===type?"pink":"purple"):"";
+if(currentRound===3) return type.includes("diamond")?"pink":"yellow";
+if(currentRound===4) return type.includes("circle")?"red":"blue";
+if(currentRound===5) return type.includes("square")?"pink":"purple";
 if(currentRound===6) return type.includes("heart")?"pink":"yellow";
 }
 
@@ -162,10 +166,8 @@ const ctx=canvas.getContext('2d');
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 const confettis=[];
-for(let i=0;i<150;i++){ confettis.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*6+4,dx:Math.random()*4-2,dy:Math.random()*4+2,color:`hsl(${Math.random()*360},100%,50%)`}); }
-function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-confettis.forEach(c=>{ctx.fillStyle=c.color;ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,Math.PI*2);ctx.fill();c.x+=c.dx;c.y+=c.dy;if(c.y>canvas.height){c.y=0;c.x=Math.random()*canvas.width;}});requestAnimationFrame(draw);}
+for(let i=0;i<150;i++){ confettis.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*6+4,dx:Math.random()*4-2,dy:Math.random()*4+2,color:`hsl(${Math.random()*360},100%,50%)`});}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);confettis.forEach(c=>{ctx.fillStyle=c.color;ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,Math.PI*2);ctx.fill();c.x+=c.dx;c.y+=c.dy;if(c.y>canvas.height){c.y=0;c.x=Math.random()*canvas.width;}});requestAnimationFrame(draw);}
 draw();
 }
 </script>
