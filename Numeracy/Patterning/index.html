@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
 <title>Patterning Game</title>
 
@@ -17,12 +17,12 @@ box-sizing:border-box;
 
 body{
 font-family:Arial,sans-serif;
-overflow:hidden;
 height:100vh;
+overflow:hidden;
 background:linear-gradient(to bottom,#fff4c7,#dff7ff,#ffe4f2);
 }
 
-/* LOGO SCREEN */
+/* LOGO */
 
 #logoScreen{
 position:fixed;
@@ -45,12 +45,12 @@ animation:pulse 2s infinite;
 100%{transform:scale(1);}
 }
 
-/* TITLE SCREEN */
+/* TITLE */
 
 #titleScreen{
 position:fixed;
 inset:0;
-display:flex;
+display:none;
 flex-direction:column;
 justify-content:center;
 align-items:center;
@@ -79,17 +79,17 @@ border-radius:18px;
 background:#ffb703;
 color:white;
 cursor:pointer;
-box-shadow:0 4px 0 #cc8e00;
 }
 
 /* GAME */
 
 #gameContainer{
 height:100vh;
-display:flex;
+display:none;
 flex-direction:column;
-padding:8px;
 align-items:center;
+padding:8px;
+overflow:hidden;
 }
 
 .header h1{
@@ -134,7 +134,7 @@ color:white;
 cursor:pointer;
 }
 
-/* PATTERN */
+/* PATTERN AREA */
 
 .patternArea{
 flex:1;
@@ -142,27 +142,31 @@ display:flex;
 justify-content:center;
 align-items:center;
 width:100%;
+overflow:hidden;
 }
 
 .patternRow{
 width:100%;
-max-width:1000px;
+max-width:1100px;
 background:#ffffffcc;
 border-radius:22px;
-padding:12px;
+padding:10px;
 display:flex;
+flex-wrap:nowrap;
 justify-content:space-evenly;
 align-items:center;
-flex-wrap:wrap;
-gap:10px;
+gap:6px;
 box-shadow:0 5px 12px rgba(0,0,0,0.1);
 }
+
+/* SHAPES */
 
 .shape{
 width:70px;
 height:70px;
 border:4px solid #333;
-transition:0.3s;
+flex-shrink:0;
+transition:0.2s;
 }
 
 .square{
@@ -184,6 +188,7 @@ width:60px;
 height:60px;
 transform:rotate(-45deg);
 border:none;
+flex-shrink:0;
 }
 
 .heart:before,
@@ -217,8 +222,10 @@ outline:4px dashed #999;
 display:flex;
 justify-content:center;
 gap:25px;
-margin-top:10px;
-margin-bottom:10px;
+margin-top:8px;
+margin-bottom:8px;
+position:relative;
+height:90px;
 }
 
 .colorBall{
@@ -227,32 +234,29 @@ height:70px;
 border-radius:50%;
 border:5px solid white;
 box-shadow:0 4px 10px rgba(0,0,0,0.2);
-cursor:grab;
-transition:0.2s;
-touch-action:none;
 position:relative;
-z-index:5;
+touch-action:none;
+z-index:10;
 }
 
 .dragging{
-opacity:0.7;
-transform:scale(1.15);
-z-index:999;
+opacity:0.8;
+transform:scale(1.12);
 }
 
 /* FEEDBACK */
 
 .feedback{
-height:45px;
+height:40px;
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:30px;
+font-size:28px;
 font-weight:bold;
 color:#27ae60;
 }
 
-/* ANIMATIONS */
+/* ANIMATION */
 
 .wiggle{
 animation:wiggle 0.4s;
@@ -276,12 +280,12 @@ animation:glow 1s infinite;
 100%{box-shadow:0 0 0px gold;}
 }
 
-/* END SCREEN */
+/* END */
 
 #endScreen{
 position:fixed;
 inset:0;
-display:flex;
+display:none;
 flex-direction:column;
 justify-content:center;
 align-items:center;
@@ -300,8 +304,6 @@ font-size:clamp(22px,4vw,34px);
 color:#5b4bff;
 }
 
-/* CONFETTI */
-
 .confetti{
 position:fixed;
 width:12px;
@@ -317,25 +319,52 @@ transform:translateY(110vh) rotate(720deg);
 }
 }
 
-@media(max-width:600px){
+/* MOBILE */
+
+@media(max-width:700px){
 
 .shape{
-width:55px;
-height:55px;
+width:48px;
+height:48px;
+border-width:3px;
+}
+
+.heart{
+width:42px;
+height:42px;
+}
+
+.heart:before,
+.heart:after{
+width:24px;
+height:38px;
+border-width:3px;
+}
+
+.heart:before{
+left:21px;
+}
+
+.heart:after{
+top:-21px;
 }
 
 .colorBall{
-width:60px;
-height:60px;
+width:58px;
+height:58px;
 }
 
 .patternRow{
+gap:4px;
 padding:8px;
-gap:8px;
 }
 
 .questionBox{
 padding:8px;
+}
+
+.palette{
+height:75px;
 }
 
 }
@@ -357,7 +386,7 @@ padding:8px;
 
 <!-- TITLE -->
 
-<div id="titleScreen" style="display:none;">
+<div id="titleScreen">
 
 <div class="gameTitle">Patterning</div>
 
@@ -369,7 +398,7 @@ padding:8px;
 
 <!-- GAME -->
 
-<div id="gameContainer" style="display:none;">
+<div id="gameContainer">
 
 <div class="header">
 <h1>Patterning</h1>
@@ -400,7 +429,7 @@ Look at the pattern. Colour the shape with correct colour to complete the patter
 
 <!-- END -->
 
-<div id="endScreen" style="display:none;">
+<div id="endScreen">
 
 <h2>🎉 Great Job! 🎉</h2>
 
@@ -517,7 +546,6 @@ window.onload = ()=>{
 setTimeout(()=>{
 
 document.getElementById("logoScreen").style.display="none";
-
 document.getElementById("titleScreen").style.display="flex";
 
 },5000);
@@ -527,7 +555,6 @@ document.getElementById("titleScreen").style.display="flex";
 function startGame(){
 
 document.getElementById("titleScreen").style.display="none";
-
 document.getElementById("gameContainer").style.display="flex";
 
 loadRound();
@@ -543,12 +570,14 @@ feedback.innerHTML="";
 patternRow.innerHTML="";
 palette.innerHTML="";
 
-roundInfo.innerText=
+roundInfo.innerText =
 `Round ${currentRound+1} / ${rounds.length}`;
 
 speakQuestion();
 
 const round = rounds[currentRound];
+
+/* SHAPES */
 
 round.shapes.forEach(shapeData=>{
 
@@ -557,33 +586,22 @@ const shape=document.createElement("div");
 shape.classList.add("shape",shapeData.type);
 
 if(shapeData.type!=="heart"){
-shape.style.background=
+
+shape.style.background =
 shapeData.blank ? "white" : shapeData.color;
+
 }else{
-shape.style.background=
+
+shape.style.background =
 shapeData.blank ? "white" : shapeData.color;
+
 }
 
 if(shapeData.blank){
 
 shape.classList.add("blank");
 
-shape.dataset.answer=shapeData.answer;
-
-shape.addEventListener("dragover",(e)=>{
-e.preventDefault();
-});
-
-shape.addEventListener("drop",(e)=>{
-
-e.preventDefault();
-
-const draggedColor =
-e.dataTransfer.getData("color");
-
-checkAnswer(shape, draggedColor);
-
-});
+shape.dataset.answer = shapeData.answer;
 
 }
 
@@ -591,35 +609,31 @@ patternRow.appendChild(shape);
 
 });
 
+/* COLOURS */
+
 round.palette.forEach(color=>{
 
 const ball=document.createElement("div");
 
 ball.classList.add("colorBall");
 
-ball.style.background=color;
+ball.style.background = color;
 
-/* DESKTOP DRAG */
+palette.appendChild(ball);
 
-ball.draggable = true;
+/* TOUCH DRAG */
 
-ball.addEventListener("dragstart",(e)=>{
-
-e.dataTransfer.setData("color",color);
-
-});
-
-/* MOBILE TOUCH DRAG */
-
-let startX = 0;
-let startY = 0;
+let offsetX = 0;
+let offsetY = 0;
 
 ball.addEventListener("touchstart",(e)=>{
 
 ball.classList.add("dragging");
 
-startX = e.touches[0].clientX;
-startY = e.touches[0].clientY;
+const touch = e.touches[0];
+
+offsetX = touch.clientX - ball.getBoundingClientRect().left;
+offsetY = touch.clientY - ball.getBoundingClientRect().top;
 
 });
 
@@ -629,11 +643,13 @@ e.preventDefault();
 
 const touch = e.touches[0];
 
+ball.style.position = "fixed";
+
 ball.style.left =
-(touch.clientX - startX) + "px";
+(touch.clientX - offsetX) + "px";
 
 ball.style.top =
-(touch.clientY - startY) + "px";
+(touch.clientY - offsetY) + "px";
 
 });
 
@@ -658,12 +674,45 @@ checkAnswer(target,color);
 
 }
 
+/* RESET */
+
+ball.style.position = "relative";
 ball.style.left = "0px";
 ball.style.top = "0px";
 
 });
 
-palette.appendChild(ball);
+/* DESKTOP DRAG */
+
+ball.draggable = true;
+
+ball.addEventListener("dragstart",(e)=>{
+
+e.dataTransfer.setData("color",color);
+
+});
+
+});
+
+/* DESKTOP DROP */
+
+document.querySelectorAll(".blank")
+.forEach(shape=>{
+
+shape.addEventListener("dragover",(e)=>{
+e.preventDefault();
+});
+
+shape.addEventListener("drop",(e)=>{
+
+e.preventDefault();
+
+const draggedColor =
+e.dataTransfer.getData("color");
+
+checkAnswer(shape,draggedColor);
+
+});
 
 });
 
@@ -673,21 +722,21 @@ function checkAnswer(shape,color){
 
 if(shape.dataset.done) return;
 
-const correct=shape.dataset.answer;
+const correct = shape.dataset.answer;
 
-if(color===correct){
+if(color === correct){
 
-shape.style.background=color;
+shape.style.background = color;
 
 shape.classList.remove("blank");
 
-shape.dataset.done=true;
+shape.dataset.done = true;
 
 document.getElementById("rightSound").play();
 
 completedTargets++;
 
-feedback.innerHTML="✅ Good Job!";
+feedback.innerHTML = "✅ Good Job!";
 
 if(completedTargets===2){
 
@@ -697,7 +746,7 @@ setTimeout(()=>{
 
 currentRound++;
 
-if(currentRound>=rounds.length){
+if(currentRound >= rounds.length){
 
 endGame();
 
@@ -723,7 +772,7 @@ setTimeout(()=>{
 shape.classList.remove("wiggle");
 },400);
 
-if(wrongAttempts>=2){
+if(wrongAttempts >= 2){
 
 document.querySelectorAll(".blank")
 .forEach(t=>{
@@ -750,11 +799,11 @@ function speakQuestion(){
 
 speechSynthesis.cancel();
 
-const speech=
+const speech =
 new SpeechSynthesisUtterance(question);
 
-speech.rate=0.9;
-speech.pitch=1;
+speech.rate = 0.9;
+speech.pitch = 1;
 
 speechSynthesis.speak(speech);
 
@@ -782,11 +831,11 @@ confetti.classList.add("confetti");
 
 confetti.style.left=Math.random()*100+"vw";
 
-confetti.style.background=
+confetti.style.background =
 ["#ff5c8a","#ffb703","#5b4bff","#66c7ff","#90ee90"]
 [Math.floor(Math.random()*5)];
 
-confetti.style.animationDuration=
+confetti.style.animationDuration =
 (Math.random()*3+2)+"s";
 
 document.body.appendChild(confetti);
@@ -801,7 +850,7 @@ confetti.remove();
 
 function restartGame(){
 
-currentRound=0;
+currentRound = 0;
 
 document.getElementById("endScreen")
 .style.display="none";
