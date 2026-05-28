@@ -1,389 +1,396 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>Patterning - Complete the Pattern</title>
 
 <style>
+
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  -webkit-tap-highlight-color: transparent;
+margin:0;
+padding:0;
+box-sizing:border-box;
+-webkit-tap-highlight-color: transparent;
 }
 
 body{
-  font-family: 'Trebuchet MS', sans-serif;
-  overflow:hidden;
-  background: linear-gradient(180deg,#fff7d6,#dff6ff,#ffe4f2);
-  height:100vh;
-  width:100vw;
-}
-
-#gameContainer{
-  width:100%;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:flex-start;
-  padding:10px;
-  overflow:hidden;
+font-family:Arial, sans-serif;
+overflow:hidden;
+background:linear-gradient(to bottom,#fff4c7,#dff7ff,#ffe4f3);
+height:100vh;
+width:100vw;
 }
 
 .hidden{
-  display:none !important;
+display:none !important;
 }
 
 /* LOGO SCREEN */
 
 #logoScreen{
-  position:fixed;
-  inset:0;
-  background:linear-gradient(180deg,#fff3b0,#d6f5ff);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:1000;
+position:fixed;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(to bottom,#fff6cf,#dff6ff);
+z-index:999;
 }
 
 #logoScreen img{
-  width:min(320px,70vw);
-  animation:pulse 2s infinite;
+width:min(300px,70vw);
+animation:pulse 2s infinite;
 }
 
 @keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.05);}
-  100%{transform:scale(1);}
+0%{transform:scale(1);}
+50%{transform:scale(1.05);}
+100%{transform:scale(1);}
 }
 
 /* TITLE SCREEN */
 
 #titleScreen{
-  position:fixed;
-  inset:0;
-  background:linear-gradient(180deg,#fff0c7,#dff7ff,#ffe4f1);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:20px;
+position:fixed;
+inset:0;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:20px;
+background:linear-gradient(to bottom,#fff6cf,#dff6ff,#ffe3f1);
 }
 
 .gameTitle{
-  font-size:clamp(32px,5vw,60px);
-  color:#ff5a7a;
-  text-shadow:2px 2px #fff;
-  text-align:center;
+font-size:clamp(35px,5vw,60px);
+color:#ff5d8f;
+font-weight:bold;
+text-shadow:2px 2px white;
 }
 
 .subTitle{
-  font-size:clamp(22px,3vw,36px);
-  color:#5b4bff;
+font-size:clamp(25px,3vw,40px);
+color:#5d4fff;
+font-weight:bold;
 }
 
 .startBtn{
-  padding:14px 34px;
-  border:none;
-  border-radius:20px;
-  background:#ffb703;
-  color:white;
-  font-size:26px;
-  cursor:pointer;
-  box-shadow:0 4px 0 #d18e00;
+padding:14px 30px;
+font-size:26px;
+border:none;
+border-radius:20px;
+background:#ffb703;
+color:white;
+cursor:pointer;
+box-shadow:0 4px 0 #c48a00;
 }
 
 .startBtn:active{
-  transform:translateY(2px);
+transform:translateY(2px);
 }
 
-/* HEADER */
+/* MAIN GAME */
+
+#gameContainer{
+width:100%;
+height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding:10px;
+overflow:hidden;
+}
 
 .header{
-  width:100%;
-  text-align:center;
-  padding:6px;
+text-align:center;
 }
 
 .header h1{
-  font-size:clamp(28px,4vw,48px);
-  color:#ff5c8a;
-  text-shadow:2px 2px white;
+font-size:clamp(28px,4vw,48px);
+color:#ff5d8f;
+text-shadow:2px 2px white;
 }
 
-/* ROUND INFO */
-
 .roundInfo{
-  font-size:clamp(18px,2vw,28px);
-  color:#5b4bff;
-  margin-top:4px;
-  font-weight:bold;
+margin-top:4px;
+font-size:clamp(18px,2vw,28px);
+color:#5d4fff;
+font-weight:bold;
 }
 
 .questionBox{
-  background:white;
-  border-radius:20px;
-  padding:10px;
-  width:95%;
-  max-width:1000px;
-  margin-top:8px;
-  text-align:center;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+margin-top:8px;
+width:95%;
+max-width:1000px;
+background:white;
+border-radius:20px;
+padding:10px;
+text-align:center;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
 .questionText{
-  font-size:clamp(16px,2vw,24px);
-  color:#444;
-  line-height:1.4;
+font-size:clamp(16px,2vw,24px);
+color:#444;
+line-height:1.4;
 }
 
 .listenBtn{
-  margin-top:8px;
-  padding:10px 20px;
-  border:none;
-  border-radius:16px;
-  background:#66c7ff;
-  color:white;
-  font-size:18px;
-  cursor:pointer;
+margin-top:10px;
+padding:10px 18px;
+font-size:18px;
+border:none;
+border-radius:14px;
+background:#66c7ff;
+color:white;
+cursor:pointer;
 }
 
-/* PATTERN AREA */
-
 .patternArea{
-  width:100%;
-  max-width:1100px;
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-top:10px;
+flex:1;
+width:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+margin-top:10px;
 }
 
 .patternRow{
-  width:100%;
-  background:#ffffffcc;
-  border-radius:25px;
-  border:4px solid #ffffff;
-  display:flex;
-  justify-content:space-evenly;
-  align-items:center;
-  padding:10px;
-  min-height:240px;
-  box-shadow:0 6px 12px rgba(0,0,0,0.12);
+width:100%;
+max-width:1100px;
+background:#ffffffcc;
+border-radius:25px;
+padding:12px;
+display:flex;
+justify-content:space-evenly;
+align-items:center;
+min-height:230px;
+box-shadow:0 6px 12px rgba(0,0,0,0.12);
 }
 
+/* SHAPES */
+
 .shape{
-  width:min(11vw,100px);
-  height:min(11vw,100px);
-  min-width:60px;
-  min-height:60px;
-  position:relative;
-  border:4px solid #333;
-  transition:0.3s;
+width:min(11vw,100px);
+height:min(11vw,100px);
+min-width:60px;
+min-height:60px;
+border:4px solid #333;
+position:relative;
+transition:0.3s;
 }
 
 .circle{
-  border-radius:50%;
+border-radius:50%;
 }
 
 .square{
-  border-radius:10px;
-}
-
-.triangle{
-  width:0;
-  height:0;
-  border-left:50px solid transparent;
-  border-right:50px solid transparent;
-  border-bottom:95px solid;
-  border-top:none;
-  background:none !important;
-  border-radius:0;
+border-radius:12px;
 }
 
 .diamond{
-  transform:rotate(45deg);
-  border-radius:10px;
+transform:rotate(45deg);
+border-radius:10px;
+}
+
+.triangle{
+width:0;
+height:0;
+background:transparent !important;
+border-left:50px solid transparent;
+border-right:50px solid transparent;
+border-bottom:95px solid;
+border-top:none;
+border-radius:0;
+border-bottom-color:red;
+border-left-color:transparent !important;
+border-right-color:transparent !important;
+border-top:none !important;
 }
 
 .heart{
-  position:relative;
-  width:90px;
-  height:80px;
-  transform:rotate(-45deg);
-  border:none;
+position:relative;
+width:90px;
+height:80px;
+transform:rotate(-45deg);
+border:none;
 }
 
 .heart:before,
 .heart:after{
-  content:"";
-  position:absolute;
-  width:50px;
-  height:80px;
-  background:inherit;
-  border-radius:50px 50px 0 0;
-  border:4px solid #333;
+content:"";
+position:absolute;
+width:50px;
+height:80px;
+background:inherit;
+border-radius:50px 50px 0 0;
+border:4px solid #333;
 }
 
 .heart:before{
-  left:50px;
-  top:0;
+left:50px;
+top:0;
 }
 
 .heart:after{
-  left:0;
-  top:-50px;
+left:0;
+top:-50px;
 }
 
 /* BLANK SHAPES */
 
 .blank{
-  background:#fff !important;
+background:white;
+}
+
+.triangle.blank{
+background:transparent !important;
+border-bottom-color:white !important;
 }
 
 .dropTarget{
-  outline:4px dashed #999;
-}
-
-.correctGlow{
-  animation:glow 1s infinite;
-}
-
-@keyframes glow{
-  0%{box-shadow:0 0 0px gold;}
-  50%{box-shadow:0 0 20px gold;}
-  100%{box-shadow:0 0 0px gold;}
-}
-
-.wiggle{
-  animation:wiggle 0.4s;
-}
-
-@keyframes wiggle{
-  0%{transform:translateX(0);}
-  25%{transform:translateX(-6px);}
-  50%{transform:translateX(6px);}
-  75%{transform:translateX(-6px);}
-  100%{transform:translateX(0);}
+outline:4px dashed #999;
 }
 
 /* PALETTE */
 
 .palette{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  gap:40px;
-  margin-top:10px;
-  margin-bottom:10px;
+width:100%;
+display:flex;
+justify-content:center;
+gap:40px;
+margin-top:10px;
+margin-bottom:10px;
 }
 
 .colorBall{
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  border:5px solid white;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
-  cursor:grab;
+width:80px;
+height:80px;
+border-radius:50%;
+border:5px solid white;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+cursor:grab;
 }
 
 .colorBall:active{
-  cursor:grabbing;
+cursor:grabbing;
 }
 
 /* FEEDBACK */
 
 .feedback{
-  height:50px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:32px;
-  font-weight:bold;
-  color:#27ae60;
+height:50px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:34px;
+font-weight:bold;
+color:#27ae60;
 }
 
-.tick{
-  font-size:42px;
+/* WRONG ANSWER */
+
+.wiggle{
+animation:wiggle 0.4s;
+}
+
+@keyframes wiggle{
+0%{transform:translateX(0);}
+25%{transform:translateX(-5px);}
+50%{transform:translateX(5px);}
+75%{transform:translateX(-5px);}
+100%{transform:translateX(0);}
+}
+
+.correctGlow{
+animation:glow 1s infinite;
+}
+
+@keyframes glow{
+0%{box-shadow:0 0 0px gold;}
+50%{box-shadow:0 0 20px gold;}
+100%{box-shadow:0 0 0px gold;}
 }
 
 /* END SCREEN */
 
 #endScreen{
-  position:fixed;
-  inset:0;
-  background:linear-gradient(180deg,#fff0c7,#dff7ff,#ffe4f1);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:20px;
-  text-align:center;
+position:fixed;
+inset:0;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:20px;
+background:linear-gradient(to bottom,#fff6cf,#dff6ff,#ffe3f1);
+text-align:center;
 }
 
 #endScreen h2{
-  font-size:clamp(32px,5vw,60px);
-  color:#ff5a7a;
+font-size:clamp(35px,5vw,60px);
+color:#ff5d8f;
 }
 
 #endScreen p{
-  font-size:clamp(22px,3vw,36px);
-  color:#5b4bff;
+font-size:clamp(24px,3vw,36px);
+color:#5d4fff;
 }
 
+/* CONFETTI */
+
 .confetti{
-  position:fixed;
-  width:12px;
-  height:12px;
-  top:-20px;
-  border-radius:50%;
-  animation:fall linear forwards;
+position:fixed;
+width:12px;
+height:12px;
+border-radius:50%;
+top:-20px;
+animation:fall linear forwards;
 }
 
 @keyframes fall{
-  to{
-    transform:translateY(110vh) rotate(720deg);
-  }
+to{
+transform:translateY(110vh) rotate(720deg);
+}
 }
 
 @media(max-width:700px){
 
-  .triangle{
-    border-left:35px solid transparent;
-    border-right:35px solid transparent;
-    border-bottom:70px solid;
-  }
+.triangle{
+border-left:35px solid transparent;
+border-right:35px solid transparent;
+border-bottom:70px solid;
+}
 
-  .heart{
-    width:60px;
-    height:55px;
-  }
+.heart{
+width:60px;
+height:55px;
+}
 
-  .heart:before,
-  .heart:after{
-    width:35px;
-    height:55px;
-  }
+.heart:before,
+.heart:after{
+width:35px;
+height:55px;
+}
 
-  .heart:before{
-    left:30px;
-  }
+.heart:before{
+left:30px;
+}
 
-  .heart:after{
-    top:-30px;
-  }
+.heart:after{
+top:-30px;
+}
 
-  .colorBall{
-    width:65px;
-    height:65px;
-  }
+.colorBall{
+width:65px;
+height:65px;
+}
 
-  .patternRow{
-    min-height:180px;
-  }
+.patternRow{
+min-height:180px;
+}
+
 }
 
 </style>
@@ -392,53 +399,70 @@ body{
 <body>
 
 <!-- AUDIO -->
+
 <audio id="rightSound" src="assets/right.mp3"></audio>
 <audio id="wrongSound" src="assets/wrong.mp3"></audio>
 <audio id="clapSound" src="assets/clap.mp3"></audio>
 
 <!-- LOGO SCREEN -->
+
 <div id="logoScreen">
-  <img src="assets/innovine-logo.png" alt="Innovine Logo">
+<img src="assets/innovine-logo.png" alt="Innovine Logo">
 </div>
 
 <!-- TITLE SCREEN -->
+
 <div id="titleScreen" class="hidden">
-  <div class="gameTitle">Patterning</div>
-  <div class="subTitle">Complete the Pattern</div>
-  <button class="startBtn" onclick="startGame()">Start Game</button>
+
+<div class="gameTitle">Patterning</div>
+
+<div class="subTitle">Complete the Pattern</div>
+
+<button class="startBtn" onclick="startGame()">Start Game</button>
+
 </div>
 
 <!-- GAME -->
+
 <div id="gameContainer" class="hidden">
 
-  <div class="header">
-    <h1>Patterning</h1>
-    <div class="roundInfo" id="roundInfo">Round 1 / 7</div>
-  </div>
+<div class="header">
+<h1>Patterning</h1>
+<div class="roundInfo" id="roundInfo">Round 1 / 7</div>
+</div>
 
-  <div class="questionBox">
-    <div class="questionText" id="questionText">
-      Look at the pattern. Colour the shape with correct colour to complete the pattern.
-    </div>
+<div class="questionBox">
 
-    <button class="listenBtn" onclick="speakQuestion()">🔊 Hear Again</button>
-  </div>
+<div class="questionText" id="questionText">
+Look at the pattern. Colour the shape with correct colour to complete the pattern.
+</div>
 
-  <div class="patternArea">
-    <div class="patternRow" id="patternRow"></div>
-  </div>
+<button class="listenBtn" onclick="speakQuestion()">🔊 Hear Again</button>
 
-  <div class="palette" id="palette"></div>
+</div>
 
-  <div class="feedback" id="feedback"></div>
+<div class="patternArea">
+
+<div class="patternRow" id="patternRow"></div>
+
+</div>
+
+<div class="palette" id="palette"></div>
+
+<div class="feedback" id="feedback"></div>
 
 </div>
 
 <!-- END SCREEN -->
+
 <div id="endScreen" class="hidden">
-  <h2>🎉 Great Job! 🎉</h2>
-  <p>You completed all the patterns!</p>
-  <button class="startBtn" onclick="restartGame()">Play Again</button>
+
+<h2>🎉 Great Job! 🎉</h2>
+
+<p>You completed all the patterns!</p>
+
+<button class="startBtn" onclick="restartGame()">Play Again</button>
+
 </div>
 
 <script>
@@ -446,87 +470,87 @@ body{
 const rounds = [
 
 {
-  shapes:[
-    {type:"triangle", color:"yellow"},
-    {type:"square", color:"blue"},
-    {type:"triangle", color:"yellow"},
-    {type:"square", color:"blue"},
-    {type:"triangle", blank:true, answer:"yellow"},
-    {type:"square", blank:true, answer:"blue"}
-  ],
-  palette:["yellow","blue"]
+shapes:[
+{type:"triangle", color:"yellow"},
+{type:"square", color:"blue"},
+{type:"triangle", color:"yellow"},
+{type:"square", color:"blue"},
+{type:"triangle", blank:true, answer:"yellow"},
+{type:"square", blank:true, answer:"blue"}
+],
+palette:["yellow","blue"]
 },
 
 {
-  shapes:[
-    {type:"square", color:"orange"},
-    {type:"circle", color:"red"},
-    {type:"square", color:"orange"},
-    {type:"circle", color:"red"},
-    {type:"square", blank:true, answer:"orange"},
-    {type:"circle", blank:true, answer:"red"}
-  ],
-  palette:["red","orange"]
+shapes:[
+{type:"square", color:"orange"},
+{type:"circle", color:"red"},
+{type:"square", color:"orange"},
+{type:"circle", color:"red"},
+{type:"square", blank:true, answer:"orange"},
+{type:"circle", blank:true, answer:"red"}
+],
+palette:["red","orange"]
 },
 
 {
-  shapes:[
-    {type:"square", color:"#7ad9ff"},
-    {type:"triangle", color:"#90ee90"},
-    {type:"square", color:"#7ad9ff"},
-    {type:"triangle", color:"#90ee90"},
-    {type:"square", blank:true, answer:"#7ad9ff"},
-    {type:"triangle", blank:true, answer:"#90ee90"}
-  ],
-  palette:["#90ee90","#7ad9ff"]
+shapes:[
+{type:"square", color:"#7ad9ff"},
+{type:"triangle", color:"#90ee90"},
+{type:"square", color:"#7ad9ff"},
+{type:"triangle", color:"#90ee90"},
+{type:"square", blank:true, answer:"#7ad9ff"},
+{type:"triangle", blank:true, answer:"#90ee90"}
+],
+palette:["#90ee90","#7ad9ff"]
 },
 
 {
-  shapes:[
-    {type:"diamond", color:"pink"},
-    {type:"diamond", color:"yellow"},
-    {type:"diamond", color:"pink"},
-    {type:"diamond", color:"yellow"},
-    {type:"diamond", blank:true, answer:"pink"},
-    {type:"diamond", blank:true, answer:"yellow"}
-  ],
-  palette:["pink","yellow"]
+shapes:[
+{type:"diamond", color:"pink"},
+{type:"diamond", color:"yellow"},
+{type:"diamond", color:"pink"},
+{type:"diamond", color:"yellow"},
+{type:"diamond", blank:true, answer:"pink"},
+{type:"diamond", blank:true, answer:"yellow"}
+],
+palette:["pink","yellow"]
 },
 
 {
-  shapes:[
-    {type:"circle", color:"red"},
-    {type:"circle", color:"blue"},
-    {type:"circle", color:"red"},
-    {type:"circle", color:"blue"},
-    {type:"circle", blank:true, answer:"red"},
-    {type:"circle", blank:true, answer:"blue"}
-  ],
-  palette:["red","blue"]
+shapes:[
+{type:"circle", color:"red"},
+{type:"circle", color:"blue"},
+{type:"circle", color:"red"},
+{type:"circle", color:"blue"},
+{type:"circle", blank:true, answer:"red"},
+{type:"circle", blank:true, answer:"blue"}
+],
+palette:["red","blue"]
 },
 
 {
-  shapes:[
-    {type:"square", color:"pink"},
-    {type:"square", color:"purple"},
-    {type:"square", color:"pink"},
-    {type:"square", color:"purple"},
-    {type:"square", blank:true, answer:"pink"},
-    {type:"square", blank:true, answer:"purple"}
-  ],
-  palette:["pink","purple"]
+shapes:[
+{type:"square", color:"pink"},
+{type:"square", color:"purple"},
+{type:"square", color:"pink"},
+{type:"square", color:"purple"},
+{type:"square", blank:true, answer:"pink"},
+{type:"square", blank:true, answer:"purple"}
+],
+palette:["pink","purple"]
 },
 
 {
-  shapes:[
-    {type:"heart", color:"pink"},
-    {type:"triangle", color:"yellow"},
-    {type:"heart", color:"pink"},
-    {type:"triangle", color:"yellow"},
-    {type:"heart", blank:true, answer:"pink"},
-    {type:"triangle", blank:true, answer:"yellow"}
-  ],
-  palette:["pink","yellow"]
+shapes:[
+{type:"heart", color:"pink"},
+{type:"triangle", color:"yellow"},
+{type:"heart", color:"pink"},
+{type:"triangle", color:"yellow"},
+{type:"heart", blank:true, answer:"pink"},
+{type:"triangle", blank:true, answer:"yellow"}
+],
+palette:["pink","yellow"]
 }
 
 ];
@@ -545,266 +569,321 @@ const question =
 
 window.onload = () => {
 
-  setTimeout(()=>{
-    document.getElementById("logoScreen").classList.add("hidden");
-    document.getElementById("titleScreen").classList.remove("hidden");
-  },5000);
+setTimeout(()=>{
+
+document.getElementById("logoScreen").classList.add("hidden");
+
+document.getElementById("titleScreen").classList.remove("hidden");
+
+},5000);
 
 };
 
 function startGame(){
 
-  document.getElementById("titleScreen").classList.add("hidden");
-  document.getElementById("gameContainer").classList.remove("hidden");
+document.getElementById("titleScreen").classList.add("hidden");
 
-  loadRound();
+document.getElementById("gameContainer").classList.remove("hidden");
+
+loadRound();
+
 }
 
 function loadRound(){
 
-  completedTargets = 0;
-  wrongAttempts = 0;
+completedTargets = 0;
 
-  feedback.innerHTML = "";
+wrongAttempts = 0;
 
-  patternRow.innerHTML = "";
-  palette.innerHTML = "";
+feedback.innerHTML = "";
 
-  roundInfo.innerText = `Round ${currentRound+1} / ${rounds.length}`;
+patternRow.innerHTML = "";
 
-  speakQuestion();
+palette.innerHTML = "";
 
-  const round = rounds[currentRound];
+roundInfo.innerText =
+`Round ${currentRound+1} / ${rounds.length}`;
 
-  round.shapes.forEach((shapeData,index)=>{
+speakQuestion();
 
-    const shape = document.createElement("div");
+const round = rounds[currentRound];
 
-    shape.classList.add("shape");
-    shape.dataset.type = shapeData.type;
+round.shapes.forEach((shapeData)=>{
 
-    if(shapeData.type !== "triangle"){
-      shape.classList.add(shapeData.type);
-    }
+const shape = document.createElement("div");
 
-    if(shapeData.type === "triangle"){
-      shape.classList.add("triangle");
-      shape.style.borderBottomColor =
-      shapeData.blank ? "white" : shapeData.color;
-    }
-    else if(shapeData.type === "heart"){
-      shape.classList.add("heart");
-      shape.style.background = shapeData.blank ? "white" : shapeData.color;
-    }
-    else{
-      shape.style.background =
-      shapeData.blank ? "white" : shapeData.color;
-    }
+shape.classList.add("shape");
 
-    if(shapeData.blank){
+shape.dataset.type = shapeData.type;
 
-      shape.classList.add("dropTarget");
+if(shapeData.type !== "triangle"){
+shape.classList.add(shapeData.type);
+}
 
-      shape.dataset.answer = shapeData.answer;
+if(shapeData.type === "triangle"){
 
-      shape.addEventListener("dragover",(e)=>{
-        e.preventDefault();
-      });
+shape.classList.add("triangle");
 
-      shape.addEventListener("drop",(e)=>{
+shape.style.borderBottomColor =
+shapeData.blank ? "white" : shapeData.color;
 
-        e.preventDefault();
+}
+else if(shapeData.type === "heart"){
 
-        const draggedColor = e.dataTransfer.getData("color");
+shape.classList.add("heart");
 
-        checkAnswer(shape, draggedColor);
+shape.style.background =
+shapeData.blank ? "white" : shapeData.color;
 
-      });
+}
+else{
 
-      // TOUCH SUPPORT
+shape.style.background =
+shapeData.blank ? "white" : shapeData.color;
 
-      shape.addEventListener("touchend",()=>{
-        if(window.selectedColor){
-          checkAnswer(shape, window.selectedColor);
-        }
-      });
+}
 
-    }
+if(shapeData.blank){
 
-    patternRow.appendChild(shape);
+shape.classList.add("blank");
 
-  });
+shape.classList.add("dropTarget");
 
-  round.palette.forEach(color=>{
+shape.dataset.answer = shapeData.answer;
 
-    const ball = document.createElement("div");
+shape.addEventListener("dragover",(e)=>{
+e.preventDefault();
+});
 
-    ball.classList.add("colorBall");
-    ball.style.background = color;
+shape.addEventListener("drop",(e)=>{
 
-    ball.draggable = true;
+e.preventDefault();
 
-    ball.addEventListener("dragstart",(e)=>{
-      e.dataTransfer.setData("color",color);
-    });
+const draggedColor =
+e.dataTransfer.getData("color");
 
-    // MOBILE TOUCH
+checkAnswer(shape, draggedColor);
 
-    ball.addEventListener("touchstart",()=>{
-      window.selectedColor = color;
-      ball.style.transform = "scale(1.15)";
-    });
+});
 
-    ball.addEventListener("touchend",()=>{
-      setTimeout(()=>{
-        ball.style.transform = "scale(1)";
-      },100);
-    });
+shape.addEventListener("touchend",()=>{
 
-    palette.appendChild(ball);
+if(window.selectedColor){
 
-  });
+checkAnswer(shape, window.selectedColor);
+
+}
+
+});
+
+}
+
+patternRow.appendChild(shape);
+
+});
+
+round.palette.forEach(color=>{
+
+const ball = document.createElement("div");
+
+ball.classList.add("colorBall");
+
+ball.style.background = color;
+
+ball.draggable = true;
+
+ball.addEventListener("dragstart",(e)=>{
+
+e.dataTransfer.setData("color",color);
+
+});
+
+ball.addEventListener("touchstart",()=>{
+
+window.selectedColor = color;
+
+ball.style.transform = "scale(1.15)";
+
+});
+
+ball.addEventListener("touchend",()=>{
+
+setTimeout(()=>{
+ball.style.transform = "scale(1)";
+},100);
+
+});
+
+palette.appendChild(ball);
+
+});
 
 }
 
 function checkAnswer(shape, color){
 
-  if(shape.dataset.done) return;
+if(shape.dataset.done) return;
 
-  const correct = shape.dataset.answer;
+const correct = shape.dataset.answer;
 
-  if(color === correct){
+if(color === correct){
 
-    if(shape.dataset.type === "triangle"){
-      shape.style.borderBottomColor = color;
-    }
-    else if(shape.dataset.type === "heart"){
-      shape.style.background = color;
-    }
-    else{
-      shape.style.background = color;
-    }
+if(shape.dataset.type === "triangle"){
 
-    shape.classList.remove("dropTarget");
+shape.style.borderBottomColor = color;
 
-    shape.dataset.done = true;
+}
+else if(shape.dataset.type === "heart"){
 
-    document.getElementById("rightSound").play();
+shape.style.background = color;
 
-    completedTargets++;
+}
+else{
 
-    feedback.innerHTML = "✅ Good Job!";
+shape.style.background = color;
 
-    if(completedTargets === 2){
+}
 
-      document.getElementById("clapSound").play();
+shape.classList.remove("dropTarget");
 
-      setTimeout(()=>{
-        currentRound++;
+shape.dataset.done = true;
 
-        if(currentRound >= rounds.length){
-          endGame();
-        }else{
-          loadRound();
-        }
+document.getElementById("rightSound").play();
 
-      },1800);
+completedTargets++;
 
-    }
+feedback.innerHTML = "✅ Good Job!";
 
-  }else{
+if(completedTargets === 2){
 
-    wrongAttempts++;
+document.getElementById("clapSound").play();
 
-    document.getElementById("wrongSound").play();
+setTimeout(()=>{
 
-    shape.classList.add("wiggle");
+currentRound++;
 
-    setTimeout(()=>{
-      shape.classList.remove("wiggle");
-    },400);
+if(currentRound >= rounds.length){
 
-    if(wrongAttempts >= 2){
+endGame();
 
-      const targets = document.querySelectorAll(".dropTarget");
+}
+else{
 
-      targets.forEach(t=>{
+loadRound();
 
-        if(!t.dataset.done){
+}
 
-          t.classList.add("correctGlow");
+},1800);
 
-          setTimeout(()=>{
-            t.classList.remove("correctGlow");
-          },2500);
+}
 
-        }
+}
+else{
 
-      });
+wrongAttempts++;
 
-    }
+document.getElementById("wrongSound").play();
 
-  }
+shape.classList.add("wiggle");
+
+setTimeout(()=>{
+shape.classList.remove("wiggle");
+},400);
+
+if(wrongAttempts >= 2){
+
+const targets =
+document.querySelectorAll(".dropTarget");
+
+targets.forEach(t=>{
+
+if(!t.dataset.done){
+
+t.classList.add("correctGlow");
+
+setTimeout(()=>{
+t.classList.remove("correctGlow");
+},2500);
+
+}
+
+});
+
+}
+
+}
 
 }
 
 function speakQuestion(){
 
-  speechSynthesis.cancel();
+speechSynthesis.cancel();
 
-  const speech = new SpeechSynthesisUtterance(question);
+const speech =
+new SpeechSynthesisUtterance(question);
 
-  speech.rate = 0.9;
-  speech.pitch = 1;
-  speech.volume = 1;
+speech.rate = 0.9;
 
-  speechSynthesis.speak(speech);
+speech.pitch = 1;
+
+speech.volume = 1;
+
+speechSynthesis.speak(speech);
 
 }
 
 function endGame(){
 
-  document.getElementById("gameContainer").classList.add("hidden");
-  document.getElementById("endScreen").classList.remove("hidden");
+document.getElementById("gameContainer")
+.classList.add("hidden");
 
-  createConfetti();
+document.getElementById("endScreen")
+.classList.remove("hidden");
+
+createConfetti();
 
 }
 
 function createConfetti(){
 
-  for(let i=0;i<120;i++){
+for(let i=0;i<120;i++){
 
-    const confetti = document.createElement("div");
+const confetti =
+document.createElement("div");
 
-    confetti.classList.add("confetti");
+confetti.classList.add("confetti");
 
-    confetti.style.left = Math.random()*100 + "vw";
+confetti.style.left =
+Math.random()*100 + "vw";
 
-    confetti.style.background =
-      ["#ff5c8a","#ffb703","#5b4bff","#66c7ff","#90ee90"][Math.floor(Math.random()*5)];
+confetti.style.background =
+["#ff5d8f","#ffb703","#5d4fff","#66c7ff","#90ee90"]
+[Math.floor(Math.random()*5)];
 
-    confetti.style.animationDuration =
-      (Math.random()*3 + 2) + "s";
+confetti.style.animationDuration =
+(Math.random()*3 + 2) + "s";
 
-    document.body.appendChild(confetti);
+document.body.appendChild(confetti);
 
-    setTimeout(()=>{
-      confetti.remove();
-    },5000);
+setTimeout(()=>{
+confetti.remove();
+},5000);
 
-  }
+}
 
 }
 
 function restartGame(){
 
-  currentRound = 0;
+currentRound = 0;
 
-  document.getElementById("endScreen").classList.add("hidden");
-  document.getElementById("gameContainer").classList.remove("hidden");
+document.getElementById("endScreen")
+.classList.add("hidden");
 
-  loadRound();
+document.getElementById("gameContainer")
+.classList.remove("hidden");
+
+loadRound();
 
 }
 
