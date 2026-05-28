@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>Patterning - Complete the Pattern</title>
+<title>Patterning Game</title>
 
 <style>
 
@@ -18,16 +18,15 @@ box-sizing:border-box;
 body{
 font-family:Arial, sans-serif;
 overflow:hidden;
-background:linear-gradient(to bottom,#fff4c7,#dff7ff,#ffe4f3);
 height:100vh;
-width:100vw;
+background:linear-gradient(to bottom,#fff4c7,#dff7ff,#ffe4f2);
 }
 
 .hidden{
 display:none !important;
 }
 
-/* LOGO SCREEN */
+/* LOGO */
 
 #logoScreen{
 position:fixed;
@@ -35,12 +34,12 @@ inset:0;
 display:flex;
 justify-content:center;
 align-items:center;
-background:linear-gradient(to bottom,#fff6cf,#dff6ff);
+background:linear-gradient(to bottom,#fff7d6,#dff7ff);
 z-index:999;
 }
 
 #logoScreen img{
-width:min(300px,70vw);
+width:min(320px,70vw);
 animation:pulse 2s infinite;
 }
 
@@ -50,7 +49,7 @@ animation:pulse 2s infinite;
 100%{transform:scale(1);}
 }
 
-/* TITLE SCREEN */
+/* TITLE */
 
 #titleScreen{
 position:fixed;
@@ -60,64 +59,55 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 gap:20px;
-background:linear-gradient(to bottom,#fff6cf,#dff6ff,#ffe3f1);
+background:linear-gradient(to bottom,#fff4c7,#dff7ff,#ffe4f2);
 }
 
 .gameTitle{
-font-size:clamp(35px,5vw,60px);
-color:#ff5d8f;
+font-size:clamp(34px,5vw,60px);
 font-weight:bold;
+color:#ff5c8a;
 text-shadow:2px 2px white;
 }
 
 .subTitle{
-font-size:clamp(25px,3vw,40px);
-color:#5d4fff;
+font-size:clamp(24px,3vw,38px);
+color:#5b4bff;
 font-weight:bold;
 }
 
 .startBtn{
 padding:14px 30px;
-font-size:26px;
 border:none;
 border-radius:20px;
 background:#ffb703;
+font-size:26px;
 color:white;
 cursor:pointer;
-box-shadow:0 4px 0 #c48a00;
+box-shadow:0 4px 0 #c58b00;
 }
 
-.startBtn:active{
-transform:translateY(2px);
-}
-
-/* MAIN GAME */
+/* GAME */
 
 #gameContainer{
-width:100%;
 height:100vh;
 display:flex;
 flex-direction:column;
 align-items:center;
 padding:10px;
-overflow:hidden;
-}
-
-.header{
-text-align:center;
 }
 
 .header h1{
-font-size:clamp(28px,4vw,48px);
-color:#ff5d8f;
+font-size:clamp(30px,4vw,48px);
+color:#ff5c8a;
 text-shadow:2px 2px white;
 }
 
 .roundInfo{
 margin-top:4px;
 font-size:clamp(18px,2vw,28px);
-color:#5d4fff;
+color:#5b4bff;
 font-weight:bold;
+text-align:center;
 }
 
 .questionBox{
@@ -125,8 +115,8 @@ margin-top:8px;
 width:95%;
 max-width:1000px;
 background:white;
+padding:12px;
 border-radius:20px;
-padding:10px;
 text-align:center;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
@@ -140,32 +130,33 @@ line-height:1.4;
 .listenBtn{
 margin-top:10px;
 padding:10px 18px;
-font-size:18px;
 border:none;
 border-radius:14px;
 background:#66c7ff;
 color:white;
+font-size:18px;
 cursor:pointer;
 }
 
+/* PATTERN AREA */
+
 .patternArea{
 flex:1;
-width:100%;
 display:flex;
-justify-content:center;
 align-items:center;
-margin-top:10px;
+justify-content:center;
+width:100%;
 }
 
 .patternRow{
 width:100%;
 max-width:1100px;
-background:#ffffffcc;
-border-radius:25px;
-padding:12px;
 display:flex;
 justify-content:space-evenly;
 align-items:center;
+background:#ffffffcc;
+padding:14px;
+border-radius:25px;
 min-height:230px;
 box-shadow:0 6px 12px rgba(0,0,0,0.12);
 }
@@ -177,45 +168,43 @@ width:min(11vw,100px);
 height:min(11vw,100px);
 min-width:60px;
 min-height:60px;
-border:4px solid #333;
 position:relative;
 transition:0.3s;
 }
 
 .circle{
 border-radius:50%;
+border:4px solid #333;
 }
 
 .square{
 border-radius:12px;
+border:4px solid #333;
 }
 
 .diamond{
-transform:rotate(45deg);
 border-radius:10px;
+border:4px solid #333;
+transform:rotate(45deg);
 }
 
+/* TRIANGLE USING IMAGE */
+
 .triangle{
-width:0;
-height:0;
-background:transparent !important;
-border-left:50px solid transparent;
-border-right:50px solid transparent;
-border-bottom:95px solid;
-border-top:none;
-border-radius:0;
-border-bottom-color:red;
-border-left-color:transparent !important;
-border-right-color:transparent !important;
-border-top:none !important;
+background-image:url('assets/triangle.jpg');
+background-size:contain;
+background-repeat:no-repeat;
+background-position:center;
+border:none;
 }
+
+/* HEART */
 
 .heart{
 position:relative;
 width:90px;
 height:80px;
 transform:rotate(-45deg);
-border:none;
 }
 
 .heart:before,
@@ -239,30 +228,21 @@ left:0;
 top:-50px;
 }
 
-/* BLANK SHAPES */
+/* BLANK */
 
 .blank{
-background:white;
-}
-
-.triangle.blank{
-background:transparent !important;
-border-bottom-color:white !important;
-}
-
-.dropTarget{
 outline:4px dashed #999;
 }
 
 /* PALETTE */
 
 .palette{
-width:100%;
 display:flex;
 justify-content:center;
 gap:40px;
-margin-top:10px;
 margin-bottom:10px;
+margin-top:10px;
+width:100%;
 }
 
 .colorBall{
@@ -274,23 +254,19 @@ box-shadow:0 4px 10px rgba(0,0,0,0.2);
 cursor:grab;
 }
 
-.colorBall:active{
-cursor:grabbing;
-}
-
 /* FEEDBACK */
 
 .feedback{
 height:50px;
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
 font-size:34px;
 font-weight:bold;
 color:#27ae60;
 }
 
-/* WRONG ANSWER */
+/* WRONG */
 
 .wiggle{
 animation:wiggle 0.4s;
@@ -298,9 +274,9 @@ animation:wiggle 0.4s;
 
 @keyframes wiggle{
 0%{transform:translateX(0);}
-25%{transform:translateX(-5px);}
-50%{transform:translateX(5px);}
-75%{transform:translateX(-5px);}
+25%{transform:translateX(-6px);}
+50%{transform:translateX(6px);}
+75%{transform:translateX(-6px);}
 100%{transform:translateX(0);}
 }
 
@@ -324,18 +300,17 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 gap:20px;
-background:linear-gradient(to bottom,#fff6cf,#dff6ff,#ffe3f1);
-text-align:center;
+background:linear-gradient(to bottom,#fff4c7,#dff7ff,#ffe4f2);
 }
 
 #endScreen h2{
 font-size:clamp(35px,5vw,60px);
-color:#ff5d8f;
+color:#ff5c8a;
 }
 
 #endScreen p{
-font-size:clamp(24px,3vw,36px);
-color:#5d4fff;
+font-size:clamp(24px,3vw,38px);
+color:#5b4bff;
 }
 
 /* CONFETTI */
@@ -344,8 +319,8 @@ color:#5d4fff;
 position:fixed;
 width:12px;
 height:12px;
-border-radius:50%;
 top:-20px;
+border-radius:50%;
 animation:fall linear forwards;
 }
 
@@ -357,10 +332,9 @@ transform:translateY(110vh) rotate(720deg);
 
 @media(max-width:700px){
 
-.triangle{
-border-left:35px solid transparent;
-border-right:35px solid transparent;
-border-bottom:70px solid;
+.colorBall{
+width:65px;
+height:65px;
 }
 
 .heart{
@@ -382,11 +356,6 @@ left:30px;
 top:-30px;
 }
 
-.colorBall{
-width:65px;
-height:65px;
-}
-
 .patternRow{
 min-height:180px;
 }
@@ -398,19 +367,17 @@ min-height:180px;
 
 <body>
 
-<!-- AUDIO -->
-
 <audio id="rightSound" src="assets/right.mp3"></audio>
 <audio id="wrongSound" src="assets/wrong.mp3"></audio>
 <audio id="clapSound" src="assets/clap.mp3"></audio>
 
-<!-- LOGO SCREEN -->
+<!-- LOGO -->
 
 <div id="logoScreen">
-<img src="assets/innovine-logo.png" alt="Innovine Logo">
+<img src="assets/innovine-logo.png">
 </div>
 
-<!-- TITLE SCREEN -->
+<!-- TITLE -->
 
 <div id="titleScreen" class="hidden">
 
@@ -428,12 +395,12 @@ min-height:180px;
 
 <div class="header">
 <h1>Patterning</h1>
-<div class="roundInfo" id="roundInfo">Round 1 / 7</div>
+<div class="roundInfo" id="roundInfo"></div>
 </div>
 
 <div class="questionBox">
 
-<div class="questionText" id="questionText">
+<div class="questionText">
 Look at the pattern. Colour the shape with correct colour to complete the pattern.
 </div>
 
@@ -453,7 +420,7 @@ Look at the pattern. Colour the shape with correct colour to complete the patter
 
 </div>
 
-<!-- END SCREEN -->
+<!-- END -->
 
 <div id="endScreen" class="hidden">
 
@@ -567,7 +534,7 @@ const roundInfo = document.getElementById("roundInfo");
 const question =
 "Look at the pattern. Colour the shape with correct colour to complete the pattern.";
 
-window.onload = () => {
+window.onload = ()=>{
 
 setTimeout(()=>{
 
@@ -592,13 +559,11 @@ loadRound();
 function loadRound(){
 
 completedTargets = 0;
-
 wrongAttempts = 0;
 
 feedback.innerHTML = "";
 
 patternRow.innerHTML = "";
-
 palette.innerHTML = "";
 
 roundInfo.innerText =
@@ -608,35 +573,29 @@ speakQuestion();
 
 const round = rounds[currentRound];
 
-round.shapes.forEach((shapeData)=>{
+round.shapes.forEach(shapeData=>{
 
 const shape = document.createElement("div");
 
 shape.classList.add("shape");
-
-shape.dataset.type = shapeData.type;
-
-if(shapeData.type !== "triangle"){
 shape.classList.add(shapeData.type);
-}
 
-if(shapeData.type === "triangle"){
-
-shape.classList.add("triangle");
-
-shape.style.borderBottomColor =
-shapeData.blank ? "white" : shapeData.color;
-
-}
-else if(shapeData.type === "heart"){
-
-shape.classList.add("heart");
+if(shapeData.type !== "triangle" &&
+shapeData.type !== "heart"){
 
 shape.style.background =
 shapeData.blank ? "white" : shapeData.color;
 
 }
-else{
+
+if(shapeData.type === "triangle"){
+
+shape.style.filter =
+shapeData.blank ? "brightness(3)" : `drop-shadow(0 0 0 ${shapeData.color})`;
+
+}
+
+if(shapeData.type === "heart"){
 
 shape.style.background =
 shapeData.blank ? "white" : shapeData.color;
@@ -646,8 +605,6 @@ shapeData.blank ? "white" : shapeData.color;
 if(shapeData.blank){
 
 shape.classList.add("blank");
-
-shape.classList.add("dropTarget");
 
 shape.dataset.answer = shapeData.answer;
 
@@ -720,7 +677,7 @@ palette.appendChild(ball);
 
 }
 
-function checkAnswer(shape, color){
+function checkAnswer(shape,color){
 
 if(shape.dataset.done) return;
 
@@ -728,14 +685,10 @@ const correct = shape.dataset.answer;
 
 if(color === correct){
 
-if(shape.dataset.type === "triangle"){
+if(shape.classList.contains("triangle")){
 
-shape.style.borderBottomColor = color;
-
-}
-else if(shape.dataset.type === "heart"){
-
-shape.style.background = color;
+shape.style.filter =
+`drop-shadow(0 0 0 ${color})`;
 
 }
 else{
@@ -744,7 +697,7 @@ shape.style.background = color;
 
 }
 
-shape.classList.remove("dropTarget");
+shape.classList.remove("blank");
 
 shape.dataset.done = true;
 
@@ -792,10 +745,8 @@ shape.classList.remove("wiggle");
 
 if(wrongAttempts >= 2){
 
-const targets =
-document.querySelectorAll(".dropTarget");
-
-targets.forEach(t=>{
+document.querySelectorAll(".blank")
+.forEach(t=>{
 
 if(!t.dataset.done){
 
@@ -823,10 +774,7 @@ const speech =
 new SpeechSynthesisUtterance(question);
 
 speech.rate = 0.9;
-
 speech.pitch = 1;
-
-speech.volume = 1;
 
 speechSynthesis.speak(speech);
 
@@ -857,7 +805,7 @@ confetti.style.left =
 Math.random()*100 + "vw";
 
 confetti.style.background =
-["#ff5d8f","#ffb703","#5d4fff","#66c7ff","#90ee90"]
+["#ff5c8a","#ffb703","#5b4bff","#66c7ff","#90ee90"]
 [Math.floor(Math.random()*5)];
 
 confetti.style.animationDuration =
