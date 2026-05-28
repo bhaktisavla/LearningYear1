@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patterning Game</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        background: linear-gradient(135deg, #FFE5B4, #FFCCFF);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+    }
+
+    #logo-screen, #game-screen, #end-screen {
+        width: 100%;
+        height: 100vh;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #logo-screen img {
+        width: 250px;
+        height: auto;
+    }
+
+    h1 {
+        font-size: 3vw;
+        color: #FF4500;
+        margin: 10px 0;
+        text-shadow: 2px 2px #fff;
+    }
+
+    #question-text {
+        font-size: 2vw;
+        color: #0066CC;
+        margin: 10px 0;
+    }
+
+    .pattern-row {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+    }
+
+    .shape {
+        width: 80px;
+        height: 80px;
+        border: 2px solid black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .triangle {
+        width: 0;
+        height: 0;
+        border-left: 40px solid transparent;
+        border-right: 40px solid transparent;
+        border-bottom: 70px solid grey;
+        background: none;
+    }
+
+    .circle {
+        border-radius: 50%;
+        background: grey;
+    }
+
+    .square {
+        background: grey;
+    }
+
+    .diamond {
+        width: 60px;
+        height: 60px;
+        background: grey;
+        transform: rotate(45deg);
+    }
+
+    .heart {
+        position: relative;
+        width: 60px;
+        height: 60px;
+        background: grey;
+        transform: rotate(-45deg);
+    }
+    .heart::before,
+    .heart::after {
+        content: "";
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: grey;
+        border-radius: 50%;
+    }
+    .heart::before { top: -30px; left: 0; }
+    .heart::after { left: 30px; top: 0; }
+
+    #palette {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 20px 0;
+    }
+
+    .palette-color {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid #333;
+    }
+
+    .feedback {
+        font-size: 2vw;
+        margin: 10px 0;
+        color: green;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 1.5rem;
+        margin-top: 20px;
+        cursor: pointer;
+        border-radius: 10px;
+        border: none;
+        background: #FF69B4;
+        color: #fff;
+    }
+
+    /* Confetti canvas */
+    #confetti-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        width: 100%;
+        height: 100%;
+        z-index: 999;
+    }
+
+</style>
+</head>
+<body>
+
+<!-- Logo Screen -->
+<div id="logo-screen">
+    <img src="assets/innovine-logo.png" alt="Innovine Logo">
+</div>
+
+<!-- Game Screen -->
+<div id="game-screen">
+    <h1>Patterning</h1>
+    <div id="question-text">Colour the shapes to complete the pattern</div>
+    <button id="replay-question">🔊 Hear Question Again</button>
+    <div class="pattern-row" id="pattern-row"></div>
+    <div id="palette"></div>
+    <div class="feedback" id="feedback"></div>
+</div>
+
+<!-- End Screen -->
+<div id="end-screen">
+    <h1>Good Job! 🎉</h1>
+    <button id="play-again">Play Again</button>
+</div>
+
+<canvas id="confetti-canvas"></canvas>
+
+<audio id="right-sound" src="assets/correct.mp3"></audio>
+<audio id="wrong-sound" src="assets/wrong.mp3"></audio>
+<audio id="clap-sound" src="assets/freesound_community-claps-44774.mp3"></audio>
+<audio id="voice-question" src=""></audio>
+
+<script>
+const rounds = [
+    {pattern:["yellow-triangle","blue-square","yellow-triangle","blue-square","plain-triangle","plain-square"], colors:["yellow","blue"]},
+    {pattern:["orange-square","red-circle","orange-square","red-circle","plain-square","plain-circle"], colors:["orange","red"]},
+    {pattern:["lightblue-square","lightgreen-triangle","lightblue-square","lightgreen-triangle","plain-square","plain-triangle"], colors:["lightblue","lightgreen"]},
+    {pattern:["pink-diamond","yellow-diamond","pink-diamond","yellow-diamond","plain-diamond","plain-diamond"], colors:["pink","yellow"]},
+    {pattern:["red-circle","blue-circle","red-circle","blue-circle","plain-circle","plain-circle"], colors:["red","blue"]},
+    {pattern:["pink-square","purple-square","pink-square","purple-square","plain-square","plain-square"], colors:["pink","purple"]},
+    {pattern:["pink-heart","yellow-triangle","pink-heart","yellow-triangle","plain-heart","plain-triangle"], colors:["pink","yellow"]}
+];
+
+let currentRound = 0;
+let selectedColor = null;
+let attemptCount = 0;
+
+const logoScreen = document.getElementById('logo-screen');
+const gameScreen = document.getElementById('game-screen');
+const endScreen = document.getElementById('end-screen');
+const patternRow = document.getElementById('pattern-row');
+const paletteDiv = document.getElementById('palette');
+const feedbackDiv = document.getElementById('feedback');
+const rightSound = document.getElementById('right-sound');
+const wrongSound = document.getElementById('wrong-sound');
+const clapSound = document.getElementById('clap-sound');
+const voiceQuestion = document.getElementById('voice-question');
+const replayButton = document.getElementById('replay-question');
+const playAgainButton = document.getElementById('play-again');
+
+// Splash logo for 5 sec
+logoScreen.style.display = "flex";
+setTimeout(() => {
+    logoScreen.style.display = "none";
+    startRound();
+    gameScreen.style.display = "flex";
+}, 5000);
+
+// Function to generate shapes
+function createShape(type, color) {
+    const div = document.createElement('div');
+    div.className = 'shape';
+    if(type.includes("triangle")) {
+        div.classList.add('triangle');
+        div.style.borderBottomColor = color || 'grey';
+    } else if(type.includes("circle")) {
+        div.classList.add('circle');
+        div.style.backgroundColor = color || 'grey';
+    } else if(type.includes("square")) {
+        div.classList.add('square');
+        div.style.backgroundColor = color || 'grey';
+    } else if(type.includes("diamond")) {
+        div.classList.add('diamond');
+        div.style.backgroundColor = color || 'grey';
+    } else if(type.includes("heart")) {
+        div.classList.add('heart');
+        div.style.backgroundColor = color || 'grey';
+        div.querySelector('::before');
+    }
+    if(type.startsWith("plain")) {
+        div.dataset.plain = type;
+    }
+    return div;
+}
+
+function startRound() {
+    feedbackDiv.textContent = "";
+    attemptCount = 0;
+    selectedColor = null;
+    patternRow.innerHTML = "";
+    paletteDiv.innerHTML = "";
+
+    if(currentRound >= rounds.length) {
+        gameScreen.style.display = "none";
+        endScreen.style.display = "flex";
+        runConfetti();
+        return;
+    }
+
+    const round = rounds[currentRound];
+
+    // Create pattern shapes
+    round.pattern.forEach(p => {
+        const color = p.includes("plain") ? null : p.split("-")[0];
+        const shapeDiv = createShape(p, color);
+        shapeDiv.addEventListener('click', () => {
+            if(selectedColor && p.includes("plain")) {
+                shapeDivClicked(shapeDiv, selectedColor);
+            }
+        });
+        patternRow.appendChild(shapeDiv);
+    });
+
+    // Create colour palette
+    round.colors.forEach(col => {
+        const colDiv = document.createElement('div');
+        colDiv.className = 'palette-color';
+        colDiv.style.backgroundColor = col;
+        colDiv.addEventListener('click', () => {
+            selectedColor = col;
+        });
+        paletteDiv.appendChild(colDiv);
+    });
+
+    // Voice question
+    playVoiceQuestion();
+}
+
+function shapeDivClicked(shapeDiv, color) {
+    const plainType = shapeDiv.dataset.plain;
+    const correctColor = getCorrectColorForPlain(plainType);
+    if(color === correctColor) {
+        shapeDiv.style.backgroundColor = color;
+        if(plainType.includes("triangle")) shapeDiv.style.borderBottomColor = color;
+        feedbackDiv.textContent = "Good Job! ✅";
+        rightSound.play();
+        clapSound.play();
+        checkRoundComplete();
+    } else {
+        attemptCount++;
+        wrongSound.play();
+        shapeDiv.style.transform = "translateX(10px)";
+        setTimeout(() => {shapeDiv.style.transform = "translateX(0)";},200);
+        if(attemptCount >=2) {
+            // Glow correct options
+            document.querySelectorAll('[data-plain]').forEach(p => {
+                p.style.boxShadow = `0 0 10px 3px ${getCorrectColorForPlain(p.dataset.plain)}`;
+            });
+        }
+    }
+}
+
+function getCorrectColorForPlain(plainType) {
+    const round = rounds[currentRound];
+    if(currentRound===0) {
+        return plainType.includes("triangle") ? "yellow" : "blue";
+    } else if(currentRound===1) {
+        return plainType.includes("square") ? "orange" : "red";
+    } else if(currentRound===2) {
+        return plainType.includes("square") ? "lightblue" : "lightgreen";
+    } else if(currentRound===3) {
+        return plainType.includes("diamond") ? (round.pattern.indexOf("plain-diamond")===4?"pink":"yellow") : null;
+    } else if(currentRound===4) {
+        return plainType.includes("circle") ? (round.pattern.indexOf("plain-circle")===4?"red":"blue") : null;
+    } else if(currentRound===5) {
+        return plainType.includes("square") ? (round.pattern.indexOf("plain-square")===4?"pink":"purple") : null;
+    } else if(currentRound===6) {
+        return plainType.includes("heart") ? "pink" : "yellow";
+    }
+    return null;
+}
+
+function checkRoundComplete() {
+    const round = rounds[currentRound];
+    const allDone = Array.from(patternRow.children).every(p => {
+        if(p.dataset.plain) {
+            return p.style.backgroundColor !== "" && p.style.backgroundColor !== "grey";
+        } else return true;
+    });
+    if(allDone) {
+        setTimeout(() => {
+            currentRound++;
+            startRound();
+        },1000);
+    }
+}
+
+// Voice question
+function playVoiceQuestion() {
+    // Using speechSynthesis
+    const msg = new SpeechSynthesisUtterance("Colour the shapes to complete the pattern");
+    window.speechSynthesis.speak(msg);
+}
+
+replayButton.addEventListener('click', playVoiceQuestion);
+playAgainButton.addEventListener('click', () => {
+    currentRound = 0;
+    endScreen.style.display = "none";
+    startRound();
+    gameScreen.style.display = "flex";
+});
+
+// Confetti
+function runConfetti() {
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    const ctx = confettiCanvas.getContext('2d');
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+    const confettis = [];
+    for(let i=0;i<150;i++){
+        confettis.push({x:Math.random()*confettiCanvas.width, y:Math.random()*confettiCanvas.height, r:Math.random()*6+4, dx:Math.random()*4-2, dy:Math.random()*4+2, color:`hsl(${Math.random()*360},100%,50%)`});
+    }
+    function draw(){
+        ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+        confettis.forEach(c=>{
+            ctx.fillStyle = c.color;
+            ctx.beginPath();
+            ctx.arc(c.x,c.y,c.r,0,Math.PI*2);
+            ctx.fill();
+            c.x+=c.dx;
+            c.y+=c.dy;
+            if(c.y>confettiCanvas.height){c.y=0; c.x=Math.random()*confettiCanvas.width;}
+        });
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+</script>
+</body>
+</html>
