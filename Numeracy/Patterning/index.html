@@ -13,9 +13,9 @@ h1{font-size:3vw;color:#FF4500;text-shadow:2px 2px #fff;margin:10px 0;}
 #instruction-text{font-size:1.5vw;color:#333;margin-bottom:10px;}
 .pattern-row{display:flex;justify-content:center;gap:15px;margin:20px 0;flex-wrap:wrap;}
 .shape{width:80px;height:80px;border:2px solid black;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.triangle{width:0;height:0;border-left:40px solid transparent;border-right:40px solid transparent;border-bottom:70px solid white;}
 .circle{border-radius:50%;background:white;}
 .square{background:white;}
+.triangle{width:0;height:0;border-left:40px solid transparent;border-right:40px solid transparent;border-bottom:70px solid white;}
 .diamond{width:60px;height:60px;background:white;transform:rotate(45deg);}
 .heart{position:relative;width:60px;height:60px;background:white;transform:rotate(-45deg);}
 .heart::before,.heart::after{content:"";position:absolute;width:60px;height:60px;background:white;border-radius:50%;}
@@ -52,124 +52,123 @@ button{padding:10px 20px;font-size:1.5rem;margin-top:20px;cursor:pointer;border-
 <audio id="clap-sound" src="assets/freesound_community-claps-44774.mp3"></audio>
 
 <script>
-// Define rounds (pattern sequence and blank shapes)
-const rounds=[
-{pattern:["yellow-triangle","blue-square","yellow-triangle","blue-square","plain-triangle","plain-square"],colors:["yellow","blue"]},
-{pattern:["orange-square","red-circle","orange-square","red-circle","plain-square","plain-circle"],colors:["orange","red"]},
-{pattern:["lightblue-square","lightgreen-triangle","lightblue-square","lightgreen-triangle","plain-square","plain-triangle"],colors:["lightblue","lightgreen"]},
-{pattern:["pink-diamond","yellow-diamond","pink-diamond","yellow-diamond","plain-diamond","plain-diamond"],colors:["pink","yellow"]},
-{pattern:["red-circle","blue-circle","red-circle","blue-circle","plain-circle","plain-circle"],colors:["red","blue"]},
-{pattern:["pink-square","purple-square","pink-square","purple-square","plain-square","plain-square"],colors:["pink","purple"]},
-{pattern:["pink-heart","yellow-triangle","pink-heart","yellow-triangle","plain-heart","plain-triangle"],colors:["pink","yellow"]}
+// Rounds with exact shapes and blank shapes last
+const rounds = [
+  {pattern:["yellow-square","blue-square","yellow-square","blue-square","plain-square","plain-square"], colors:["yellow","blue"]},
+  {pattern:["orange-square","red-circle","orange-square","red-circle","plain-square","plain-circle"], colors:["orange","red"]},
+  {pattern:["lightblue-square","lightgreen-square","lightblue-square","lightgreen-square","plain-square","plain-square"], colors:["lightblue","lightgreen"]},
+  {pattern:["pink-diamond","yellow-diamond","pink-diamond","yellow-diamond","plain-diamond","plain-diamond"], colors:["pink","yellow"]},
+  {pattern:["red-circle","blue-circle","red-circle","blue-circle","plain-circle","plain-circle"], colors:["red","blue"]},
+  {pattern:["pink-square","purple-square","pink-square","purple-square","plain-square","plain-square"], colors:["pink","purple"]},
+  {pattern:["pink-heart","yellow-triangle","pink-heart","yellow-triangle","plain-heart","plain-triangle"], colors:["pink","yellow"]}
 ];
 
-let currentRound=0;
-const logoScreen=document.getElementById('logo-screen');
-const gameScreen=document.getElementById('game-screen');
-const endScreen=document.getElementById('end-screen');
-const patternRow=document.getElementById('pattern-row');
-const paletteDiv=document.getElementById('palette');
-const feedbackDiv=document.getElementById('feedback');
-const rightSound=document.getElementById('right-sound');
-const wrongSound=document.getElementById('wrong-sound');
-const clapSound=document.getElementById('clap-sound');
+let currentRound = 0;
+const logoScreen = document.getElementById('logo-screen');
+const gameScreen = document.getElementById('game-screen');
+const endScreen = document.getElementById('end-screen');
+const patternRow = document.getElementById('pattern-row');
+const paletteDiv = document.getElementById('palette');
+const feedbackDiv = document.getElementById('feedback');
+const rightSound = document.getElementById('right-sound');
+const wrongSound = document.getElementById('wrong-sound');
+const clapSound = document.getElementById('clap-sound');
 
-// Show logo 5s
-logoScreen.style.display="flex";
+logoScreen.style.display = "flex";
 setTimeout(()=>{ logoScreen.style.display="none"; startRound(); gameScreen.style.display="flex"; },5000);
 
-// Drag and drop
-function allowDrop(ev){ev.preventDefault();}
-function drag(ev){ev.dataTransfer.setData("text",ev.target.dataset.color);}
+function allowDrop(ev){ ev.preventDefault(); }
+function drag(ev){ ev.dataTransfer.setData("text", ev.target.dataset.color); }
 function drop(ev){
-ev.preventDefault();
-const color=ev.dataTransfer.getData("text");
-const target=ev.target;
-const correct=getCorrectColor(target.dataset.plain);
-if(color===correct){
-target.style.backgroundColor=color;
-if(target.dataset.plain.includes("triangle")) target.style.borderBottomColor=color;
-rightSound.play();
-feedbackDiv.textContent="Good Job! ✅";
-checkRoundComplete();
-}else{
-wrongSound.play();
-target.style.transform="translateX(10px)";
-setTimeout(()=>{target.style.transform="translateX(0)";},200);
-}
+  ev.preventDefault();
+  const color = ev.dataTransfer.getData("text");
+  const target = ev.target;
+  const correct = getCorrectColor(target.dataset.plain);
+  if(color === correct){
+    target.style.backgroundColor = color;
+    if(target.dataset.plain.includes("triangle")) target.style.borderBottomColor = color;
+    rightSound.play();
+    feedbackDiv.textContent = "Good Job! ✅";
+    checkRoundComplete();
+  } else {
+    wrongSound.play();
+    target.style.transform="translateX(10px)";
+    setTimeout(()=>{target.style.transform="translateX(0)";},200);
+  }
 }
 
-// Start a round
 function startRound(){
-feedbackDiv.textContent="";
-patternRow.innerHTML="";
-paletteDiv.innerHTML="";
-if(currentRound>=rounds.length){ gameScreen.style.display="none"; endScreen.style.display="flex"; runConfetti(); return;}
-const round=rounds[currentRound];
-// Build pattern row
-round.pattern.forEach((p,i)=>{
-const shapeDiv=document.createElement('div');
-shapeDiv.className='shape';
-if(p.includes("triangle")) shapeDiv.classList.add('triangle');
-if(p.includes("circle")) shapeDiv.classList.add('circle');
-if(p.includes("square")) shapeDiv.classList.add('square');
-if(p.includes("diamond")) shapeDiv.classList.add('diamond');
-if(p.includes("heart")) shapeDiv.classList.add('heart');
-if(p.includes("plain")) shapeDiv.dataset.plain=p; // only last shapes are plain
-else{
-let color=p.split('-')[0];
-shapeDiv.style.backgroundColor=color;
-if(p.includes("triangle")) shapeDiv.style.borderBottomColor=color;
-}
-shapeDiv.ondrop=drop;
-shapeDiv.ondragover=allowDrop;
-patternRow.appendChild(shapeDiv);
-});
-// Build palette below
-round.colors.forEach(col=>{
-const colDiv=document.createElement('div');
-colDiv.className='palette-color';
-colDiv.dataset.color=col;
-colDiv.draggable=true;
-colDiv.ondragstart=drag;
-colDiv.style.backgroundImage=`url('assets/${col}-splash.png')`;
-paletteDiv.appendChild(colDiv);
-});
+  feedbackDiv.textContent = "";
+  patternRow.innerHTML = "";
+  paletteDiv.innerHTML = "";
+  if(currentRound >= rounds.length){ gameScreen.style.display="none"; endScreen.style.display="flex"; runConfetti(); return; }
+  const round = rounds[currentRound];
+  
+  // Build pattern row
+  round.pattern.forEach(p=>{
+    const shapeDiv = document.createElement('div');
+    shapeDiv.className='shape';
+    if(p.includes("triangle")) shapeDiv.classList.add('triangle');
+    if(p.includes("circle")) shapeDiv.classList.add('circle');
+    if(p.includes("square")) shapeDiv.classList.add('square');
+    if(p.includes("diamond")) shapeDiv.classList.add('diamond');
+    if(p.includes("heart")) shapeDiv.classList.add('heart');
+    if(p.includes("plain")) shapeDiv.dataset.plain = p;
+    else{
+      let color = p.split('-')[0];
+      shapeDiv.style.backgroundColor = color;
+      if(p.includes("triangle")) shapeDiv.style.borderBottomColor = color;
+    }
+    shapeDiv.ondrop = drop;
+    shapeDiv.ondragover = allowDrop;
+    patternRow.appendChild(shapeDiv);
+  });
+
+  // Build palette below
+  round.colors.forEach(col=>{
+    const colDiv = document.createElement('div');
+    colDiv.className='palette-color';
+    colDiv.dataset.color = col;
+    colDiv.draggable = true;
+    colDiv.ondragstart = drag;
+    colDiv.style.backgroundImage = `url('assets/${col}-splash.png')`;
+    paletteDiv.appendChild(colDiv);
+  });
 }
 
 function getCorrectColor(type){
-if(currentRound===0) return type.includes("triangle")?"yellow":"blue";
-if(currentRound===1) return type.includes("square")?"orange":"red";
-if(currentRound===2) return type.includes("square")?"lightblue":"lightgreen";
-if(currentRound===3) return type.includes("diamond")?"pink":"yellow";
-if(currentRound===4) return type.includes("circle")?"red":"blue";
-if(currentRound===5) return type.includes("square")?"pink":"purple";
-if(currentRound===6) return type.includes("heart")?"pink":"yellow";
+  if(currentRound===0) return type.includes("square")?"yellow":"blue";
+  if(currentRound===1) return type.includes("square")?"orange":"red";
+  if(currentRound===2) return type.includes("square")?"lightblue":"lightgreen";
+  if(currentRound===3) return type.includes("diamond")?"pink":"yellow";
+  if(currentRound===4) return type.includes("circle")?"red":"blue";
+  if(currentRound===5) return type.includes("square")?"pink":"purple";
+  if(currentRound===6) return type.includes("heart")?"pink":"yellow";
 }
 
 function checkRoundComplete(){
-const allDone=Array.from(patternRow.children).every(p=>{
-return !p.dataset.plain||(p.style.backgroundColor!=""&&p.style.backgroundColor!="white");
-});
-if(allDone){ clapSound.play(); setTimeout(()=>{currentRound++; startRound();},1000);}
+  const allDone = Array.from(patternRow.children).every(p=>{
+    return !p.dataset.plain || (p.style.backgroundColor!="" && p.style.backgroundColor!="white");
+  });
+  if(allDone){ clapSound.play(); setTimeout(()=>{currentRound++; startRound();},1000);}
 }
 
 document.getElementById('play-again').addEventListener('click',()=>{
-currentRound=0;
-endScreen.style.display="none";
-startRound();
-gameScreen.style.display="flex";
+  currentRound=0;
+  endScreen.style.display="none";
+  startRound();
+  gameScreen.style.display="flex";
 });
 
 function runConfetti(){
-const canvas=document.getElementById('confetti-canvas');
-const ctx=canvas.getContext('2d');
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-const confettis=[];
-for(let i=0;i<150;i++){ confettis.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*6+4,dx:Math.random()*4-2,dy:Math.random()*4+2,color:`hsl(${Math.random()*360},100%,50%)`});}
-function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);confettis.forEach(c=>{ctx.fillStyle=c.color;ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,Math.PI*2);ctx.fill();c.x+=c.dx;c.y+=c.dy;if(c.y>canvas.height){c.y=0;c.x=Math.random()*canvas.width;}});requestAnimationFrame(draw);}
-draw();
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const confettis=[];
+  for(let i=0;i<150;i++){ confettis.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*6+4,dx:Math.random()*4-2,dy:Math.random()*4+2,color:`hsl(${Math.random()*360},100%,50%)`});}
+  function draw(){ ctx.clearRect(0,0,canvas.width,canvas.height); confettis.forEach(c=>{ctx.fillStyle=c.color;ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,Math.PI*2);ctx.fill();c.x+=c.dx;c.y+=c.dy;if(c.y>canvas.height){c.y=0;c.x=Math.random()*canvas.width;}}); requestAnimationFrame(draw);}
+  draw();
 }
 </script>
 </body>
