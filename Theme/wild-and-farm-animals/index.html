@@ -118,7 +118,20 @@ const farmAnimals=['pig.png','horse.png','hen.png','chick.jpeg','cock.png'];
 let questions=[], currentQ=0;
 let selectedAnimal=null;
 
-function generateQuestions(){
+function speakInstruction() {
+  const speech = new SpeechSynthesisUtterance(
+    "Tap an animal, then tap the correct zone. Jungle for Wild Animals. Farm for Farm Animals."
+  );
+
+  speech.rate = 0.9;   // slightly slower for children
+  speech.pitch = 1.1;  // cheerful voice
+  speech.volume = 1;
+
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(speech);
+}
+  
+  function generateQuestions(){
   for(let i=0;i<15;i++){
     questions.push({wild:[...wildAnimals].sort(()=>Math.random()-0.5),
                     farm:[...farmAnimals].sort(()=>Math.random()-0.5)});
@@ -199,6 +212,7 @@ function restartGame(){
 
   // Show game screen
   game.style.display = 'flex';
+  speakInstruction();
 }
 
 // Splash screen 2s
@@ -207,6 +221,8 @@ setTimeout(()=>{
   game.style.display='flex';
   generateQuestions();
   loadQuestion(0);
+
+  speakInstruction(); // speak instructions automatically
 },2000);
 </script>
 </body>
