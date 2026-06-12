@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Letters I to L</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:url('assets/colorful-background.jpg') center/cover fixed;height:100vh;overflow:hidden}
+.screen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.hidden{display:none}
+#logo img{max-width:60vw;max-height:50vh}
+.flash{font-size:clamp(36px,6vw,72px);font-weight:bold;animation:flash 1s infinite;color:#fff;text-shadow:2px 2px 4px #000}
+@keyframes flash{50%{opacity:.4}}
+#game{padding:10px;color:#222}
+h1{margin:5px;color:#7a2ebd}
+.top{display:flex;align-items:center;justify-content:center;gap:10px}
+#speakBtn{font-size:24px}
+.content{display:flex;height:calc(100vh - 100px);gap:10px}
+.letterBox{width:22%;display:flex;justify-content:center;align-items:center}
+.letterBox .frame{background:url('assets/coloful-square.png') center/contain no-repeat;width:100%;aspect-ratio:1;display:flex;justify-content:center;align-items:center}
+.letterBox img{width:70%}
+.grid{width:78%;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-content:center}
+.card{background:#fff;border-radius:15px;padding:8px;border:4px solid transparent;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.card img{max-width:100%;max-height:22vh}
+.correct{border-color:#16a34a}
+.correct::after{content:"✓";position:absolute}
+.shake{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-5px)}}
+.glow{animation:glow 1s infinite}
+@keyframes glow{50%{box-shadow:0 0 20px gold}}
+#message{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;padding:20px;border-radius:20px;font-size:32px;display:none}
+#end h2{font-size:60px;color:#fff}
+button{padding:10px 20px;font-size:20px}
+.confetti{position:absolute;width:10px;height:10px;animation:fall 4s linear infinite}
+@keyframes fall{from{transform:translateY(-100px)}to{transform:translateY(110vh)}}
+</style>
+</head>
+<body>
+<div id="logo" class="screen"><img src="assets/innovine-logo.png"></div>
+<div id="title" class="screen hidden"><div class="flash">Letters I to L</div></div>
+
+<div id="game" class="screen hidden">
+<h1>Letters I to L</h1>
+<div class="top">
+<div id="question">Look at the letter.</div>
+<button id="speakBtn">🔊</button>
+</div>
+<div class="content">
+<div class="letterBox"><div class="frame"><img id="letterImg"></div></div>
+<div id="grid" class="grid"></div>
+</div>
+</div>
+
+<div id="message"></div>
+
+<div id="end" class="screen hidden">
+<h2>Great Job!</h2>
+<button onclick="location.reload()">Play Again</button>
+</div>
+
+<audio id="clap" src="assets/clap.mp3"></audio>
+<audio id="wrong" src="assets/wrong.mp3"></audio>
+
+<script>
+const rounds=[
+{letter:'I',letterImg:'assets/I.png',speech:'Look at the letter I. Tap the pictures that start with I.',correct:['ice-cream','icecube','igloo','inkpot','iron'],items:['ice-cream','icecube','igloo','inkpot','iron','key']},
+{letter:'J',letterImg:'assets/J.png',speech:'Look at the letter J. Tap the pictures that start with J.',correct:['jacket','jar','jelly','jeep','jug'],items:['jacket','jar','jelly','jeep','jug','lock']},
+{letter:'K',letterImg:'assets/K.png',speech:'Look at the letter K. Tap the pictures that start with K.',correct:['kangaroo','king','kite','key','Kiwi'],items:['kangaroo','king','kite','key','Kiwi','igloo']},
+{letter:'L',letterImg:'assets/L.png',speech:'Look at the letter L. Tap the pictures that start with L.',correct:['lamp','leaf','lion','lock','lotus'],items:['lamp','leaf','lion','lock','lotus','jug']}
+];
+let r=0,selected=0,wrongCount=0;
+
+setTimeout(()=>{
+logo.classList.add('hidden');
+title.classList.remove('hidden');
+setTimeout(()=>{
+title.classList.add('hidden');
+game.classList.remove('hidden');
+loadRound();
+},5000);
+},5000);
+
+function speak(text){
+if(!window.speechSynthesis)return;
+speechSynthesis.cancel();
+speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+}
+
+function loadRound(){
+const round=rounds[r];
+question.textContent=round.speech;
+letterImg.src=round.letterImg;
+grid.innerHTML='';
+selected=0;wrongCount=0;
+round.items.forEach(item=>{
+const c=document.createElement('div');
+c.className='card';
+c.innerHTML=`<img src="assets/${item}.png">`;
+c.onclick=()=>tap(c,item);
+grid.appendChild(c);
+});
+setTimeout(()=>speak(round.speech),500);
+}
+
+function tap(card,item){
+const round=rounds[r];
+if(card.classList.contains('correct')) return;
+if(round.correct.includes(item)){
+card.classList.add('correct');
+selected++;
+if(selected===round.correct.length){
+clap.play();
+showMsg('Good Job!');
+setTimeout(()=>{
+r++;
+if(r<rounds.length) loadRound();
+else finish();
+},1800);
+}
+}else{
+wrong.play();
+card.classList.add('shake');
+setTimeout(()=>card.classList.remove('shake'),300);
+wrongCount++;
+if(wrongCount>=2){
+document.querySelectorAll('.card').forEach((c,i)=>{
+if(round.correct.includes(round.items[i])&&!c.classList.contains('correct')) c.classList.add('glow');
+});
+}
+}
+}
+
+function showMsg(t){
+message.textContent=t;
+message.style.display='block';
+setTimeout(()=>message.style.display='none',1200);
+}
+
+speakBtn.onclick=()=>speak(rounds[r].speech);
+
+function finish(){
+game.classList.add('hidden');
+end.classList.remove('hidden');
+for(let i=0;i<80;i++){
+const d=document.createElement('div');
+d.className='confetti';
+d.style.left=Math.random()*100+'vw';
+d.style.animationDelay=Math.random()*4+'s';
+document.body.appendChild(d);
+}
+clap.play();
+}
+</script>
+</body>
+</html>
