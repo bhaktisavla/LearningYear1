@@ -63,10 +63,10 @@ button{padding:10px 20px;font-size:20px}
 
 <script>
 const rounds=[
-{letter:'I',letterImg:'assets/I.png',speech:'Look at the letter I. Tap the pictures that start with I.',correct:['ice-cream','icecube','igloo','inkpot','iron'],items:['ice-cream','icecube','igloo','inkpot','iron','key']},
-{letter:'J',letterImg:'assets/J.png',speech:'Look at the letter J. Tap the pictures that start with J.',correct:['jacket','jar','jelly','jeep','jug'],items:['jacket','jar','jelly','jeep','jug','lock']},
-{letter:'K',letterImg:'assets/K.png',speech:'Look at the letter K. Tap the pictures that start with K.',correct:['kangaroo','king','kite','key','Kiwi'],items:['kangaroo','king','kite','key','Kiwi','igloo']},
-{letter:'L',letterImg:'assets/L.png',speech:'Look at the letter L. Tap the pictures that start with L.',correct:['lamp','leaf','lion','lock','lotus'],items:['lamp','leaf','lion','lock','lotus','jug']}
+{letter:'I',letterImg:'assets/I.png',speech:'Look at the letter I. Tap the pictures that start with letter I.',correct:['ice-cream','icecube','igloo','inkpot','iron'],items:['ice-cream','icecube','igloo','inkpot','iron','key']},
+{letter:'J',letterImg:'assets/J.png',speech:'Look at the letter J. Tap the pictures that start with letter J.',correct:['jacket','jar','jelly','jeep','jug'],items:['jacket','jar','jelly','jeep','jug','lock']},
+{letter:'K',letterImg:'assets/K.png',speech:'Look at the letter K. Tap the pictures that start with letter K.',correct:['kangaroo','king','kite','key','Kiwi'],items:['kangaroo','king','kite','key','Kiwi','igloo']},
+{letter:'L',letterImg:'assets/L.png',speech:'Look at the letter L. Tap the pictures that start with letter L.',correct:['lamp','leaf','lion','lock','lotus'],items:['lamp','leaf','lion','lock','lotus','jug']}
 ];
 let r=0,selected=0,wrongCount=0;
 
@@ -86,13 +86,27 @@ speechSynthesis.cancel();
 speechSynthesis.speak(new SpeechSynthesisUtterance(text));
 }
 
-function loadRound(){
+function shuffleArray(array) {
+  const arr = [...array];
+
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+
+  return arr;
+}
+  
+  function loadRound(){
 const round=rounds[r];
 question.textContent=round.speech;
 letterImg.src=round.letterImg;
 grid.innerHTML='';
 selected=0;wrongCount=0;
-round.items.forEach(item=>{
+const shuffledItems = shuffleArray(round.items);
+
+shuffledItems.forEach(item=>{
 const c=document.createElement('div');
 c.className='card';
 c.innerHTML=`<img src="assets/${item}.png">`;
@@ -123,8 +137,22 @@ card.classList.add('shake');
 setTimeout(()=>card.classList.remove('shake'),300);
 wrongCount++;
 if(wrongCount>=2){
-document.querySelectorAll('.card').forEach((c,i)=>{
-if(round.correct.includes(round.items[i])&&!c.classList.contains('correct')) c.classList.add('glow');
+document.querySelectorAll('.card').forEach((c)=>{
+
+const imageName =
+c.querySelector('img')
+ .src
+ .split('/')
+ .pop()
+ .replace('.png','');
+
+if(
+  round.correct.includes(imageName) &&
+  !c.classList.contains('correct')
+){
+  c.classList.add('glow');
+}
+
 });
 }
 }
