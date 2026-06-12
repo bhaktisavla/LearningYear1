@@ -100,7 +100,7 @@ flex-direction:column;
 align-items:center;
 justify-content:center;
 }
-}
+
     #finish h2{
 font-size:clamp(55px,7vw,100px);
 color:#22c55e;
@@ -110,7 +110,15 @@ text-shadow:
 6px 6px 15px rgba(0,0,0,.2);
 }
 .playAgain{padding:15px 30px;font-size:24px;border:none;border-radius:12px;background:#ff7043;color:#fff}
-.confetti{position:fixed;width:10px;height:10px;top:-20px;animation:fall 4s linear forwards}
+.confetti{
+position:fixed;
+width:10px;
+height:10px;
+top:-20px;
+animation:fall 4s linear forwards;
+pointer-events:none;
+z-index:9999;
+}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
 @media(max-width:768px){
 .left{width:26%}
@@ -268,7 +276,6 @@ function createConfetti(){
 
         document.body.appendChild(c);
     }
-}
 }
 
 setTimeout(()=>{
