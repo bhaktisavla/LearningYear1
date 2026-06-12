@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>My Family</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif}
+body{
+background:url('assets/house.png') center/cover no-repeat;
+}
+.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#fff;z-index:20}
+.overlay img{max-width:70%;max-height:70%}
+.titleSplash{font-size:clamp(40px,7vw,80px);font-weight:bold;color:#ff6b6b}
+#game{display:none;height:100vh;background:rgba(255,255,255,.65)}
+.top{text-align:center;padding:10px}
+h1{color:#ff7043}
+.questionWrap{display:flex;justify-content:center;align-items:center;gap:10px}
+.question{font-size:clamp(16px,2vw,24px);font-weight:bold}
+.replay{font-size:24px;cursor:pointer;border:none;background:#fff;padding:6px 10px;border-radius:10px}
+.main{height:calc(100vh - 110px);display:flex;padding:10px;gap:10px}
+.left{width:22%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.speaker{
+width:min(150px,22vw);height:min(150px,22vw);border-radius:50%;
+background:#ffd54f;border:6px solid #fff;font-size:70px;cursor:pointer;
+display:flex;align-items:center;justify-content:center;
+}
+.tapBox{margin-top:10px;background:#fff;padding:10px 25px;border-radius:12px;font-weight:bold}
+.grid{
+width:78%;display:grid;
+grid-template-columns:repeat(3,1fr);
+grid-template-rows:repeat(2,1fr);
+gap:12px;
+}
+.card{
+background:rgba(255,255,255,.9);
+border:5px solid transparent;
+border-radius:20px;
+position:relative;
+display:flex;align-items:center;justify-content:center;
+cursor:pointer;
+overflow:hidden;
+}
+.card img{max-width:95%;max-height:95%;object-fit:contain}
+.correct{border-color:#22c55e}
+.tick{
+position:absolute;font-size:70px;color:#22c55e;font-weight:bold;
+display:none;
+}
+.correct .tick{display:block}
+.shake{animation:shake .4s}
+@keyframes shake{
+0%,100%{transform:translateX(0)}
+25%{transform:translateX(-6px)}
+75%{transform:translateX(6px)}
+}
+.glow{animation:glow 1s infinite alternate}
+@keyframes glow{
+from{box-shadow:0 0 5px #ffeb3b}
+to{box-shadow:0 0 25px #ffeb3b}
+}
+#finish{
+display:none;position:fixed;inset:0;background:rgba(255,255,255,.95);
+z-index:30;flex-direction:column;align-items:center;justify-content:center;
+}
+#finish h2{font-size:clamp(40px,6vw,80px);color:#22c55e}
+.playAgain{padding:15px 30px;font-size:24px;border:none;border-radius:12px;background:#ff7043;color:#fff}
+.confetti{position:fixed;width:10px;height:10px;top:-20px;animation:fall 4s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+@media(max-width:768px){
+.left{width:26%}
+.grid{width:74%}
+.speaker{font-size:50px}
+}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="logo">
+<img src="assets/innovine-logo.png">
+</div>
+
+<div class="overlay" id="title" style="display:none;">
+<div class="titleSplash">My Family</div>
+</div>
+
+<div id="game">
+<div class="top">
+<h1>My Family</h1>
+<div class="questionWrap">
+<div class="question">Tap on the speaker icon, listen to the word and tap on image that family member.</div>
+<button class="replay" id="replay">🔄</button>
+</div>
+</div>
+
+<div class="main">
+<div class="left">
+<div class="speaker" id="speaker">🔊</div>
+<div class="tapBox">Tap</div>
+</div>
+
+<div class="grid" id="grid"></div>
+</div>
+</div>
+
+<div id="finish">
+<h2>⭐ Great Job! ⭐</h2>
+<br>
+<button class="playAgain" onclick="location.reload()">Play Again</button>
+</div>
+
+<script>
+const wrongSound=new Audio('assets/wrong.mp3');
+const clap=new Audio('assets/freesound_community-claps-44774.mp3');
+
+const instruction="Tap on the speaker icon, listen to the word and tap on image that family member.";
+
+const sequence=[
+{name:"father",file:"father.png"},
+{name:"mother",file:"mother.png"},
+{name:"grandfather",file:"grand-father.png"},
+{name:"grandmother",file:"grand-mother.png"},
+{name:"brother",file:"brother.png"},
+{name:"sister",file:"sister.png"}
+];
+
+const displayOrder=[
+{name:"mother",file:"mother.png"},
+{name:"brother",file:"brother.png"},
+{name:"grandfather",file:"grand-father.png"},
+{name:"father",file:"father.png"},
+{name:"sister",file:"sister.png"},
+{name:"grandmother",file:"grand-mother.png"}
+];
+
+const grid=document.getElementById("grid");
+let current=0;
+let wrongAttempts=0;
+
+function speak(text,cb){
+speechSynthesis.cancel();
+const u=new SpeechSynthesisUtterance(text);
+u.rate=.9;
+u.onend=()=>cb&&cb();
+speechSynthesis.speak(u);
+}
+
+displayOrder.forEach(item=>{
+const card=document.createElement("div");
+card.className="card";
+card.dataset.name=item.name;
+card.innerHTML=`<img src="assets/${item.file}"><div class="tick">✓</div>`;
+card.onclick=()=>check(card,item.name);
+grid.appendChild(card);
+});
+
+function currentWord(){
+return sequence[current].name;
+}
+
+function speakCurrent(){
+speak(currentWord().replace("grandfather","Grandfather").replace("grandmother","Grandmother"));
+}
+
+document.getElementById("speaker").onclick=speakCurrent;
+document.getElementById("replay").onclick=()=>speak(instruction);
+
+function check(card,name){
+if(name===currentWord()){
+card.classList.add("correct");
+wrongAttempts=0;
+document.querySelectorAll(".glow").forEach(x=>x.classList.remove("glow"));
+speak("Good Job",()=>{
+current++;
+if(current<sequence.length){
+setTimeout(speakCurrent,400);
+}else{
+finishGame();
+}
+});
+}else{
+wrongSound.currentTime=0;
+wrongSound.play();
+card.classList.add("shake");
+setTimeout(()=>card.classList.remove("shake"),400);
+wrongAttempts++;
+if(wrongAttempts>=2){
+const correct=document.querySelector(`[data-name="${currentWord()}"]`);
+if(correct) correct.classList.add("glow");
+}
+}
+}
+
+function finishGame(){
+clap.play();
+createConfetti();
+document.getElementById("finish").style.display="flex";
+}
+
+function createConfetti(){
+for(let i=0;i<120;i++){
+const c=document.createElement("div");
+c.className="confetti";
+c.style.left=Math.random()*100+"vw";
+c.style.background=`hsl(${Math.random()*360},90%,60%)`;
+c.style.animationDelay=(Math.random()*2)+"s";
+document.body.appendChild(c);
+}
+}
+
+setTimeout(()=>{
+document.getElementById("logo").style.display="none";
+document.getElementById("title").style.display="flex";
+
+setTimeout(()=>{
+document.getElementById("title").style.display="none";
+document.getElementById("game").style.display="block";
+
+speak(instruction,()=>{
+setTimeout(speakCurrent,500);
+});
+
+},5000);
+
+},5000);
+</script>
+</body>
+</html>
