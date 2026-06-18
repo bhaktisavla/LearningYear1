@@ -14,13 +14,58 @@ body{background:linear-gradient(135deg,#ffe8a3,#b8e6ff,#ffd4e5)}
 @keyframes flash{50%{opacity:.4}}
 h1{margin:5px;color:#5a3d9a}
 #question{font-size:clamp(14px,2vw,24px);font-weight:bold}
-.top{height:18%;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.game{height:82%;position:relative}
-.board{display:flex;height:100%;padding:10px 20px}
-.col{width:40%;display:flex;flex-direction:column;justify-content:space-evenly}
-.item{background:#fff;border-radius:12px;padding:6px;text-align:center;box-shadow:0 2px 5px rgba(0,0,0,.2);cursor:pointer}
-.item img{max-height:70px;max-width:100%}
-.mid{width:20%;position:relative}
+.top{
+height:18%;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+}
+
+.game{
+height:82%;
+position:relative;
+}
+
+.board{
+height:100%;
+display:flex;
+flex-direction:column;
+justify-content:space-evenly;
+align-items:center;
+padding:5px;
+}
+
+.col{
+display:flex;
+flex-direction:row;
+justify-content:center;
+align-items:center;
+gap:10px;
+width:100%;
+}
+.item{
+background:#fff;
+border-radius:12px;
+width:90px;
+height:90px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+box-shadow:0 2px 5px rgba(0,0,0,.2);
+cursor:pointer;
+}
+.item img{
+max-width:75px;
+max-height:75px;
+object-fit:contain;
+}
+.mid{
+position:absolute;
+inset:0;
+pointer-events:none;
+}
 svg{position:absolute;inset:0;width:100%;height:100%}
 .selected{outline:4px solid orange}
 .matched{opacity:.6}
@@ -54,9 +99,15 @@ button{padding:8px 14px;border:none;border-radius:10px;background:#5a3d9a;color:
 <div class="game">
 <div id="msg">Good Job!</div>
 <div class="board">
+
 <div id="letters" class="col"></div>
-<div class="mid"><svg id="svg"></svg></div>
+
+<div class="mid">
+<svg id="svg"></svg>
+</div>
+
 <div id="images" class="col"></div>
+
 </div>
 </div>
 </div>
@@ -177,10 +228,11 @@ function drawLine(a,b){
 const s=svg.getBoundingClientRect();
 const r1=a.getBoundingClientRect();
 const r2=b.getBoundingClientRect();
-let x1=r1.right-s.left;
-let y1=r1.top+r1.height/2-s.top;
-let x2=r2.left-s.left;
-let y2=r2.top+r2.height/2-s.top;
+let x1=r1.left+r1.width/2-s.left;
+let y1=r1.bottom-s.top;
+
+let x2=r2.left+r2.width/2-s.left;
+let y2=r2.top-s.top;
 svg.innerHTML+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="green" stroke-width="6"/>`;
 }
 
