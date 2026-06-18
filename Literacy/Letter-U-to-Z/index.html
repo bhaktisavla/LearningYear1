@@ -30,11 +30,21 @@ position:relative;
 .board{
 position:relative;
 height:100%;
-display:flex;
-flex-direction:column;
-justify-content:space-around;
-align-items:center;
 padding:10px;
+}
+
+#letters{
+position:absolute;
+top:20px;
+left:0;
+right:0;
+}
+
+#images{
+position:absolute;
+bottom:40px;
+left:0;
+right:0;
 }
 
 .letters-row,
@@ -72,20 +82,27 @@ cursor:pointer;
 }
 
 #letters .item{
-width:min(11vw,70px);
-height:min(11vw,70px);
+background:none;
+box-shadow:none;
+border-radius:0;
+width:min(10vw,65px);
+height:min(10vw,65px);
+padding:0;
 }
-
+#letters .item img{
+max-width:100%;
+max-height:100%;
+}
 #images .item{
-width:min(14vw,90px);
-height:min(14vw,90px);
+width:min(12vw,85px);
+height:min(12vw,85px);
 }
 #letters{
 margin-top:10px;
 }
 
 #images{
-margin-top:120px;
+margin-top:180px;
 margin-bottom:20px;
 }
 .item img{
