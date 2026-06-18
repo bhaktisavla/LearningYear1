@@ -50,27 +50,32 @@ align-items:center;
 z-index:2;
 }
 
-#board{
-display:flex;
-justify-content:space-between;
-align-items:center;
+.board{
+position:relative;
 height:100%;
 width:100%;
-padding:20px;
-gap:40px;
 }
 
-#letters, #images{
+#letters{
+position:absolute;
+top:20px;
+left:0;
+right:0;
 display:flex;
-flex-direction:column;
 justify-content:space-evenly;
 align-items:center;
-width:45%;
-height:100%;
+z-index:2;
 }
 
-#letters .item, #images .item{
-margin:10px 0;
+#images{
+position:absolute;
+bottom:30px;
+left:0;
+right:0;
+display:flex;
+justify-content:space-evenly;
+align-items:center;
+z-index:2;
 }
 
 #images{
@@ -167,11 +172,11 @@ button{padding:8px 14px;border:none;border-radius:10px;background:#5a3d9a;color:
 <div id="msg">Good Job!</div>
 <div class="board">
 
-<svg id="svg"></svg>
+    <svg id="svg"></svg>
 
-<div id="letters" class="letters-row"></div>
+    <div id="letters"></div>
 
-<div id="images" class="images-row"></div>
+    <div id="images"></div>
 
 </div>
 </div>
