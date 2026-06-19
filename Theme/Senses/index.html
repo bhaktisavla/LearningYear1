@@ -226,6 +226,22 @@ position:absolute;
 inset:0;
 pointer-events:none;
 }
+  
+#startBtn{
+padding:18px 35px;
+font-size:clamp(22px,4vw,34px);
+font-weight:bold;
+border:none;
+border-radius:20px;
+background:#4dabf7;
+color:white;
+cursor:pointer;
+box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
+
+#startBtn:active{
+transform:scale(.97);
+}
 
 @media(max-height:700px){
 .mainImage{
@@ -253,6 +269,23 @@ height:140px;
 <h1>Senses</h1>
 </div>
 
+<div id="startScreen" class="screen">
+
+    <h2 style="
+        color:#333;
+        margin-bottom:20px;
+        font-size:clamp(24px,4vw,40px);
+        text-align:center;
+    ">
+        Ready to Play?
+    </h2>
+
+    <button id="startBtn">
+        Tap to Start
+    </button>
+
+</div>
+  
 <!-- Game -->
 <div id="gameScreen" class="screen">
 <div class="game-container">
@@ -345,15 +378,21 @@ const logoScreen=document.getElementById("logoScreen");
 const titleScreen=document.getElementById("titleScreen");
 const gameScreen=document.getElementById("gameScreen");
 const endScreen=document.getElementById("endScreen");
+const startScreen=document.getElementById("startScreen");
+  
+const startScreen =
+document.getElementById("startScreen");
 
 setTimeout(()=>{
+
 logoScreen.classList.remove("show");
 titleScreen.classList.add("show");
 
 setTimeout(()=>{
+
 titleScreen.classList.remove("show");
-gameScreen.classList.add("show");
-loadRound();
+startScreen.classList.add("show");
+
 },5000);
 
 },5000);
@@ -478,6 +517,18 @@ clap.play();
 startConfetti();
 
 }
+
+document
+.getElementById("startBtn")
+.addEventListener("click",()=>{
+
+startScreen.classList.remove("show");
+
+gameScreen.classList.add("show");
+
+loadRound();
+
+});
 
 document.getElementById("playAgain").onclick=()=>{
 location.reload();
