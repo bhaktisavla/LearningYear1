@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<title>Senses</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+width:100%;
+height:100%;
+overflow:hidden;
+font-family:'Arial',sans-serif;
+}
+
+/* Background */
+body{
+background:
+linear-gradient(rgba(255,255,255,.15),rgba(255,255,255,.15)),
+url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop');
+background-size:cover;
+background-position:center;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+/* Screens */
+.screen{
+position:absolute;
+inset:0;
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+padding:2vh;
+}
+
+.show{
+display:flex;
+}
+
+/* Logo */
+#logoScreen img{
+width:min(60vw,320px);
+max-height:60vh;
+object-fit:contain;
+}
+
+/* Title Screen */
+#titleScreen h1{
+font-size:clamp(40px,8vw,80px);
+font-weight:bold;
+animation:flash 1s infinite;
+text-align:center;
+}
+
+@keyframes flash{
+0%{color:#ff6b6b}
+25%{color:#4dabf7}
+50%{color:#51cf66}
+75%{color:#f59f00}
+100%{color:#845ef7}
+}
+
+/* Game */
+.game-container{
+width:100%;
+height:100%;
+display:flex;
+flex-direction:column;
+justify-content:space-evenly;
+align-items:center;
+}
+
+.title{
+font-size:clamp(28px,4vw,50px);
+font-weight:bold;
+text-align:center;
+background:linear-gradient(90deg,#ff6b6b,#4dabf7,#51cf66,#f59f00);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.question{
+font-size:clamp(18px,2vw,28px);
+font-weight:bold;
+text-align:center;
+color:#333;
+max-width:90%;
+line-height:1.4;
+background:rgba(255,255,255,.85);
+padding:10px 20px;
+border-radius:15px;
+}
+
+.speakerBtn{
+padding:10px 18px;
+border:none;
+border-radius:12px;
+background:#4dabf7;
+color:white;
+font-weight:bold;
+font-size:16px;
+cursor:pointer;
+}
+
+.mainImage{
+max-width:min(55vw,380px);
+max-height:28vh;
+object-fit:contain;
+}
+
+.options{
+display:flex;
+gap:5vw;
+justify-content:center;
+align-items:center;
+width:100%;
+}
+
+.option{
+width:min(32vw,220px);
+height:min(32vw,220px);
+background:rgba(255,255,255,.9);
+border-radius:25px;
+padding:10px;
+display:flex;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+border:6px solid transparent;
+transition:.3s;
+}
+
+.option img{
+width:100%;
+height:100%;
+object-fit:contain;
+}
+
+.correct{
+border:6px solid #2ecc71;
+}
+
+.glow{
+animation:glow 1s infinite;
+}
+
+@keyframes glow{
+0%,100%{
+box-shadow:0 0 10px #2ecc71;
+}
+50%{
+box-shadow:0 0 30px #2ecc71;
+}
+}
+
+.wiggle{
+animation:wiggle .4s;
+}
+
+@keyframes wiggle{
+0%{transform:translateX(0)}
+25%{transform:translateX(-8px)}
+50%{transform:translateX(8px)}
+75%{transform:translateX(-8px)}
+100%{transform:translateX(0)}
+}
+
+.feedback{
+font-size:clamp(28px,4vw,50px);
+font-weight:bold;
+height:60px;
+text-align:center;
+}
+
+.good{
+background:linear-gradient(90deg,#ff6b6b,#4dabf7,#51cf66,#f59f00);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* End */
+#endScreen h1{
+font-size:clamp(42px,8vw,90px);
+background:linear-gradient(90deg,#ff6b6b,#4dabf7,#51cf66,#f59f00);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+margin-bottom:20px;
+}
+
+#playAgain{
+padding:16px 32px;
+font-size:22px;
+border:none;
+border-radius:15px;
+background:#4dabf7;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+canvas{
+position:absolute;
+inset:0;
+pointer-events:none;
+}
+
+@media(max-height:700px){
+.mainImage{
+max-height:22vh;
+}
+.option{
+width:140px;
+height:140px;
+}
+}
+</style>
+</head>
+<body>
+
+<audio id="clapSound" src="assets/clap.mp3"></audio>
+<audio id="wrongSound" src="assets/wrong.mp3"></audio>
+
+<!-- Logo -->
+<div id="logoScreen" class="screen show">
+<img src="assets/innovine-logo.png">
+</div>
+
+<!-- Title -->
+<div id="titleScreen" class="screen">
+<h1>Senses</h1>
+</div>
+
+<!-- Game -->
+<div id="gameScreen" class="screen">
+<div class="game-container">
+
+<div class="title">Senses</div>
+
+<div class="question" id="question"></div>
+
+<button class="speakerBtn" onclick="speakQuestion()">
+🔊 Hear Again
+</button>
+
+<img id="mainImage" class="mainImage">
+
+<div class="options" id="options"></div>
+
+<div class="feedback" id="feedback"></div>
+
+</div>
+</div>
+
+<!-- End -->
+<div id="endScreen" class="screen">
+<canvas id="confetti"></canvas>
+<h1>Great Job!</h1>
+<button id="playAgain">Play Again</button>
+</div>
+
+<script>
+
+const rounds = [
+
+{
+image:"assets/smell.png",
+correct:"nose",
+options:[
+"assets/nose.png",
+"assets/eye.png"
+]
+},
+
+{
+image:"assets/hear.png",
+correct:"ear",
+options:[
+"assets/nose.png",
+"assets/ear.png"
+]
+},
+
+{
+image:"assets/see.png",
+correct:"eye",
+options:[
+"assets/eye.png",
+"assets/tongue.png"
+]
+},
+
+{
+image:"assets/taste.png",
+correct:"tongue",
+options:[
+"assets/tongue.png",
+"assets/hand.png"
+]
+},
+
+{
+image:"assets/feel.png",
+correct:"hand",
+options:[
+"assets/ear.png",
+"assets/hand.png"
+]
+}
+
+];
+
+const questionText =
+"Look at the picture carefully. Tap the correct sense organ that helps you do the action shown in the picture.";
+
+let currentRound=0;
+let wrongAttempts=0;
+
+const clap=document.getElementById("clapSound");
+const wrong=document.getElementById("wrongSound");
+
+const logoScreen=document.getElementById("logoScreen");
+const titleScreen=document.getElementById("titleScreen");
+const gameScreen=document.getElementById("gameScreen");
+const endScreen=document.getElementById("endScreen");
+
+setTimeout(()=>{
+logoScreen.classList.remove("show");
+titleScreen.classList.add("show");
+
+setTimeout(()=>{
+titleScreen.classList.remove("show");
+gameScreen.classList.add("show");
+loadRound();
+},5000);
+
+},5000);
+
+function speakQuestion(){
+
+speechSynthesis.cancel();
+
+const speech=new SpeechSynthesisUtterance(questionText);
+
+speech.rate=0.9;
+speech.pitch=1;
+speech.volume=1;
+
+speechSynthesis.speak(speech);
+}
+
+function loadRound(){
+
+wrongAttempts=0;
+
+const round=rounds[currentRound];
+
+document.getElementById("question").textContent=questionText;
+document.getElementById("mainImage").src=round.image;
+
+const options=document.getElementById("options");
+options.innerHTML="";
+
+round.options.forEach(path=>{
+
+const card=document.createElement("div");
+card.className="option";
+
+const img=document.createElement("img");
+img.src=path;
+
+card.appendChild(img);
+
+card.onclick=()=>checkAnswer(card,path);
+
+options.appendChild(card);
+
+});
+
+document.getElementById("feedback").textContent="";
+
+setTimeout(speakQuestion,500);
+}
+
+function checkAnswer(card,path){
+
+const round=rounds[currentRound];
+
+const name=path.split("/").pop().replace(".png","");
+
+if(name===round.correct){
+
+card.classList.add("correct");
+
+document.getElementById("feedback").innerHTML=
+'<span class="good">Good Job!</span>';
+
+clap.currentTime=0;
+clap.play();
+
+setTimeout(()=>{
+
+currentRound++;
+
+if(currentRound<rounds.length){
+
+loadRound();
+
+}else{
+
+showEnd();
+
+}
+
+},1800);
+
+}else{
+
+wrongAttempts++;
+
+wrong.currentTime=0;
+wrong.play();
+
+card.classList.add("wiggle");
+
+setTimeout(()=>{
+card.classList.remove("wiggle");
+},400);
+
+if(wrongAttempts>=2){
+
+document.querySelectorAll(".option").forEach(opt=>{
+
+const img=opt.querySelector("img");
+
+if(img.src.includes(round.correct)){
+opt.classList.add("glow");
+}
+
+});
+
+}
+
+}
+
+}
+
+function showEnd(){
+
+gameScreen.classList.remove("show");
+endScreen.classList.add("show");
+
+clap.currentTime=0;
+clap.play();
+
+startConfetti();
+
+}
+
+document.getElementById("playAgain").onclick=()=>{
+location.reload();
+};
+
+/* Confetti */
+function startConfetti(){
+
+const canvas=document.getElementById("confetti");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+const pieces=[];
+
+for(let i=0;i<180;i++){
+
+pieces.push({
+
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height-canvas.height,
+r:Math.random()*8+4,
+c:`hsl(${Math.random()*360},80%,60%)`,
+s:Math.random()*3+2
+
+});
+
+}
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+pieces.forEach(p=>{
+
+ctx.fillStyle=p.c;
+
+ctx.beginPath();
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+ctx.fill();
+
+p.y+=p.s;
+
+if(p.y>canvas.height){
+p.y=-10;
+}
+
+});
+
+requestAnimationFrame(draw);
+
+}
+
+draw();
+
+}
+
+</script>
+
+</body>
+</html>
