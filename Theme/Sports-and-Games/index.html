@@ -87,6 +87,16 @@ background:#ff922b;
 color:white;
 cursor:pointer;
 box-shadow:0 6px 15px rgba(0,0,0,.25);
+animation:startPulse 1s infinite;
+}
+
+@keyframes startPulse{
+0%,100%{
+transform:scale(1);
+}
+50%{
+transform:scale(1.08);
+}
 }
 
 #startBtn:active{
@@ -111,10 +121,11 @@ margin-bottom:8px;
 }
 
 .question{
-font-size:clamp(18px,2vw,28px);
-font-weight:700;
+font-size:clamp(20px,2vw,30px);
+font-weight:900;
+color:#e03131;
 text-align:center;
-background:rgba(255,255,255,.85);
+background:rgba(255,255,255,.88);
 padding:10px 16px;
 border-radius:16px;
 max-width:950px;
@@ -139,13 +150,11 @@ object-fit:contain;
 margin-bottom:10px;
 }
 
-.options{
-display:flex;
-gap:20px;
-justify-content:center;
-align-items:center;
-width:100%;
-}
+.option{
+width:min(22vw,160px);
+height:min(22vw,160px);
+min-width:90px;
+min-height:90px;
 
 .option{
 width:min(28vw,220px);
@@ -215,7 +224,10 @@ text-shadow:2px 2px 5px rgba(0,0,0,.3);
 }
 
 .good{
-color:#2f9e44;
+color:#51cf66;
+text-shadow:
+0 0 10px #51cf66,
+0 0 20px #51cf66;
 }
 
 #finishScreen{
@@ -256,8 +268,8 @@ height:30vh;
 }
 
 .option{
-width:38vw;
-height:38vw;
+width:28vw;
+height:28vw;
 }
 
 .question{
@@ -530,6 +542,59 @@ startConfetti();
 }
 
 playAgainBtn.addEventListener("click",()=>{
+
+  const canvas=document.getElementById("confettiCanvas");
+const ctx=canvas.getContext("2d");
+
+function startConfetti(){
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let confetti=[];
+
+for(let i=0;i<150;i++){
+
+confetti.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height-canvas.height,
+r:Math.random()*8+4,
+d:Math.random()*150
+});
+
+}
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+confetti.forEach(c=>{
+
+ctx.beginPath();
+
+ctx.fillStyle=
+["#ff6b6b","#4dabf7","#51cf66","#fcc419","#f783ac"]
+[Math.floor(Math.random()*5)];
+
+ctx.arc(c.x,c.y,c.r,0,Math.PI*2);
+
+ctx.fill();
+
+c.y+=3;
+
+if(c.y>canvas.height){
+c.y=-20;
+}
+
+});
+
+requestAnimationFrame(draw);
+
+}
+
+draw();
+
+}
 
 location.reload();
 
