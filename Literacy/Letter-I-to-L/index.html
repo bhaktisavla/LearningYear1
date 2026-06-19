@@ -114,7 +114,28 @@ box-shadow:0 4px 12px rgba(0,0,0,.25);
 button:hover{
 transform:scale(1.05);
 }
-.confetti{
+#startBtn{
+font-size:28px;
+padding:15px 35px;
+margin-top:30px;
+font-weight:bold;
+border:none;
+border-radius:40px;
+cursor:pointer;
+background:linear-gradient(
+45deg,
+#ff6b6b,
+#ffd93d,
+#6bcB77,
+#4d96ff,
+#9b5de5
+);
+background-size:300% 300%;
+color:white;
+animation:rainbowButton 5s ease infinite;
+box-shadow:0 6px 15px rgba(0,0,0,.25);
+}
+  .confetti{
   position:fixed;
   top:-20px;
   border-radius:2px;
@@ -143,7 +164,13 @@ transform:scale(1.05);
 </head>
 <body>
 <div id="logo" class="screen"><img src="assets/innovine-logo.png"></div>
-<div id="title" class="screen hidden"><div class="flash">Letters I to L</div></div>
+<div id="title" class="screen hidden">
+  <div class="flash">Letters I to L</div>
+
+  <button id="startBtn" style="margin-top:30px;">
+    👆 TAP TO START
+  </button>
+</div>
 
 <div id="game" class="screen hidden">
 <h1>Letters I to L</h1>
@@ -175,17 +202,35 @@ const rounds=[
 {letter:'L',letterImg:'assets/L.png',speech:'Look at the letter L. Tap the pictures that start with letter L.',correct:['lamp','leaf','lion','lock','lotus'],items:['lamp','leaf','lion','lock','lotus','jug']}
 ];
 let r=0,selected=0,wrongCount=0;
+document.addEventListener("click", unlockAudio, { once:true });
 
+function unlockAudio(){
+
+  if(window.speechSynthesis){
+
+    const u = new SpeechSynthesisUtterance("");
+
+    speechSynthesis.speak(u);
+    speechSynthesis.cancel();
+
+  }
+
+}
 setTimeout(()=>{
-logo.classList.add('hidden');
-title.classList.remove('hidden');
-setTimeout(()=>{
-title.classList.add('hidden');
-game.classList.remove('hidden');
-loadRound();
-},5000);
+  logo.classList.add('hidden');
+  title.classList.remove('hidden');
 },5000);
 
+  startBtn.addEventListener("click", ()=>{
+
+  title.classList.add("hidden");
+
+  game.classList.remove("hidden");
+
+  loadRound();
+
+});
+  
 function speak(text){
 if(!window.speechSynthesis)return;
 speechSynthesis.cancel();
