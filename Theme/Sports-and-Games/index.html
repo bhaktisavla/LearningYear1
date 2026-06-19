@@ -337,17 +337,206 @@ Play Again
 
 <script>
 
-/* ---------- SPLASH SCREENS ---------- */
-
 const logoScreen=document.getElementById("logoScreen");
 const titleScreen=document.getElementById("titleScreen");
+const gameScreen=document.getElementById("gameScreen");
+const finishScreen=document.getElementById("finishScreen");
+
+const startBtn=document.getElementById("startBtn");
+const playAgainBtn=document.getElementById("playAgainBtn");
+const listenBtn=document.getElementById("listenBtn");
+
+const questionText=document.getElementById("questionText");
+const mainImage=document.getElementById("mainImage");
+const optionsContainer=document.getElementById("optionsContainer");
+const feedback=document.getElementById("feedback");
+
+const clapSound=document.getElementById("clapSound");
+const wrongSound=document.getElementById("wrongSound");
+
+let currentRound=0;
+let wrongAttempts=0;
+
+const rounds=[
+
+{
+question:"Look at the picture carefully. Tap the correct ball that matches the sport shown in the picture.",
+mainImage:"assets/cricket.png",
+
+options:[
+{
+image:"assets/ball.png",
+correct:true
+},
+{
+image:"assets/rugby.png",
+correct:false
+}
+]
+},
+
+{
+question:"Look at the picture carefully. Tap the correct ball that matches the sport shown in the picture.",
+mainImage:"assets/boy-football.png",
+
+options:[
+{
+image:"assets/football.png",
+correct:true
+},
+{
+image:"assets/tennis.png",
+correct:false
+}
+]
+}
+
+];
 
 setTimeout(()=>{
 logoScreen.classList.remove("active");
 titleScreen.classList.add("active");
 },5000);
 
+function speak(text){
+
+speechSynthesis.cancel();
+
+const utterance=new SpeechSynthesisUtterance(text);
+
+utterance.rate=0.9;
+utterance.pitch=1;
+
+speechSynthesis.speak(utterance);
+}
+
+startBtn.addEventListener("click",()=>{
+
+titleScreen.classList.remove("active");
+gameScreen.classList.add("active");
+
+loadRound();
+
+});
+
+listenBtn.addEventListener("click",()=>{
+
+speak(rounds[currentRound].question);
+
+});
+
+function loadRound(){
+
+wrongAttempts=0;
+
+const round=rounds[currentRound];
+
+questionText.textContent=round.question;
+
+mainImage.src=round.mainImage;
+
+optionsContainer.innerHTML="";
+
+round.options.forEach(option=>{
+
+const card=document.createElement("div");
+
+card.className="option";
+
+card.innerHTML=`<img src="${option.image}">`;
+
+card.addEventListener("click",()=>checkAnswer(card,option.correct));
+
+optionsContainer.appendChild(card);
+
+});
+
+setTimeout(()=>{
+speak(round.question);
+},500);
+
+}
+
+function checkAnswer(card,isCorrect){
+
+if(isCorrect){
+
+card.classList.add("correct");
+
+feedback.style.display="block";
+
+clapSound.currentTime=0;
+clapSound.play();
+
+setTimeout(()=>{
+feedback.style.display="none";
+
+currentRound++;
+
+if(currentRound<rounds.length){
+
+loadRound();
+
+}else{
+
+showFinish();
+
+}
+
+},1800);
+
+}else{
+
+wrongAttempts++;
+
+wrongSound.currentTime=0;
+wrongSound.play();
+
+card.classList.add("wrong");
+
+setTimeout(()=>{
+card.classList.remove("wrong");
+},400);
+
+if(wrongAttempts>=2){
+
+const cards=document.querySelectorAll(".option");
+
+const round=rounds[currentRound];
+
+cards.forEach((c,index)=>{
+
+if(round.options[index].correct){
+
+c.classList.add("glow");
+
+}
+
+});
+
+}
+
+}
+
+}
+
+function showFinish(){
+
+gameScreen.classList.remove("active");
+finishScreen.classList.add("active");
+
+startConfetti();
+
+}
+
+playAgainBtn.addEventListener("click",()=>{
+
+location.reload();
+
+});
+
 </script>
+
 
 </body>
 </html>
