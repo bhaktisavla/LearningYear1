@@ -121,9 +121,52 @@ z-index:9999;
 }
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
 @media(max-width:768px){
-.left{width:26%}
-.grid{width:74%}
-.speaker{font-size:50px}
+
+.top{
+padding:4px;
+}
+
+h1{
+font-size:28px;
+}
+
+.question{
+font-size:14px;
+}
+
+.main{
+height:calc(100vh - 90px);
+gap:6px;
+}
+
+.left{
+width:22%;
+}
+
+.grid{
+width:78%;
+gap:6px;
+}
+
+.card{
+border-radius:12px;
+}
+
+.card img{
+max-width:80%;
+max-height:80%;
+}
+
+.speaker{
+width:90px;
+height:90px;
+font-size:40px;
+}
+
+.tapBox{
+padding:6px 14px;
+font-size:14px;
+}
 }
 </style>
 </head>
@@ -134,7 +177,24 @@ z-index:9999;
 </div>
 
 <div class="overlay" id="title" style="display:none;">
-<div class="titleSplash">My Family</div>
+    <div style="text-align:center;">
+        <div class="titleSplash">My Family</div>
+
+        <button id="startBtn" style="
+            margin-top:30px;
+            padding:15px 40px;
+            font-size:28px;
+            font-weight:bold;
+            border:none;
+            border-radius:15px;
+            background:#ff7043;
+            color:white;
+            cursor:pointer;
+            box-shadow:0 4px 10px rgba(0,0,0,0.2);
+        ">
+            START
+        </button>
+    </div>
 </div>
 
 <div id="game">
@@ -279,20 +339,20 @@ function createConfetti(){
 }
 
 setTimeout(()=>{
-document.getElementById("logo").style.display="none";
-document.getElementById("title").style.display="flex";
+    document.getElementById("logo").style.display="none";
+    document.getElementById("title").style.display="flex";
+},5000);
 
-setTimeout(()=>{
-document.getElementById("title").style.display="none";
-document.getElementById("game").style.display="block";
+document.getElementById("startBtn").addEventListener("click",()=>{
 
-speak(instruction,()=>{
-setTimeout(speakCurrent,500);
+    document.getElementById("title").style.display="none";
+    document.getElementById("game").style.display="block";
+
+    speak(instruction,()=>{
+        setTimeout(speakCurrent,500);
+    });
+
 });
-
-},5000);
-
-},5000);
 </script>
 </body>
 </html>
