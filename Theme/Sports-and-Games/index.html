@@ -111,6 +111,7 @@ background:url("assets/background.png") center center/cover no-repeat;
 font-size:clamp(28px,4vw,48px);
 font-weight:900;
 text-align:center;
+margin-top:10px;
 margin-bottom:8px;
 }
 
@@ -144,26 +145,18 @@ cursor:pointer;
 }
 
 .main-image{
-width:min(45vh,420px);
-height:min(38vh,340px);
+width:min(32vh,280px);
+height:min(28vh,240px);
 object-fit:contain;
-margin-bottom:10px;
+margin-bottom:8px;
 }
 
 .option{
-width:min(22vw,160px);
-height:min(22vw,160px);
-min-width:90px;
-min-height:90px;
-
-.option{
-width:min(28vw,220px);
-height:min(28vw,220px);
-min-width:120px;
-min-height:120px;
+width:160px;
+height:160px;
 background:white;
 border-radius:24px;
-padding:10px;
+padding:8px;
 border:5px solid transparent;
 display:flex;
 justify-content:center;
@@ -267,9 +260,18 @@ width:50vw;
 height:30vh;
 }
 
+.options{
+display:flex;
+gap:20px;
+justify-content:center;
+align-items:center;
+width:100%;
+margin-top:10px;
+}
+
 .option{
-width:28vw;
-height:28vw;
+width:120px;
+height:120px;
 }
 
 .question{
@@ -531,19 +533,7 @@ c.classList.add("glow");
 }
 
 }
-
-function showFinish(){
-
-gameScreen.classList.remove("active");
-finishScreen.classList.add("active");
-
-startConfetti();
-
-}
-
-playAgainBtn.addEventListener("click",()=>{
-
-  const canvas=document.getElementById("confettiCanvas");
+const canvas=document.getElementById("confettiCanvas");
 const ctx=canvas.getContext("2d");
 
 function startConfetti(){
@@ -595,9 +585,18 @@ requestAnimationFrame(draw);
 draw();
 
 }
+  
+function showFinish(){
 
+gameScreen.classList.remove("active");
+finishScreen.classList.add("active");
+
+startConfetti();
+
+}
+
+playAgainBtn.addEventListener("click",()=>{
 location.reload();
-
 });
 
 </script>
