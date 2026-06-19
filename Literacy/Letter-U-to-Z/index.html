@@ -104,9 +104,8 @@ max-height:100%;
 #images .item{
 width:75px;
 height:75px;
-background:transparent;
-box-shadow:none;
-border:none;
+background:#fff;
+border-radius:10px;
 }
     
 .item img{
@@ -228,7 +227,7 @@ d.onclick=()=>selectLetter(d);
 letters.appendChild(d);
 });
 
-r.images.sort(()=>Math.random()-0.5).forEach(img=>{
+r.images.forEach(img=>{
 let d=document.createElement("div");
 d.className="item";
 d.dataset.img=img;
@@ -293,6 +292,11 @@ msg.style.display="none";
 round++;
 if(round<rounds.length){
 loadRound();
+
+setTimeout(()=>{
+speakInstruction();
+},500);
+
 }else{
 finishGame();
 }
