@@ -64,7 +64,7 @@ cursor:pointer;
 overflow:hidden;
 }
 .card img{
-width:785%;
+width:85%;
 height:85%;
 object-fit:contain;
 }
@@ -123,6 +123,17 @@ animation:fall 4s linear forwards;
 pointer-events:none;
 z-index:9999;
 }
+@keyframes gentlePulse{
+    0%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.05);
+    }
+    100%{
+        transform:scale(1);
+    }
+}   
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
 @media(max-width:768px){
 
@@ -198,6 +209,7 @@ font-size:14px;
             color:white;
             cursor:pointer;
             box-shadow:0 4px 10px rgba(0,0,0,0.2);
+            animation:gentlePulse 1.8s infinite;
         ">
             👆 TAP TO START
         </button>
