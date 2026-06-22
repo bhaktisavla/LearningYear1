@@ -253,12 +253,24 @@ background:#4dabf7;
 color:white;
 cursor:pointer;
 box-shadow:0 4px 10px rgba(0,0,0,.2);
+animation:startPulse 1.5s infinite;
 }
 
 #startBtn:active{
 transform:scale(.97);
 }
 
+@keyframes startPulse{
+
+0%,100%{
+transform:scale(1);
+}
+
+50%{
+transform:scale(1.08);
+}
+
+}
 @media(max-height:700px){
 
 .mainImage{
@@ -291,7 +303,7 @@ height:120px;
 <h1>Senses</h1>
 
 <button id="startBtn">
-Tap to Start
+👆 TAP TO PLAY
 </button>
 
 </div>
