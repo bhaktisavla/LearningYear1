@@ -86,10 +86,10 @@ display:grid;
 grid-template-rows:
 auto      /* title */
 auto      /* question */
-auto      /* button */
-1fr        /* image gets most space */
+auto      /* hear again button */
+minmax(180px,1fr) /* image area */
 auto      /* options */
-auto;     /* feedback */
+60px;     /* feedback (Good Job) */
 align-items:center;
 justify-items:center;
 padding:10px;
@@ -193,10 +193,13 @@ animation:wiggle .4s;
 }
 
 .feedback{
-font-size:clamp(28px,4vw,50px);
+font-size:clamp(24px,3vw,42px);
 font-weight:bold;
-height:60px;
+height:50px;
 text-align:center;
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
 .good{
